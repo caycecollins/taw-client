@@ -1,0 +1,104 @@
+{
+  "name": "taw-3.0",
+  "version": "0.0.1",
+  "description": "Front-end for TAW.net",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "npm run clean && npm run build:prod:dll && npm run build:webpack",
+    "build:dev:dll": "webpack --config webpack.dev.dll.babel.js --progress",
+    "build:prod:dll": "webpack --config webpack.prod.dll.babel.js --progress",
+    "build:webpack": "webpack --config webpack.prod.babel.js --progress",
+    "clean": "rimraf dist",
+    "start": "webpack-dev-server --config webpack.dev.babel.js --hot --inline --progress",
+    "start:full": "npm run clean && npm run build:dev:dll && webpack-dev-server --config webpack.dev.babel.js --hot --inline --progress",
+    "test": "jest"
+  },
+  "babel": {
+    "presets": [
+      "es2015",
+      "react",
+      "stage-0"
+    ]
+  },
+  "jest": {
+    "notify": true,
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "setupTestFrameworkScriptFile": "./src/test/setup",
+    "testPathDirs": [
+      "src"
+    ],
+    "testPathIgnorePatterns": [
+      "/src/test/*"
+    ],
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "src/components/Main/index.js"
+    ]
+  },
+  "dependencies": {
+    "@cerebral/forms": "^0.0.0-beta.3",
+    "@cerebral/http": "^0.0.0-beta.3",
+    "@cerebral/router": "^0.0.0-beta.3",
+    "@cerebral/storage": "^0.0.0-beta.3",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.25.0",
+    "babel-eslint": "^7.2.3",
+    "babel-jest": "^20.0.3",
+    "babel-loader": "^7.1.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-react-intl": "^2.3.1",
+    "babel-plugin-transform-builtin-extend": "^1.1.2",
+    "babel-polyfill": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-latest": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "cerebral": "beta",
+    "chart.js": "^2.6.0",
+    "chartkick": "^2.2.4",
+    "colors": "^1.1.2",
+    "copy-webpack-plugin": "^4.0.1",
+    "css-loader": "^0.28.4",
+    "enzyme": "^2.9.1",
+    "eslint": "^4.1.1",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.0",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-react": "^7.1.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "extract-text-webpack-plugin": "2.1.2",
+    "file-loader": "^0.11.2",
+    "font-awesome": "^4.7.0",
+    "function-tree": "^0.4.7",
+    "highcharts": "^5.0.12",
+    "jest-cli": "^20.0.4",
+    "mkdirp": "^0.5.1",
+    "node-fetch": "^1.7.1",
+    "node-sass": "^4.5.3",
+    "polished": "^1.2.1",
+    "prop-types": "^15.5.10",
+    "ramda": "^0.24.1",
+    "react": "^15.6.1",
+    "react-addons-css-transition-group": "^15.6.0",
+    "react-addons-transition-group": "^15.6.0",
+    "react-chartkick": "^0.1.3",
+    "react-dom": "^15.6.1",
+    "react-fa": "^4.2.0",
+    "react-hot-loader": "next",
+    "react-icons": "^2.2.5",
+    "react-material-responsive-grid": "^1.2.0",
+    "react-style-proptype": "^3.0.0",
+    "react-tap-event-plugin": "^2.0.1",
+    "react-transition-group": "1.2.0",
+    "rimraf": "^2.6.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "styled-components": "^2.1.1",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.1.0",
+    "webpack-dev-server": "^2.5.1"
+  }
+}
