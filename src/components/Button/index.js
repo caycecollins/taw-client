@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
-import Icon from 'react-fa'
 
-function Button (props) {
+import Icon from '../Icon'
+
+const Button = props => {
   return (
     <StyledButton
       outline={props.outline}

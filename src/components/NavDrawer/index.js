@@ -1,15 +1,16 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
-import { state, signal, props } from 'cerebral/tags'
+import { state, signal } from 'cerebral/tags'
 import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 
 import Button from '../Button'
 import Link from '../Link'
+import Icon from '../Icon'
 
 const userMenuItems = [
-  { label: 'My Profile', route: 'profile', icon: 'person' },
+  { label: 'My Profile', route: 'profile', icon: 'user' },
   { label: 'Notifications', route: 'notifications', icon: 'bell' },
 ]
 
@@ -29,8 +30,12 @@ const NavDrawer = props => {
         <Link routeTo={item.route} key={item.route}>
           <ListItem
             disabled={item.route === props.currentView}
+            iconOnly={!props.drawerLarge}
           >
-            {item.label}
+            <StyledIcon label={props.drawerLarge}>
+              <Icon size={props.drawerLarge ? 16 : 20} name={item.icon} />
+            </StyledIcon>
+            {props.drawerLarge && <div>{item.label}</div>}
           </ListItem>
         </Link>
       )
@@ -60,7 +65,7 @@ const NavDrawer = props => {
       </NavDrawerToggles>
       <User>
         <Avatar />
-        Callsign
+        {props.drawerLarge && 'Callsign'}
       </User>
       <Navigation user={true}>
         <List>{getListItems(userMenuItems)}</List>
@@ -150,24 +155,33 @@ const List = styled.ul`
 
 const ListItem = styled.li`
   display: flex;
+  white-space: nowrap;
   align-items: center;
+  justify-content: flex-start;
   height: 64px;
   color: ${props => props.theme.colors.armyGreen};
-  padding: 8px 16px;
-  transition: all .1s ease-in-out;
+  ${props => props.iconOnly
+    ? css`padding: 8px 30px;`
+    : css`padding: 8px 16px;`}
+  transition: all .3s ease-in-out;
   text-transform: uppercase;
   ${props => props.disabled
     ? css`
-        background-color: rgba(0,0,0,.5);
+        background-color: rgba(0,0,0,.8);
+        color: ${props.theme.colors.armyWhite};
         &:hover {
           cursor: default;
         }
       `
     : css`
         &:hover {
-          background-color: rgba(0,0,0,.2);
+          color: ${props.theme.colors.lightTan};
+          background-color: rgba(0,0,0,.4);
           cursor: pointer;
         }
-      `
-  }
+      `}
+`
+
+const StyledIcon = styled.div`
+  ${props => props.label && css`padding-right: 16px;`}
 `
