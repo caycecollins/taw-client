@@ -42,7 +42,7 @@ export default {
   devServer: {
     contentBase: Path.resolve(__dirname, 'dist'),
     host: local.host || 'localhost',
-    port: local.port || 6000,
+    port: local.port || 5000,
     compress: local.compress || false,
     historyApiFallback: true,
     disableHostCheck: true,
