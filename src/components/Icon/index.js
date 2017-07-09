@@ -35,5 +35,5 @@ const StyledIcon = styled.div`
   flex: 1;
   align-items: center;
   justify-content: center;
-  transition: all .3s ease-in-out;
+  transition: font-size .3s ease-in-out;
 `
