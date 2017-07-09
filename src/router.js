@@ -5,6 +5,7 @@ export default Router({
   routes: {
     '/': 'dashboard.routed',
     '/profile': 'profile.routed',
+    '/notifications': 'notifications.routed',
     '/games': {
       '/': 'games.routed',
       '/:id': 'game.routed',
