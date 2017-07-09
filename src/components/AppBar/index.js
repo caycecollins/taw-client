@@ -16,7 +16,7 @@ const AppBar = (props) => {
   return (
     <StyledAppBar>
       <LogoContainer>
-        {(!props.drawerLarge && !props.drawerActive) &&
+        {(!props.drawerActive) &&
           <Button
             icon="bars"
             outline={false}

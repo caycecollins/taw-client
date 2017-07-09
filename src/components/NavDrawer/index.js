@@ -50,10 +50,7 @@ const NavDrawer = props => {
         <Button
           small={true}
           outline={false}
-          onClick={() => {
-            props.drawerLargeToggled({ value: false })
-            props.drawerActiveToggled({ value: false })
-          }}
+          onClick={() => props.drawerActiveToggled({ value: false })}
           icon="close"
         />
         <Button
@@ -104,7 +101,13 @@ const NavDrawerContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
-  left: ${props => props.active ? '0' : '-320'}px;
+  left: ${props => {
+    if (props.active) {
+      return css`0px`
+    } else {
+      return props.large ? css`-320px` : css`-80px`
+    }
+  }};
   width: ${props => props.large ? '320' : '80'}px;
   height: calc(100% - 48px);
   top: 48px;
