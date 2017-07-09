@@ -17,8 +17,6 @@ import Profile from '../Profile'
 import Notifications from '../Notifications'
 import FourOhFour from '../FourOhFour'
 
-import './transitions.scss'
-
 const views = {
   home: Home,
   dashboard: Dashboard,

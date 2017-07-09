@@ -1,0 +1,32 @@
+.initial-appear {
+  opacity: 0.01;
+  &.initial-appear-active {
+    opacity: 1;
+    transition: opacity 1000ms ease-in-out;
+  }
+}
+
+.view-appear {
+  opacity: 0.01;
+  &.view-appear-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+  }
+}
+
+.view-enter {
+  opacity: 0.01;
+  &.view-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+  }
+}
+
+.view-leave {
+  opacity: 1;
+  &.view-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+
