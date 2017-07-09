@@ -1,30 +1,23 @@
-import drawerActiveToggled from './signals/drawerActiveToggled'
-import drawerLargeToggled from './signals/drawerLargeToggled'
-import drawerMinimalToggled from './signals/drawerMinimalToggled'
-import sidebarActiveToggled from './signals/sidebarActiveToggled'
-import sidebarViewChanged from './signals/sidebarViewChanged'
+import drawerActiveToggled from './chains/drawerActiveToggled'
+import drawerLargeToggled from './chains/drawerLargeToggled'
+import sidebarActiveToggled from './chains/sidebarActiveToggled'
+import sidebarViewChanged from './chains/sidebarViewChanged'
 
-function getInitialDrawerPinned () {
-  if (window.innerWidth < 840) {
-    return false
-  } else {
-    return true
-  }
-}
+const drawerActiveFromStorage = window.localStorage.getItem('app.drawerActive')
+const drawerLargeFromStorage = window.localStorage.getItem('app.drawerLarge')
 
 export default {
   state: {
     currentView: null,
     previousView: null,
-    drawerActive: getInitialDrawerPinned(),
-    drawerLarge: getInitialDrawerPinned(),
+    drawerActive: drawerActiveFromStorage || (window.innerWidth > 768),
+    drawerLarge: drawerLargeFromStorage || (window.innerWidth > 1024),
     sidebarActive: null,
     sidebarView: null,
   },
   signals: {
     drawerActiveToggled,
     drawerLargeToggled,
-    drawerMinimalToggled,
     sidebarActiveToggled,
     sidebarViewChanged,
   },

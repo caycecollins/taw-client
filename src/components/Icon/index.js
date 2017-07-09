@@ -17,7 +17,7 @@ Icon.propTypes = {
     PropTypes.bool,
     PropTypes.string,
   ]),
-  spin: PropTypes.string,
+  spin: PropTypes.bool,
 }
 
 Icon.defaultProps = {
