@@ -15,7 +15,6 @@ export default {
   },
   signals: {
     routed: [
-      changeView('game'),
       getGame, {
         true: changeView('game'),
         false: changeView('fourohfour'),
