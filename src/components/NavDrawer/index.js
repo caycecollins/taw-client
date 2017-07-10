@@ -29,7 +29,7 @@ const NavDrawer = props => {
       return (
         <Link routeTo={item.route} key={item.route}>
           <ListItem
-            disabled={item.route === props.currentView}
+            disabled={props.currentView && item.route.search(props.currentView) > -1}
             iconOnly={!props.drawerLarge}
           >
             <StyledIcon label={props.drawerLarge}>

@@ -1,7 +1,6 @@
 import Router from '@cerebral/router'
 
 export default Router({
-  preventAutostart: false,
   routes: {
     '/': 'dashboard.routed',
     '/profile': 'profile.routed',
