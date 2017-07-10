@@ -49,11 +49,11 @@ const controller = Controller({
   },
   providers: [
     HttpProvider({
-      baseUrl: 'http://localhost:6100/api',
+      baseUrl: `${window.location.protocol}//${window.location.hostname}:6100/api`,
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
-        // 'Accept': 'application/json',
-        // 'Authorization': jwtHeader,
+        'Accept': 'application/json',
+        'Authorization': jwtHeader,
       },
       withCredentials: false, // true if CORS is required
     }),
