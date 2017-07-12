@@ -36,16 +36,6 @@ const RenderView = ({ authorizationPending, authenticated, currentView, lastVisi
       ? console.log(`mounting ${currentView} component`)
       : console.log(`There is no component for "${currentView}", using "dashboard" component instead.`)
   }
-  // const determineComponent = () => {
-  //   if (currentView === 'login' && authenticated) {
-  //     let Component = views.dashboard
-  //     return Component
-  //   } else {
-  //     let Component = views[currentView] || views.fourohfour
-  //     return Component
-  //   }
-  // }
-  // const Component = determineComponent()
   const Component = views[currentView] || views.fourohfour
   return (
     <PageContainer loggedIn={authenticated}>
