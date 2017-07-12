@@ -7,10 +7,11 @@ import styled, { css } from 'styled-components'
 function ViewContainer (props) {
   return (
     <Container
-      drawerActive={props.drawerActive}
+      drawerActive={!props.authorizationPending && props.authenticated && props.drawerActive}
       drawerLarge={props.drawerLarge}
+      authenticated={props.authenticated}
       backgroundImage={props.backgroundImage}
-      className={props.className} // required for overriding from other components
+      className={props.className}
     >
       {props.children}
     </Container>
@@ -23,10 +24,14 @@ ViewContainer.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   backgroundImage: PropTypes.string,
+  authenticated: PropTypes.bool,
+  authorizationPending: PropTypes.bool,
 }
 
 export default connect(
   {
+    authenticated: state`authorization.authenticated`,
+    authorizationPending: state`authorization.pending`,
     drawerActive: state`app.drawerActive`,
     drawerLarge: state`app.drawerLarge`,
   },
@@ -38,8 +43,8 @@ const Container = styled.div`
   height: auto;
   padding: 24px;
   padding-left: ${props => {
-    if (props.drawerActive) {
-      if (props.drawerLarge) return '344px'
+    if (props.drawerActive && props.authenticated) {
+      if (props.drawerLarge) return '304px'
       else return '104px'
     } else {
       return '24px'

@@ -7,7 +7,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import config from 'config'
 
 // import Signup from '../Signup'
-// import Login from '../Login'
+import Login from '../Login'
 import Home from '../Home'
 import Dashboard from '../Dashboard'
 import Game from '../Game'
@@ -21,7 +21,7 @@ const views = {
   home: Home,
   dashboard: Dashboard,
   // signup: Signup,
-  // login: Login,
+  login: Login,
   game: Game,
   games: Games,
   reports: Reports,
@@ -30,15 +30,25 @@ const views = {
   fourohfour: FourOhFour,
 }
 
-const RenderView = ({ currentView, lastVisited, drawerActive, drawerLarge }) => {
+const RenderView = ({ authenticated, currentView, lastVisited, drawerActive, drawerLarge }) => {
   if (!config.production) {
     views[currentView]
       ? console.log(`mounting ${currentView} component`)
       : console.log(`There is no component for "${currentView}", using "dashboard" component instead.`)
   }
+  // const determineComponent = () => {
+  //   if (currentView === 'login' && authenticated) {
+  //     let Component = views.dashboard
+  //     return Component
+  //   } else {
+  //     let Component = views[currentView] || views.fourohfour
+  //     return Component
+  //   }
+  // }
+  // const Component = determineComponent()
   const Component = views[currentView] || views.fourohfour
   return (
-    <PageContainer>
+    <PageContainer loggedIn={authenticated}>
       <CSSTransitionGroup
         transitionName="view"
         transitionAppearTimeout={500}
@@ -49,8 +59,9 @@ const RenderView = ({ currentView, lastVisited, drawerActive, drawerLarge }) => 
         <FullWidthHeight
           key={currentView}
           drawerActive={drawerActive}
-          drawerLarge={drawerLarge}>
-          <Component />
+          drawerLarge={drawerLarge}
+        >
+          {authenticated && currentView === 'login' ? <Login /> : <Component />}
         </FullWidthHeight>
       </CSSTransitionGroup>
     </PageContainer>
@@ -62,6 +73,7 @@ RenderView.propTypes = {
   lastVisited: PropTypes.string,
   drawerActive: PropTypes.bool,
   drawerLarge: PropTypes.bool,
+  authenticated: PropTypes.bool,
 }
 
 export default connect(
@@ -70,6 +82,7 @@ export default connect(
     lastVisited: state`app.lastVisited`,
     drawerActive: state`app.drawerActive`,
     drawerLarge: state`app.drawerLarge`,
+    authenticated: state`authorization.authenticated`,
   },
   RenderView
 )
@@ -83,6 +96,7 @@ const PageContainer = styled.div`
   overflow-y: scroll;
   overflow-x: hidden;
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 
 const FullWidthHeight = styled.div`

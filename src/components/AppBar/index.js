@@ -5,16 +5,38 @@ import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
 
 import Button from '../Button'
+import Link from '../Link'
 
-const AppBar = (props) => {
-  // const menuIconClicked = () => {
-  //   const windowWidth = window.innerWidth
-  //   windowWidth <= 840
-  //     ? props.drawerActiveToggled({ value: !props.drawerActive })
-  //     : props.drawerLargeToggled({ value: !props.drawerLarge })
-  // }
+const LoginButton = () => (
+  <Link routeTo="login">
+    <Button
+      label="Login"
+      icon="sign-in"
+      outline={false}
+    />
+  </Link>
+)
+
+const LogoutButton = props => (
+  <Link
+    onClick={() => props.logout()}
+    routeTo="login"
+  >
+    <Button
+      label="Logout"
+      icon="sign-out"
+      outline={false}
+    />
+  </Link>
+)
+
+LogoutButton.propTypes = {
+  logout: PropTypes.func,
+}
+
+const AppBar = props => {
   return (
-    <StyledAppBar>
+    <StyledAppBar className={props.className} >
       <LogoContainer>
         {(!props.drawerActive) &&
           <Button
@@ -22,12 +44,11 @@ const AppBar = (props) => {
             outline={false}
             onClick={() => props.drawerActiveToggled({ value: !props.drawerActive })} />
         }
-        <Logo />
+        <Link routeTo="dashboard">
+          <Logo />
+        </Link>
       </LogoContainer>
-      <Button
-        label="Signout"
-        icon="sign-out"
-        outline={false} />
+      {props.loggedIn ? <LogoutButton logout={props.logout} /> : <LoginButton />}
     </StyledAppBar>
   )
 }
@@ -38,6 +59,9 @@ AppBar.propTypes = {
   drawerLarge: PropTypes.bool,
   drawerLargeToggled: PropTypes.func,
   sidebarViewChanged: PropTypes.func,
+  className: PropTypes.string,
+  loggedIn: PropTypes.string,
+  logout: PropTypes.func,
 }
 
 export default connect(
@@ -47,6 +71,8 @@ export default connect(
     drawerLarge: state`app.drawerLarge`,
     drawerLargeToggled: signal`app.drawerLargeToggled`,
     sidebarViewChanged: signal`app.sidebarViewChanged`,
+    loggedIn: state`authorization.token`,
+    logout: signal`authorization.logout`,
   },
   AppBar
 )
@@ -64,6 +90,10 @@ const StyledAppBar = styled.div`
   background-color: ${props => props.theme.colors.darkGray};
   color: white;
   z-index: 9999;
+  animation-name: appBar;
+  animation-duration: .3s;
+  animation-timing-function: cubic-bezier(.4,0,.2,1);
+  animation-fill-mode: backwards;
 `
 
 const LogoContainer = styled.div`

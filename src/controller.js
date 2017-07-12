@@ -11,7 +11,7 @@ import router from './router'
 import app from './modules/app'
 import authorization from './modules/authorization'
 // import signup from './modules/signup'
-// import login from './modules/login'
+import login from './modules/login'
 import dashboard from './modules/dashboard'
 import profile from './modules/profile'
 import notifications from './modules/notifications'
@@ -19,10 +19,12 @@ import games from './modules/games'
 import game from './modules/game'
 import events from './modules/events'
 import reports from './modules/reports'
+import user from './modules/user'
 import fourohfour from './modules/fourohfour'
 
-const jwtHeader = window.localStorage.getItem('jwtHeader')
-  ? JSON.parse(window.localStorage.getItem('jwtHeader'))
+const localStorageToken = window.localStorage.getItem('authorization.token')
+const jwtToken = localStorageToken
+  ? JSON.parse(localStorageToken)
   : null
 
 const controller = Controller({
@@ -37,7 +39,7 @@ const controller = Controller({
     app,
     authorization,
     // signup,
-    // login,
+    login,
     dashboard,
     profile,
     notifications,
@@ -45,6 +47,7 @@ const controller = Controller({
     game,
     events,
     reports,
+    user,
     fourohfour,
   },
   providers: [
@@ -53,14 +56,14 @@ const controller = Controller({
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',
-        'Authorization': jwtHeader,
+        'Authorization': `Bearer ${jwtToken}`,
       },
-      withCredentials: false, // true if CORS is required
+      withCredentials: true, // true if CORS is required
     }),
     FormsProvider({
       errorMessages: {
         minLength (value, minLength) {
-          return `${value} is too short - should be equal or more than ${minLength}`
+          return `${minLength} characters minimum.`
         },
         isEmail (value) {
           return `${value} is not a valid email`

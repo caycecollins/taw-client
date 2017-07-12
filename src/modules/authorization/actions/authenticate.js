@@ -1,35 +1,36 @@
-// import R from 'ramda'
-// import Auth0 from 'auth0-js'
-
-export default function ({ state }) {
-  // const auth0 = new Auth0.WebAuth({
-  //   domain: state.get('config.auth0.domain'),
-  //   clientID: state.get('config.auth0.clientID'),
-  //   responseType: 'token',
-  //   scope: 'openid profile',
-  // })
-  // return new Promise((resolve, reject) => {
-  //   const payload = {
-  //     realm: 'Username-Password-Authentication',
-  //     username: state.get('authorization.username'),
-  //     password: state.get('authorization.password'),
-  //   }
-  //   if (!payload.username) {
-  //     return reject({ type: 'UsernameNotSpecifiedError' })
-  //   }
-  //   if (!payload.password) {
-  //     return reject({ type: 'PasswordNotSpecifiedError' })
-  //   }
-  //   auth0.client.login(payload, (error, result) => {
-  //     if (error) return reject(error)
-  //     resolve(result)
-  //   })
-  // }).then(result => {
-  //   state.set('authorization.password', '')
-  //   state.set('authorization.error', null)
-  //   state.set('authorization.token', result.idToken)
-  //   state.set('authorization.authenticated', true)
-  // }).catch(error => {
-  //   state.set('authorization.error', R.omit(['original'], error))
-  // })
+export default function ({ state, http, storage, router }) {
+  state.set('authorization.pending', true)
+  const callsign = state.get('login.form.callsign.value')
+  state.set('authorization.callsign', callsign)
+  const password = state.get('login.form.password.value')
+  console.log(`attempting login with username: ${callsign}`)
+  return http.post('/auth/login', {
+    callsign,
+    password,
+  }).then(async rawResponse => {
+    const stringifyResponse = JSON.stringify(rawResponse)
+    const response = JSON.parse(stringifyResponse)
+    state.set('login.form.callsign.value', '')
+    state.set('login.form.password.value', '')
+    state.set('authorization.error', null)
+    state.set('authorization.token', response.result.token)
+    state.set('authorization.authenticated', true)
+    state.set('app.initialDrawerAnimation', true)
+    storage.set('authorization.token', response.result.token)
+    storage.set('authorization.callsign', state.get('authorization.callsign'))
+    http.updateOptions({
+      headers: {
+        'Authorization': `Bearer ${response.result.token}`,
+      },
+    })
+    const getMe = await http.get('/users/me')
+    state.set('user', getMe.result)
+    router.goTo('/')
+    state.set('authorization.pending', false)
+  }).catch(rawError => {
+    state.set('login.form.password.value', '')
+    const error = JSON.stringify(rawError)
+    state.set('authorization.error', JSON.parse(error))
+    state.set('authorization.pending', false)
+  })
 }

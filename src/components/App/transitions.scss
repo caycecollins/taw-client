@@ -2,7 +2,7 @@
   opacity: 0.01;
   &.initial-appear-active {
     opacity: 1;
-    transition: opacity 1000ms ease-in-out;
+    transition: opacity 500ms ease-in-out;
   }
 }
 
@@ -13,7 +13,6 @@
     transition: opacity 500ms ease-in-out;
   }
 }
-
 .view-enter {
   opacity: 0.01;
   &.view-enter-active {
@@ -21,7 +20,6 @@
     transition: opacity 500ms ease-in-out;
   }
 }
-
 .view-leave {
   opacity: 1;
   &.view-leave-active {
@@ -30,3 +28,29 @@
   }
 }
 
+@keyframes appBar {
+  from {
+    top: -48px;
+  }
+  to {
+    top: 0;
+  }
+}
+
+@keyframes navDrawerLarge {
+  from {
+    left: -280px;
+  }
+  to {
+    left: 0px;
+  }
+}
+
+@keyframes navDrawerSmall {
+  from {
+    left: -80px;
+  }
+  to {
+    left: 0px;
+  }
+}

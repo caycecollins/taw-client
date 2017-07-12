@@ -43,8 +43,10 @@ const NavDrawer = props => {
   }
   return (
     <NavDrawerContainer
-      active={props.drawerActive}
+      active={!props.authorizationPending && props.authenticated && props.drawerActive}
       large={props.drawerLarge}
+      className={props.className}
+      initialDrawerAnimation={props.initialDrawerAnimation}
     >
       <NavDrawerToggles>
         <Button
@@ -76,23 +78,30 @@ const NavDrawer = props => {
 }
 
 NavDrawer.propTypes = {
+  authorizationPending: PropTypes.bool,
   currentView: PropTypes.string,
+  initialDrawerAnimation: PropTypes.bool,
   drawerActive: PropTypes.bool,
   drawerActiveToggled: PropTypes.func,
   drawerLarge: PropTypes.bool,
   drawerLargeToggled: PropTypes.func,
   drawerMinimal: PropTypes.bool,
   routeTo: PropTypes.func,
+  className: PropTypes.string,
+  authenticated: PropTypes.bool,
 }
 
 export default connect(
   {
+    authorizationPending: state`authorization.pending`,
     currentView: state`app.currentView`,
+    initialDrawerAnimation: state`app.initialDrawerAnimation`,
     drawerActive: state`app.drawerActive`,
     drawerActiveToggled: signal`app.drawerActiveToggled`,
     drawerLarge: state`app.drawerLarge`,
     drawerLargeToggled: signal`app.drawerLargeToggled`,
     drawerMinimal: state`app.drawerMinimal`,
+    authenticated: state`authorization.authenticated`,
   },
   NavDrawer
 )
@@ -101,6 +110,9 @@ const NavDrawerContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  width: ${props => props.large ? '280' : '80'}px;
+  height: calc(100% - 48px);
+  top: 48px;
   left: ${props => {
     if (props.active) {
       return css`0px`
@@ -108,14 +120,21 @@ const NavDrawerContainer = styled.div`
       return props.large ? css`-320px` : css`-80px`
     }
   }};
-  width: ${props => props.large ? '320' : '80'}px;
-  height: calc(100% - 48px);
-  top: 48px;
   background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
   z-index: 9998;
   transition: all .3s cubic-bezier(.4,0,.2,1);
   overflow-y: auto;
   overflow-x: hidden;
+  ${props => {
+    if (props.active && props.initialDrawerAnimation) {
+      return css`
+        animation-name: ${props.large ? 'navDrawerLarge' : 'navDrawerSmall'};
+        animation-duration: .3s;
+        animation-timing-function: cubic-bezier(.4,0,.2,1);
+        animation-fill-mode: backwards;
+      `
+    }
+  }}
 `
 
 const NavDrawerToggles = styled.div`
@@ -149,8 +168,9 @@ const Navigation = styled.div`
   flex: ${props => !props.user && '1'};
   padding: 0;
   padding: 8px 0;
-  background-color: ${props => { if (!props.user) return rgba(props.theme.colors.darkGray6, 0.6) }};
+  background-color: ${props => !props.user ? rgba(props.theme.colors.darkGray6, 0.6) : 'transparent'};
 `
+
 const List = styled.ul`
   list-style-type: none;
   padding: 0;
@@ -175,14 +195,14 @@ const ListItem = styled.li`
         &:hover {
           cursor: default;
         }
-      `
+    `
     : css`
         &:hover {
           color: ${props.theme.colors.lightTan};
           background-color: rgba(0,0,0,.4);
           cursor: pointer;
         }
-      `}
+    `}
 `
 
 const StyledIcon = styled.div`

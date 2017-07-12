@@ -1,58 +1,73 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
-import {
-  state,
-  signal,
-} from 'cerebral/tags'
-import styled from 'styled-components'
+import { state, signal } from 'cerebral/tags'
+import { form } from '@cerebral/forms'
 
 import ViewContainer from '../ViewContainer'
+import Button from '../Button'
+import Input from '../Input'
+import ErrorMessage from '../Input/ErrorMessage'
 
-function Login (props) {
+const LoginForm = props => {
+  let enabled = true
+  if (props.settings.disableSubmitWhenFormIsInValid.value) {
+    enabled = props.form.isValid
+  }
   return (
     <ViewContainer>
-      <div>
+      <form onSubmit={(e) => e.preventDefault()}>
+        {Object.keys(props.form.getFields()).map((field, index) => {
+          return (
+            <Input type={props.form[field].type} name={field} key={index} path={`login.form.${field}`} />
+          )
+        })}
         <br />
-        <input
-          // autoFocus // (TODO) removed due to some wonkyness with dropdown causing focus/blur on this element
-          type="text"
-          value={props.username}
-          onChange={e => props.usernameChanged({ username: e.target.value })}
+        <Button
+          onClick={e => props.onReset({ formPath: 'login.form' })}
+          label="Reset"
+          type="button"
         />
-        <input
-          type="password"
-          value={props.password}
-          onChange={e => props.passwordChanged({ password: e.target.value })}
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <Button
+          onClick={e => {
+            e.preventDefault()
+            enabled && props.login()
+          }}
+          disabled={!enabled || props.authorizationPending}
+          label={props.authorizationPending ? 'Loggin In...' : 'Login'}
+          type="submit"
+          icon={props.authorizationPending && 'crosshairs'}
+          iconSpin={props.authorizationPending && true}
         />
         <br />
-        <div>
-          <button
-            onClick={() => props.viewChanged({ view: 'main' })} // until auth is in
-          />
-        </div>
-      </div>
+        <br />
+        {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
+          <ErrorMessage>The username/password was invalid.</ErrorMessage>
+        }
+      </form>
     </ViewContainer>
   )
 }
 
-Login.propTypes = {
-  password: PropTypes.string,
-  username: PropTypes.string,
-  passwordChanged: PropTypes.func,
-  authenticationRequested: PropTypes.func,
-  usernameChanged: PropTypes.func,
-  viewChanged: PropTypes.func,
+LoginForm.propTypes = {
+  form: PropTypes.object,
+  settings: PropTypes.object,
+  onReset: PropTypes.func,
+  login: PropTypes.func,
+  previousCallsign: PropTypes.string,
+  authorizationPending: PropTypes.bool,
+  authorizationError: PropTypes.object,
 }
-
 export default connect(
   {
-    username: state`authorization.username`,
-    password: state`authorization.password`,
-    usernameChanged: signal`authorization.usernameChanged`,
-    passwordChanged: signal`authorization.passwordChanged`,
-    authenticationRequested: signal`authorization.authenticationRequested`,
-    viewChanged: signal`app.viewChanged`,
+    form: form(state`login.form`),
+    settings: state`app.settings`,
+    onReset: signal`app.onReset`,
+    login: signal`authorization.authenticate`,
+    previousCallsign: state`authorization.callsign`,
+    authorizationPending: state`authorization.pending`,
+    authorizationError: state`authorization.error`,
   },
-  Login
+  LoginForm
 )

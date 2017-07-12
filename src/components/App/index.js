@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
-import { state } from 'cerebral/tags'
-import styled, { ThemeProvider as CerebralThemeProvider } from 'styled-components'
+import { state, signal } from 'cerebral/tags'
+import styled, { css, ThemeProvider as CerebralThemeProvider } from 'styled-components'
 import { CSSTransitionGroup } from 'react-transition-group'
 
 import RenderView from '../RenderView'
@@ -12,7 +12,9 @@ import NavDrawer from '../NavDrawer'
 import cerebralTheme from '../.././theme'
 import './transitions.scss'
 
-const App = ({ currentView }) => {
+const App = props => {
+  props.authenticated ? props.getUser() : props.login()
+  props.initialDrawerAnimation && props.clearInitialDrawerAnimation()
   return (
     <CerebralThemeProvider theme={cerebralTheme}>
       <CSSTransitionGroup
@@ -23,24 +25,39 @@ const App = ({ currentView }) => {
         transitionLeave={false}
         component="div"
       >
-        <AppContainer>
-          <AppBar />
-          <NavDrawer />
-          <RenderView />
-          {/* <Sidebar/> */}
-        </AppContainer>
+        {props.currentView &&
+          <AppContainer key="appcontainer">
+            <AppBar />
+            <NavDrawer />
+            {/* <Sidebar/> */}
+            <RenderView />
+          </AppContainer>
+        }
       </CSSTransitionGroup>
     </CerebralThemeProvider>
   )
 }
 
 App.propTypes = {
+  authorizationPending: PropTypes.bool,
   currentView: PropTypes.string,
+  getUser: PropTypes.func,
+  authenticated: PropTypes.bool,
+  login: PropTypes.func,
+  initialDrawerAnimation: PropTypes.bool,
+  clearInitialDrawerAnimation: PropTypes.func,
 }
 
 export default connect(
   {
     currentView: state`app.currentView`,
+    getUser: signal`user.getUser`,
+    login: signal`login.routed`,
+    authenticated: state`authorization.authenticated`,
+    drawerActive: state`app.drawerActive`,
+    drawerLarge: state`app.drawerLarge`,
+    initialDrawerAnimation: state`app.initialDrawerAnimation`,
+    clearInitialDrawerAnimation: signal`app.clearInitialDrawerAnimation`,
   },
   App
 )
