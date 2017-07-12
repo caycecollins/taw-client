@@ -1,14 +1,20 @@
+import { set } from 'cerebral/operators'
+import { state, props } from 'cerebral/tags'
+
 import changeView from '../../factories/changeView'
 
-const getGame = async ({ path, http, state, props }) => {
-  const game = await http.get(`/units/${props.id}`) || null
-  state.set('game', { selected: game.result || null })
-  if (game.result) {
-    return path.true()
-  } else {
-    if (state.get('app.currentView') !== 'fourohfour') return path.false()
-  }
+const getGame = ({ path, http, props }) => {
+  return http.get(`/units/${props.id}`)
+    .then(path.success)
+    .catch(path.error)
 }
+  // state.set('game', { selected: game.result || null })
+  // if (game && game.result) {
+  //   return path.true()
+  // } else {
+  //   if (state.get('app.currentView') !== 'fourohfour') return path.false()
+  // }
+// }
 
 export default {
   state: {
@@ -16,8 +22,11 @@ export default {
   signals: {
     routed: [
       getGame, {
-        true: changeView('game'),
-        false: changeView('fourohfour'),
+        success: [
+          set(state`game`, props`result`),
+          changeView('game'),
+        ],
+        error: changeView('fourohfour'),
       },
     ],
   },
