@@ -11,24 +11,38 @@ import Button from '../Button'
 function FourOhFour (props) {
   return (
     <ViewContainer backgroundImage="/images/in-tank-bg.jpg">
-      Whoops, we could not find the requested URL that you are on.
+      <h2>Page not found.</h2>
+      The database is still not populated with real TAW data. Get very comfortable with this page :)
       <br />
       <br />
-      <Link routeTo="dashboard">
-        <Button icon="home" label="Dashboard" />
-      </Link>
-      <Link routeTo="games">
-        <Button icon="game" label="Games" />
-      </Link>
+      {props.previousView
+        ? <span>
+          <Link routeTo={props.previousView}>
+            <Button icon="angle-left" label="Go Back" />
+          </Link>
+          <br />
+        </span>
+        : <span>
+          <Link routeTo="dashboard">
+            <Button icon="home" label="Go to Dashboard" />
+          </Link>
+          <br />
+          <Link routeTo="games">
+            <Button icon="sitemap" label="Go to Game Divisions" />
+          </Link>
+        </span>
+      }
     </ViewContainer>
   )
 }
 
 FourOhFour.propTypes = {
+  previousView: PropTypes.string,
 }
 
 export default connect(
   {
+    previousView: state`app.previousView`,
   },
   FourOhFour
 )
