@@ -6,7 +6,12 @@ import FAIcon from 'react-fa'
 function Icon (props) {
   return (
     <StyledIcon size={props.size}>
-      <FAIcon spin={props.spin} name={props.name} />
+      <FAIcon
+        name={props.name}
+        spin={props.spin}
+        pulse={props.pulse}
+        inverse={props.inverse}
+      />
     </StyledIcon>
   )
 }
@@ -18,12 +23,16 @@ Icon.propTypes = {
     PropTypes.string,
   ]),
   spin: PropTypes.bool,
+  pulse: PropTypes.bool,
+  inverse: PropTypes.bool,
 }
 
 Icon.defaultProps = {
   size: 16,
   name: null,
   spin: false,
+  pulse: false,
+  inverse: false,
 }
 
 export default Icon
