@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
-import styled, { css } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { rgba } from 'polished'
 
 import Button from '../Button'
@@ -106,6 +106,50 @@ export default connect(
   NavDrawer
 )
 
+const navDrawerLargeAnimation = keyframes`
+  from {
+    left: -280px;
+  }
+  to {
+    left: 0px;
+  }
+`
+
+const navDrawerSmallAnimation = keyframes`
+  from {
+    left: -80px;
+  }
+  to {
+    left: 0px;
+  }
+`
+
+const drawerLeftMixin = css`
+  ${props => {
+    if (props.active && !props.initialDrawerAnimation) {
+      return '0px'
+    } else {
+      if (props.large) return '-280px'
+      return '-80px'
+    }
+  }}
+`
+
+const animationName = css`
+  ${props => props.large ? navDrawerLargeAnimation : navDrawerSmallAnimation}
+`
+
+const initialAnimationMixin = css`
+  ${props => css`
+    left: ${drawerLeftMixin};
+    animation-name: ${animationName};
+    animation-duration: .6s;
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
+    animation-fill-mode: forwards;
+    animation-delay: .6s;
+  `}
+`
+
 const NavDrawerContainer = styled.div`
   position: absolute;
   display: flex;
@@ -113,28 +157,13 @@ const NavDrawerContainer = styled.div`
   width: ${props => props.large ? '280' : '80'}px;
   height: calc(100% - 48px);
   top: 48px;
-  left: ${props => {
-    if (props.active) {
-      return css`0px`
-    } else {
-      return props.large ? css`-320px` : css`-80px`
-    }
-  }};
   background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
   z-index: 9998;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
   overflow-y: auto;
   overflow-x: hidden;
-  ${props => {
-    if (props.active && props.initialDrawerAnimation) {
-      return css`
-        animation-name: ${props.large ? 'navDrawerLarge' : 'navDrawerSmall'};
-        animation-duration: .3s;
-        animation-timing-function: cubic-bezier(.4,0,.2,1);
-        animation-fill-mode: backwards;
-      `
-    }
-  }}
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  left: ${props => drawerLeftMixin};
+  ${props => props.active && props.initialDrawerAnimation && initialAnimationMixin}
 `
 
 const NavDrawerToggles = styled.div`

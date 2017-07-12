@@ -27,30 +27,3 @@
     transition: opacity 300ms ease-in-out;
   }
 }
-
-@keyframes appBar {
-  from {
-    top: -48px;
-  }
-  to {
-    top: 0;
-  }
-}
-
-@keyframes navDrawerLarge {
-  from {
-    left: -280px;
-  }
-  to {
-    left: 0px;
-  }
-}
-
-@keyframes navDrawerSmall {
-  from {
-    left: -80px;
-  }
-  to {
-    left: 0px;
-  }
-}

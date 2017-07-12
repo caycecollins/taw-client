@@ -72,8 +72,8 @@ export default {
   signals: {
     drawerActiveToggled,
     drawerLargeToggled,
-    clearInitialDrawerAnimation: [
-      wait(400),
+    startInitialDrawerAnimation: [
+      wait(2000),
       set(state`app.initialDrawerAnimation`, false),
     ],
     sidebarActiveToggled,

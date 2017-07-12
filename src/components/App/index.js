@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
-import styled, { css, ThemeProvider as CerebralThemeProvider } from 'styled-components'
+import styled, { ThemeProvider as CerebralThemeProvider } from 'styled-components'
 import { CSSTransitionGroup } from 'react-transition-group'
 
 import RenderView from '../RenderView'
@@ -14,7 +14,7 @@ import './transitions.scss'
 
 const App = props => {
   props.authenticated ? props.getUser() : props.login()
-  props.initialDrawerAnimation && props.clearInitialDrawerAnimation()
+  props.initialDrawerAnimation && props.startInitialDrawerAnimation()
   return (
     <CerebralThemeProvider theme={cerebralTheme}>
       <CSSTransitionGroup
@@ -29,8 +29,8 @@ const App = props => {
           <AppContainer key="appcontainer">
             <AppBar />
             <NavDrawer />
-            {/* <Sidebar/> */}
             <RenderView />
+            {/* <Sidebar/> */}
           </AppContainer>
         }
       </CSSTransitionGroup>
@@ -45,7 +45,7 @@ App.propTypes = {
   authenticated: PropTypes.bool,
   login: PropTypes.func,
   initialDrawerAnimation: PropTypes.bool,
-  clearInitialDrawerAnimation: PropTypes.func,
+  startInitialDrawerAnimation: PropTypes.func,
 }
 
 export default connect(
@@ -57,7 +57,7 @@ export default connect(
     drawerActive: state`app.drawerActive`,
     drawerLarge: state`app.drawerLarge`,
     initialDrawerAnimation: state`app.initialDrawerAnimation`,
-    clearInitialDrawerAnimation: signal`app.clearInitialDrawerAnimation`,
+    startInitialDrawerAnimation: signal`app.startInitialDrawerAnimation`,
   },
   App
 )

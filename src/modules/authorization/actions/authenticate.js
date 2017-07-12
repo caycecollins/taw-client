@@ -26,7 +26,7 @@ export default function ({ state, http, storage, router }) {
     const getMe = await http.get('/users/me')
     state.set('user', getMe.result)
     router.goTo('/')
-    setTimeout(() => { state.set('authorization.pending', false) }, 300)
+    state.set('authorization.pending', false)
   }).catch(rawError => {
     state.set('login.form.password.value', '')
     const error = JSON.stringify(rawError)

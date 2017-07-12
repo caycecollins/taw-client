@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
-import styled from 'styled-components'
+import styled, { keyframes } from 'styled-components'
 
 import Button from '../Button'
 import Link from '../Link'
@@ -36,9 +36,11 @@ LogoutButton.propTypes = {
 
 const AppBar = props => {
   return (
-    <StyledAppBar className={props.className} >
+    <StyledAppBar
+      className={props.className}
+    >
       <LogoContainer>
-        {(!props.drawerActive) &&
+        {(!props.drawerActive && props.authenticated) &&
           <Button
             icon="bars"
             outline={false}
@@ -48,7 +50,7 @@ const AppBar = props => {
           <Logo />
         </Link>
       </LogoContainer>
-      {props.loggedIn ? <LogoutButton logout={props.logout} /> : <LoginButton />}
+      {props.authenticated ? <LogoutButton logout={props.logout} /> : <LoginButton />}
     </StyledAppBar>
   )
 }
@@ -60,8 +62,9 @@ AppBar.propTypes = {
   drawerLargeToggled: PropTypes.func,
   sidebarViewChanged: PropTypes.func,
   className: PropTypes.string,
-  loggedIn: PropTypes.string,
   logout: PropTypes.func,
+  authorizationPending: PropTypes.bool,
+  authenticated: PropTypes.bool,
 }
 
 export default connect(
@@ -71,18 +74,28 @@ export default connect(
     drawerLarge: state`app.drawerLarge`,
     drawerLargeToggled: signal`app.drawerLargeToggled`,
     sidebarViewChanged: signal`app.sidebarViewChanged`,
-    loggedIn: state`authorization.token`,
     logout: signal`authorization.logout`,
+    authorizationPending: state`authorization.pending`,
+    authenticated: state`authorization.authenticated`,
   },
   AppBar
 )
+
+const AppBarAnimation = keyframes`
+  from {
+    top: -48px;
+  }
+  to {
+    top: 0;
+  }
+`
 
 const StyledAppBar = styled.div`
   position: fixed;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  top: 0;
+  top: 0px;
   left: 0;
   width: 100%;
   height: 48px;
@@ -90,8 +103,8 @@ const StyledAppBar = styled.div`
   background-color: ${props => props.theme.colors.darkGray};
   color: white;
   z-index: 9999;
-  animation-name: appBar;
-  animation-duration: .3s;
+  animation-name: ${AppBarAnimation};
+  animation-duration: .6s;
   animation-timing-function: cubic-bezier(.4,0,.2,1);
   animation-fill-mode: backwards;
 `
