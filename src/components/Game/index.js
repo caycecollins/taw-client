@@ -1,8 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled, { css } from 'styled-components'
 import { connect } from 'cerebral/react'
-import { state, signal } from 'cerebral/tags'
+import { state } from 'cerebral/tags'
 
 import ViewContainer from '../ViewContainer'
 import Link from '../Link'
@@ -14,7 +13,7 @@ function Games ({ game }) {
   return (
     <ViewContainer backgroundImage="/images/bf1-background.jpg">
       <Link routeTo="games">
-        <Button icon="arrow-left" label="Back to all games" />
+        <Button icon="angle-left" label="Back to all games" />
       </Link>
       <br />
 
@@ -41,7 +40,7 @@ Games.defaultProps = {
 
 export default connect(
   {
-    game: state`game.selected`,
+    game: state`game`,
   },
   Games
 )

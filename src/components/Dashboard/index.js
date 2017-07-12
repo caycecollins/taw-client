@@ -1,5 +1,4 @@
 import React from 'react'
-import styled from 'styled-components'
 import { Grid, Row, Col } from 'react-material-responsive-grid'
 
 import ViewContainer from '../ViewContainer'
