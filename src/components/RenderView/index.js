@@ -30,7 +30,7 @@ const views = {
   fourohfour: FourOhFour,
 }
 
-const RenderView = ({ authenticated, currentView, lastVisited, drawerActive, drawerLarge }) => {
+const RenderView = ({ authorizationPending, authenticated, currentView, lastVisited, drawerActive, drawerLarge }) => {
   if (!config.production) {
     views[currentView]
       ? console.log(`mounting ${currentView} component`)
@@ -61,7 +61,7 @@ const RenderView = ({ authenticated, currentView, lastVisited, drawerActive, dra
           drawerActive={drawerActive}
           drawerLarge={drawerLarge}
         >
-          {authenticated && currentView === 'login' ? <Login /> : <Component />}
+          {!authorizationPending && authenticated && currentView === 'login' ? <Login /> : <Component />}
         </FullWidthHeight>
       </CSSTransitionGroup>
     </PageContainer>
@@ -74,6 +74,7 @@ RenderView.propTypes = {
   drawerActive: PropTypes.bool,
   drawerLarge: PropTypes.bool,
   authenticated: PropTypes.bool,
+  authorizationPending: PropTypes.bool,
 }
 
 export default connect(
@@ -83,6 +84,7 @@ export default connect(
     drawerActive: state`app.drawerActive`,
     drawerLarge: state`app.drawerLarge`,
     authenticated: state`authorization.authenticated`,
+    authorizationPending: state`authorization.pending`,
   },
   RenderView
 )
