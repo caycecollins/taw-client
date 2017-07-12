@@ -63,6 +63,10 @@ export default connect(
 )
 
 const AppContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100vh;
   padding: 0;
   margin: 0;
+  overflow: hidden;
 `

@@ -62,7 +62,7 @@ const NavDrawer = props => {
           icon={props.drawerLarge ? 'angle-double-left' : 'angle-double-right'}
         />
       </NavDrawerToggles>
-      <User>
+      <User small={props.drawerActive && !props.drawerLarge}>
         <Avatar />
         {props.drawerLarge && 'Callsign'}
       </User>
@@ -179,11 +179,12 @@ const User = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  height: 160px;
+  height: ${props => props.small ? '80px' : '160px'};
   width: 100%;
   padding: 24px;
   color: white;
   margin-bottom: 16px;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 
 const Avatar = styled.img`

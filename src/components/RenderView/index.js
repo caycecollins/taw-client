@@ -30,7 +30,7 @@ const views = {
   fourohfour: FourOhFour,
 }
 
-const RenderView = ({ authorizationPending, authenticated, currentView, lastVisited, drawerActive, drawerLarge }) => {
+const RenderView = ({ initialDrawerAnimation, authorizationPending, authenticated, currentView, lastVisited, drawerActive, drawerLarge }) => {
   if (!config.production) {
     views[currentView]
       ? console.log(`mounting ${currentView} component`)
@@ -38,7 +38,10 @@ const RenderView = ({ authorizationPending, authenticated, currentView, lastVisi
   }
   const Component = views[currentView] || views.fourohfour
   return (
-    <PageContainer authenticated={authenticated && !authorizationPending}>
+    <PageContainer
+      initialDrawerAnimation={initialDrawerAnimation}
+      authenticated={authenticated && !authorizationPending}
+    >
       <CSSTransitionGroup
         transitionName="view"
         transitionAppearTimeout={500}
@@ -65,6 +68,7 @@ RenderView.propTypes = {
   drawerLarge: PropTypes.bool,
   authenticated: PropTypes.bool,
   authorizationPending: PropTypes.bool,
+  initialDrawerAnimation: PropTypes.bool,
 }
 
 export default connect(
@@ -75,6 +79,7 @@ export default connect(
     drawerLarge: state`app.drawerLarge`,
     authenticated: state`authorization.authenticated`,
     authorizationPending: state`authorization.pending`,
+    initialDrawerAnimation: state`app.initialDrawerAnimation`,
   },
   RenderView
 )
@@ -91,7 +96,7 @@ const PageContainerAnimation = keyframes`
 const PageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: ${props => props.initialDrawerAnimation ? '100vh' : 'calc(100vh - 48px)'};
   left: 0;
   top: ${props => props.authenticated ? '48px' : '0px'};
   overflow-y: ${props => props.authenticated ? 'scroll' : 'hidden'};
