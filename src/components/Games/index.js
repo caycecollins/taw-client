@@ -8,7 +8,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import ViewContainer from '../ViewContainer'
 import Link from '../Link'
 
-function Games ({ gamesList }) {
+function Games ({ games }) {
   return (
     <ViewContainer>
       <ViewHeader>
@@ -23,7 +23,7 @@ function Games ({ gamesList }) {
         component="span"
       >
         <GamesContainer>
-          {gamesList && gamesList.map((game, index) => {
+          {games && games.map((game, index) => {
             return (
               <Game
                 key={game.id}
@@ -41,12 +41,12 @@ function Games ({ gamesList }) {
 }
 
 Games.propTypes = {
-  gamesList: PropTypes.array,
+  games: PropTypes.array,
 }
 
 export default connect(
   {
-    gamesList: state`games.gamesList`,
+    games: state`games`,
   },
   Games
 )
