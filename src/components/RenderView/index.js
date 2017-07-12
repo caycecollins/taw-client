@@ -8,8 +8,8 @@ import config from 'config'
 
 // import Signup from '../Signup'
 import Login from '../Login'
-import Home from '../Home'
 import Dashboard from '../Dashboard'
+import Events from '../Events'
 import Game from '../Game'
 import Games from '../Games'
 import Reports from '../Reports'
@@ -18,15 +18,15 @@ import Notifications from '../Notifications'
 import FourOhFour from '../FourOhFour'
 
 const views = {
-  home: Home,
-  dashboard: Dashboard,
   // signup: Signup,
   login: Login,
+  profile: Profile,
+  notifications: Notifications,
+  dashboard: Dashboard,
+  events: Events,
   game: Game,
   games: Games,
   reports: Reports,
-  profile: Profile,
-  notifications: Notifications,
   fourohfour: FourOhFour,
 }
 

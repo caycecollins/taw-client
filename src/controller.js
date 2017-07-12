@@ -18,6 +18,7 @@ import notifications from './modules/notifications'
 import games from './modules/games'
 import game from './modules/game'
 import events from './modules/events'
+import event from './modules/event'
 import reports from './modules/reports'
 import user from './modules/user'
 import fourohfour from './modules/fourohfour'
@@ -40,12 +41,13 @@ const controller = Controller({
     authorization,
     // signup,
     login,
-    dashboard,
     profile,
     notifications,
+    dashboard,
+    events,
+    event,
     games,
     game,
-    events,
     reports,
     user,
     fourohfour,

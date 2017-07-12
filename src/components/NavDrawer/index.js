@@ -16,6 +16,7 @@ const userMenuItems = [
 
 const menuItems = [
   { label: 'Dashboard', route: 'dashboard', icon: 'th' },
+  { label: 'Events', route: 'events', icon: 'calendar' },
   { label: 'Game Divisions', route: 'games', icon: 'sitemap' },
 ]
 

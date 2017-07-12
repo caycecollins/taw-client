@@ -87,6 +87,8 @@ export default {
       { from: 'static' },
       { from: '../node_modules/font-awesome/fonts', to: 'fonts' },
       { from: '../node_modules/font-awesome/css/font-awesome.min.css' },
+      { from: '../node_modules/react-big-calendar/lib/css/react-big-calendar.css' },
+
     ]),
     new Webpack.DefinePlugin({
       'process.env': {
