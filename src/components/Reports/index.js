@@ -1,6 +1,8 @@
 import React from 'react'
 import styled from 'styled-components'
-// import PropTypes from 'prop-types'
+import PropTypes from 'prop-types'
+import { connect } from 'cerebral/react'
+import { state } from 'cerebral/tags'
 import Highcharts from 'highcharts'
 // import Chart from 'chart.js'
 import {
@@ -25,26 +27,36 @@ const data = {
 function Reports (props) {
   return (
     <ViewContainer>
-      Report Tests:
-      <br />
-      <br />
-      <PieChart colors={globalHighchartsStyles.colors} height="300px" library={globalHighchartsStyles} data={data} legend={true} donut={true} download={true} />
-      <br />
-      <br />
-      <br />
-      <br />
-      <BarChart colors={globalHighchartsStyles.colors} height="400px" library={globalHighchartsStyles} data={data} legend={true} download={true} />
-      <br />
-      <br />
-      <br />
-      <br />
-      <LineChart colors={globalHighchartsStyles.colors} height="400px" library={globalHighchartsStyles} data={data} legend={true} curve={false} download={true} />
-      <br />
+      {!props.initialDrawerAnimation &&
+        <div>
+          Report Tests:
+          <br />
+          <br />
+          <PieChart colors={globalHighchartsStyles.colors} height="300px" library={globalHighchartsStyles} data={data} legend={true} donut={true} download={true} />
+          <br />
+          <br />
+          <br />
+          <br />
+          <BarChart colors={globalHighchartsStyles.colors} height="400px" library={globalHighchartsStyles} data={data} legend={true} download={true} />
+          <br />
+          <br />
+          <br />
+          <br />
+          <LineChart colors={globalHighchartsStyles.colors} height="400px" library={globalHighchartsStyles} data={data} legend={true} curve={false} download={true} />>
+          <br />
+        </div>
+      }
     </ViewContainer>
   )
 }
 
 Reports.propTypes = {
+  initialDrawerAnimation: PropTypes.bool,
 }
 
-export default Reports
+export default connect(
+  {
+    initialDrawerAnimation: state`app.initialDrawerAnimation`,
+  },
+  Reports
+)
