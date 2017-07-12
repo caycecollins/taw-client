@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 
 import Button from '../Button'
 import Link from '../Link'
@@ -38,6 +38,7 @@ const AppBar = props => {
   return (
     <StyledAppBar
       className={props.className}
+      authenticated={props.authenticated && !props.authorizationPending}
     >
       <LogoContainer>
         {(!props.drawerActive && props.authenticated) &&
@@ -95,7 +96,7 @@ const StyledAppBar = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  top: 0px;
+  top: ${props => props.authenticated ? '0px' : '-48px'};
   left: 0;
   width: 100%;
   height: 48px;
@@ -103,10 +104,13 @@ const StyledAppBar = styled.div`
   background-color: ${props => props.theme.colors.darkGray};
   color: white;
   z-index: 9999;
-  animation-name: ${AppBarAnimation};
-  animation-duration: .6s;
-  animation-timing-function: cubic-bezier(.4,0,.2,1);
-  animation-fill-mode: backwards;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  ${props => props.authenticated && css`
+    animation-name: ${AppBarAnimation};
+    animation-duration: .6s;
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
+    animation-fill-mode: backwards;
+  `}
 `
 
 const LogoContainer = styled.div`

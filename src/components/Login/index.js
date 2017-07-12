@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import { form } from '@cerebral/forms'
+import styled from 'styled-components'
+import { rgba } from 'polished'
 
 import ViewContainer from '../ViewContainer'
 import Button from '../Button'
@@ -15,7 +17,7 @@ const LoginForm = props => {
     enabled = props.form.isValid
   }
   return (
-    <ViewContainer>
+    <ViewContainer centered={true}>
       <form onSubmit={(e) => e.preventDefault()}>
         {Object.keys(props.form.getFields()).map((field, index) => {
           return (
@@ -45,6 +47,17 @@ const LoginForm = props => {
         {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
           <ErrorMessage>The username/password was invalid.</ErrorMessage>
         }
+        <br />
+        <br />
+        <br />
+        <Helper>
+          Use the following credentials:
+          <br />
+          <br />
+          Username: <span>inergy</span>
+          <br />
+          Password: <span>password</span>
+        </Helper>
       </form>
     </ViewContainer>
   )
@@ -71,3 +84,14 @@ export default connect(
   },
   LoginForm
 )
+
+const Helper = styled.div`
+  display: inline-block;
+  padding: 24px;
+  background-color: ${props => rgba(props.theme.colors.lightRed, .3)};
+  border-radius: 4px;
+  color: ${props => props.theme.colors.grayGreen};
+  span {
+    color: ${props => props.theme.colors.armyWhite};
+  }
+`

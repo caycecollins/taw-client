@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
-import styled, { keyframes } from 'styled-components'
+import styled, { css, keyframes } from 'styled-components'
 import { CSSTransitionGroup } from 'react-transition-group'
 import config from 'config'
 
@@ -38,7 +38,7 @@ const RenderView = ({ authorizationPending, authenticated, currentView, lastVisi
   }
   const Component = views[currentView] || views.fourohfour
   return (
-    <PageContainer>
+    <PageContainer authenticated={authenticated && !authorizationPending}>
       <CSSTransitionGroup
         transitionName="view"
         transitionAppearTimeout={500}
@@ -93,15 +93,17 @@ const PageContainer = styled.div`
   width: 100%;
   height: 100vh;
   left: 0;
-  top: 48px;
-  overflow-y: scroll;
+  top: ${props => props.authenticated ? '48px' : '0px'};
+  overflow-y: ${props => props.authenticated ? 'scroll' : 'hidden'};
   overflow-x: hidden;
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
   transition: all .3s cubic-bezier(.4,0,.2,1);
-  animation-name: ${PageContainerAnimation};
-  animation-duration: .6s;
-  animation-timing-function: cubic-bezier(.4,0,.2,1);
-  animation-fill-mode: backwards;
+  ${props => props.authenticated && css`
+    animation-name: ${PageContainerAnimation};
+    animation-duration: .6s;
+    animation-timing-function: cubic-bezier(.4,0,.2,1);
+    animation-fill-mode: backwards;
+  `}
 `
 
 const FullWidthHeight = styled.div`

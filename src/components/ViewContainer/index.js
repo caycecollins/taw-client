@@ -13,6 +13,7 @@ function ViewContainer (props) {
       authenticated={props.authenticated}
       backgroundImage={props.backgroundImage}
       className={props.className}
+      centered={props.centered}
     >
       {props.children}
     </Container>
@@ -28,6 +29,7 @@ ViewContainer.propTypes = {
   backgroundImage: PropTypes.string,
   authenticated: PropTypes.bool,
   authorizationPending: PropTypes.bool,
+  centered: PropTypes.bool,
 }
 
 export default connect(
@@ -62,6 +64,12 @@ const viewContainerAnimation = keyframes`
 `
 
 const Container = styled.div`
+  ${props => props.centered && css`
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+  `}
   width: 100%;
   height: auto;
   padding: 24px;
