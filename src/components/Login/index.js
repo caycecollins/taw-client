@@ -44,21 +44,18 @@ const LoginForm = props => {
         />
         <br />
         <br />
-        {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
-          <ErrorMessage>The username/password was invalid.</ErrorMessage>
-        }
-        <br />
-        <br />
-        <br />
-        <Helper>
-          Use the following credentials:
-          <br />
-          <br />
-          Username: <span>inergy</span>
-          <br />
-          Password: <span>password</span>
-        </Helper>
       </form>
+      {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
+        <ErrorMessage>The username/password was invalid.</ErrorMessage>
+      }
+      <Helper>
+        Test Credentials:
+        <br />
+        <br />
+        Callsign: &nbsp; <span>inergy</span>
+        <br />
+        Password: &nbsp; <span>password</span>
+      </Helper>
     </ViewContainer>
   )
 }
@@ -86,7 +83,7 @@ export default connect(
 )
 
 const Helper = styled.div`
-  display: inline-block;
+  margin-top: 32px;
   padding: 24px;
   background-color: ${props => rgba(props.theme.colors.lightRed, .3)};
   border-radius: 4px;
@@ -94,4 +91,6 @@ const Helper = styled.div`
   span {
     color: ${props => props.theme.colors.armyWhite};
   }
+  font-size: 0.8rem;
+  min-width: 240px;
 `
