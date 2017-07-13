@@ -35,6 +35,7 @@ export default {
       getEvent, {
         success: [
           set(state`event`, props`result`),
+          changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: props`result.title` }),
         ],
         error: set(state`event`, { error: props`result` }),
       },
