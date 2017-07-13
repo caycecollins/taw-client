@@ -5,19 +5,21 @@ import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
 import { rgba } from 'polished'
 
-import EventModal from '../Event'
+import ViewEvent from '../Event'
+import CreateEvent from '../Event/Create'
 import Button from '../Button'
 import Icon from '../Icon'
 
-const SidebarTest = (props) => <div>Test</div>
+const Empty = (props) => <div></div>
 
 const views = {
-  test: SidebarTest,
-  event: EventModal,
+  empty: Empty,
+  viewEvent: ViewEvent,
+  createEvent: CreateEvent,
 }
 
 const Sidebar = (props) => {
-  const SidebarComponent = props.sidebarView ? views[props.sidebarView] : views['test']
+  const SidebarComponent = props.sidebarView ? views[props.sidebarView] : views.empty
   return (
     <SidebarContainer
       active={props.sidebarActive}
@@ -29,7 +31,7 @@ const Sidebar = (props) => {
         />
         <Title>{props.sidebarTitle}</Title>
         <Button
-          small={true}
+          size="xs"
           onClick={() => props.sidebarActiveToggled({ value: false })}
           icon="close"
         />

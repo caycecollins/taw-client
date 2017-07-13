@@ -5,7 +5,6 @@ import { setField, resetForm } from '@cerebral/forms/operators'
 import drawerActiveToggled from './chains/drawerActiveToggled'
 import drawerLargeToggled from './chains/drawerLargeToggled'
 import sidebarActiveToggled from './chains/sidebarActiveToggled'
-import sidebarViewChanged from './chains/sidebarViewChanged'
 
 function determineDrawerActive () {
   const drawerActiveFromStorage = window.localStorage.getItem('app.drawerActive')
@@ -80,7 +79,6 @@ export default {
       set(state`app.initialDrawerAnimation`, false),
     ],
     sidebarActiveToggled,
-    sidebarViewChanged,
     fieldChanged: [
       when(state`${props`settingsField`}.value`),
       {
