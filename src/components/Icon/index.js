@@ -11,6 +11,7 @@ function Icon (props) {
         spin={props.spin}
         pulse={props.pulse}
         inverse={props.inverse}
+        className={props.className}
       />
     </StyledIcon>
   )
@@ -25,11 +26,12 @@ Icon.propTypes = {
   spin: PropTypes.bool,
   pulse: PropTypes.bool,
   inverse: PropTypes.bool,
+  className: PropTypes.string,
 }
 
 Icon.defaultProps = {
   size: 16,
-  name: null,
+  name: '',
   spin: false,
   pulse: false,
   inverse: false,
