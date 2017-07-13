@@ -5,11 +5,22 @@ import styled, { css } from 'styled-components'
 import Icon from '../Icon'
 
 const Button = props => {
+  function calculateIconSize () {
+    if (props.icon && !props.iconSize) {
+      if (props.size === 'xs') return 14
+      if (props.size === 'sm') return 15
+      if (!props.size || props.size === 'md') return 16
+      if (props.size === 'lg') return 18
+    } else {
+      return props.iconSize
+    }
+    return 16
+  }
   return (
     <StyledButton
       type={props.type}
       outline={props.outline}
-      small={props.small}
+      size={props.size}
       onClick={props.onClick}
       disabled={props.disabled}
     >
@@ -17,6 +28,7 @@ const Button = props => {
         <StyledIcon label={props.label}>
           <Icon
             name={props.icon}
+            size={calculateIconSize()}
             spin={props.iconSpin}
             pulse={props.iconPulse}
             inverse={props.iconInverse}
@@ -31,7 +43,7 @@ const Button = props => {
 Button.propTypes = {
   type: PropTypes.string,
   outline: PropTypes.bool,
-  small: PropTypes.bool,
+  size: PropTypes.string,
   icon: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.string,
@@ -52,9 +64,19 @@ export default Button
 
 const StyledButton = styled.button`
   display: inline-flex;
-  align-items: baseline;
-  height: 33px;
-  padding: 8px ${props => !props.small && '16px'};
+  align-items: center;
+  height: ${props => {
+    if (props.size === 'xs') return '29px'
+    if (!props.size || props.size === 'sm') return '33px'
+    if (props.size === 'md') return '37px'
+    if (props.size === 'lg') return '41px'
+  }};
+  padding: ${props => {
+    if (props.size === 'xs') return '4px 10px 4px 10px'
+    if (!props.size || props.size === 'sm') return '6px 16px 5px 16px'
+    if (props.size === 'md') return '8px 20px 7px 20px'
+    if (props.size === 'lg') return '10px 22px 8px 22px'
+  }};
   border-radius: 2px;
   ${props => props.outline
     ? css`
@@ -65,7 +87,12 @@ const StyledButton = styled.button`
   `}
   background-color: transparent;
   color: ${props => !props.disabled ? props.theme.colors.armyGreen : props.theme.colors.gray};
-  font-size: .8rem;
+  font-size: ${props => {
+    if (props.size === 'xs') return '.65rem'
+    if (!props.size || props.size === 'sm') return '.72rem'
+    if (props.size === 'md') return '.85rem'
+    if (props.size === 'lg') return '1rem'
+  }};
   text-transform: uppercase;
   transition: all .3s ease-in-out;
   ${props => !props.disabled &&
@@ -78,6 +105,7 @@ const StyledButton = styled.button`
 `
 
 const StyledIcon = styled.div`
+  margin-bottom: 2px;
   ${props => props.label && css`padding-right: 8px;`}
 `
 
