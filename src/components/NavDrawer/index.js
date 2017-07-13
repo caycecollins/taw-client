@@ -51,13 +51,14 @@ const NavDrawer = props => {
     >
       <NavDrawerToggles>
         <Button
-          small={true}
+          size="xs"
+          iconSize={12}
           outline={false}
           onClick={() => props.drawerActiveToggled({ value: false })}
           icon="close"
         />
         <Button
-          small={true}
+          size="xs"
           outline={false}
           onClick={() => props.drawerLargeToggled({ value: !props.drawerLarge })}
           icon={props.drawerLarge ? 'angle-double-left' : 'angle-double-right'}
