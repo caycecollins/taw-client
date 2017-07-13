@@ -1,5 +1,6 @@
 export default function apiGetFactory (endpoint, pathCheck, requiredCheck) {
-  const apiGet = async ({ path, http, state, storage }) => {
+  const apiGet = async ({ path, http, state, storage, router }) => {
+    if (!state.get('authorization.authenticated')) return path.error()
     if (!endpoint || !pathCheck) return path.error({ error: 'endpint and path required' })
     const requiredPathFromLocalStorage = storage.get(requiredCheck)
     if (requiredCheck && !requiredPathFromLocalStorage) {
