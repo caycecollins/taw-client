@@ -10,6 +10,7 @@ import { rgba } from 'polished'
 import R from 'ramda'
 
 import ViewContainer from '../ViewContainer'
+import Button from '../Button'
 
 BigCalendar.momentLocalizer(moment)
 
@@ -23,11 +24,6 @@ function updateDateProps (array, prop) {
 function Events (props) {
   const updateStartDates = updateDateProps(props.events, 'start')
   const updateEndDates = updateDateProps(updateStartDates, 'end')
-  function selectEvent (event) {
-    console.log(event)
-    props.sidebarViewChanged({ view: 'event', title: event.title, icon: 'calendar-o' })
-    props.eventSelected({ id: event.id })
-  }
   return (
     <ViewContainer>
       <CSSTransitionGroup
@@ -39,6 +35,19 @@ function Events (props) {
         component="span"
       >
         <EventsContainer>
+          <CustomActions>
+            <Button
+              onClick={() => props.reportEvent()}
+              icon="calendar-check-o"
+              label="Report Event"
+            />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <Button
+              onClick={() => props.createNewEvent()}
+              icon="calendar-plus-o"
+              label="Create New Event"
+            />
+          </CustomActions>
           {updateEndDates &&
             <BigCalendar
               events={updateEndDates}
@@ -46,7 +55,7 @@ function Events (props) {
               endAccessor="end"
               popup={true}
               selectable={true}
-              onSelectEvent={event => selectEvent(event)}
+              onSelectEvent={event => props.eventSelected({ id: event.id })}
             />
           }
         </EventsContainer>
@@ -61,8 +70,9 @@ Events.propTypes = {
     PropTypes.object,
   ]),
   event: PropTypes.object,
-  sidebarViewChanged: PropTypes.func,
   eventSelected: PropTypes.func,
+  createNewEvent: PropTypes.func,
+  reportEvent: PropTypes.func,
 }
 
 Events.defaultProps = {
@@ -73,11 +83,19 @@ export default connect(
   {
     events: state`events`,
     event: state`event`,
-    sidebarViewChanged: signal`app.sidebarViewChanged`,
-    eventSelected: signal`event.selected`,
+    eventSelected: signal`event.opened`,
+    createNewEvent: signal`event.creating`,
+    reportEvent: signal`event.reporting`,
   },
   Events
 )
+
+const CustomActions = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 24px;
+`
 
 const EventsContainer = styled.div`
   padding: 24px;
@@ -86,8 +104,8 @@ const EventsContainer = styled.div`
     margin-bottom: 24px;
     padding: 0;
     button {
-        height: 33px;
-        padding: 8px 16px;
+        height: 29px;
+        padding: 4px 14px;
         margin: 0 8px;
         border-radius: 2px;
         border: 1px solid ${props => props.theme.colors.armyGreen};
@@ -96,12 +114,12 @@ const EventsContainer = styled.div`
         font-size: .7rem;
         text-transform: uppercase;
         transition: all .3s ease-in-out;
+        box-shadow: none;
         &:hover {
           &:not(.rbc-active) {
             background-color: rgba(0,0,0,.3);
             cursor: pointer;
             color: ${props => props.theme.colors.armyWhite};
-            border: 1px solid ${props => props.theme.colors.greenWhite};
           }
         }
         &:first-of-type {

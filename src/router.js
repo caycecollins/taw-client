@@ -10,6 +10,7 @@ export default Router({
     '/events': {
       '/': 'events.routed',
       '/:id': 'event.routed',
+      '/create': 'event.creating',
     },
     '/games': {
       '/': 'games.routed',
