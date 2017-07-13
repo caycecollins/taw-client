@@ -8,13 +8,6 @@ const getGame = ({ path, http, props }) => {
     .then(path.success)
     .catch(path.error)
 }
-  // state.set('game', { selected: game.result || null })
-  // if (game && game.result) {
-  //   return path.true()
-  // } else {
-  //   if (state.get('app.currentView') !== 'fourohfour') return path.false()
-  // }
-// }
 
 export default {
   state: {
