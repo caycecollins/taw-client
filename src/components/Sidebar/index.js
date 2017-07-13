@@ -3,27 +3,41 @@ import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
+import { rgba } from 'polished'
+
+import EventModal from '../Event'
+import Button from '../Button'
+import Icon from '../Icon'
 
 const SidebarTest = (props) => <div>Test</div>
 
 const views = {
   test: SidebarTest,
+  event: EventModal,
 }
 
 const Sidebar = (props) => {
   const SidebarComponent = props.sidebarView ? views[props.sidebarView] : views['test']
   return (
-    <StyledSidebar
+    <SidebarContainer
       active={props.sidebarActive}
-      onOverlayClick={() => props.sidebarActiveToggled({ value: false })}
-      width={5}
     >
-      <StyledIconButton
-        icon="close"
-        onClick={() => props.sidebarActiveToggled({ value: false })}
-      />
-      <SidebarComponent />
-    </StyledSidebar>
+      <SidebarHeader>
+        <StyledIcon
+          name={props.sidebarIcon || ''}
+          size={32}
+        />
+        <Title>{props.sidebarTitle}</Title>
+        <Button
+          small={true}
+          onClick={() => props.sidebarActiveToggled({ value: false })}
+          icon="close"
+        />
+      </SidebarHeader>
+      <SidebarComponentContainer>
+        <SidebarComponent />
+      </SidebarComponentContainer>
+    </SidebarContainer>
   )
 }
 
@@ -31,6 +45,8 @@ Sidebar.propTypes = {
   sidebarActive: PropTypes.bool,
   sidebarActiveToggled: PropTypes.func,
   sidebarView: PropTypes.string,
+  sidebarTitle: PropTypes.string,
+  sidebarIcon: PropTypes.string,
 }
 
 export default connect(
@@ -38,18 +54,46 @@ export default connect(
     sidebarActive: state`app.sidebarActive`,
     sidebarActiveToggled: signal`app.sidebarActiveToggled`,
     sidebarView: state`app.sidebarView`,
+    sidebarTitle: state`app.sidebarTitle`,
+    sidebarIcon: state`app.sidebarIcon`,
   }, Sidebar
 )
 
-const StyledSidebar = styled.div`
+const SidebarContainer = styled.div`
   position: absolute;
-  width: ${props => props.active ? '300px' : '0'};
-  height: 100vh;
-  right: ${props => props.active ? 0 : '-10px'};
-  background-color: #fff;
-  border-left: 0px !important;
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  max-width: 1024px;
+  height: calc(100% - 48px);
+  top: 48px;
+  right: ${props => props.active ? 0 : '-70%'};
+  background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
+  overflow-y: auto;
+  overflow-x: hidden;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  z-index: 9998;
 `
-const StyledIconButton = styled.button`
-  position: absolute;
-  right: 0;
+
+const SidebarHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80px;
+  border-bottom: 1px solid ${props => props.theme.colors.lightTan};
+  color: ${props => props.theme.colors.lightTan};
+  padding: 0 40px;
+`
+const StyledIcon = styled(Icon)`
+`
+
+const Title = styled.div`
+  width: 100%;
+  font-size: 2rem;
+  margin-top: 6px;
+  padding-left: 24px;
+`
+
+const SidebarComponentContainer = styled.div`
+  padding: 40px;
 `

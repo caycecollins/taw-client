@@ -8,7 +8,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import RenderView from '../RenderView'
 import AppBar from '../AppBar'
 import NavDrawer from '../NavDrawer'
-// import Sidebar from '../Sidebar'
+import Sidebar from '../Sidebar'
 import cerebralTheme from '../.././theme'
 import './transitions.scss'
 
@@ -28,9 +28,9 @@ const App = props => {
         {props.currentView &&
           <AppContainer key="appcontainer">
             <AppBar />
+            <Sidebar />
             <NavDrawer />
             <RenderView />
-            {/* <Sidebar/> */}
           </AppContainer>
         }
       </CSSTransitionGroup>

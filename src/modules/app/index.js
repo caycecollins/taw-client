@@ -36,6 +36,9 @@ export default {
     initialDrawerAnimation: true,
     sidebarActive: null,
     sidebarView: null,
+    sidebarTitle: null,
+    sidebarIcon: null,
+    sidebarPreviousView: null,
     settings: {
       validateOnChange: {
         value: true,
