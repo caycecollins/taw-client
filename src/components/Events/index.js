@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import { connect } from 'cerebral/react'
 import { signal, state } from 'cerebral/tags'
-import { CSSTransitionGroup } from 'react-transition-group'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import { rgba } from 'polished'
@@ -22,49 +21,41 @@ function updateDateProps (array, prop) {
 }
 
 function Events (props) {
-  const updateStartDates = updateDateProps(props.events, 'start')
-  const updateEndDates = updateDateProps(updateStartDates, 'end')
+  const updateStartDates = props.authenticated && updateDateProps(props.events, 'start')
+  const updateEndDates = props.authenticated && updateDateProps(updateStartDates, 'end')
   return (
     <ViewContainer>
-      <CSSTransitionGroup
-        transitionName="initial"
-        transitionAppear={true}
-        transitionAppearTimeout={1000}
-        transitionEnter={false}
-        transitionLeave={false}
-        component="span"
-      >
-        <EventsContainer>
-          <CustomActions>
-            <Button
-              onClick={() => props.reportEvent()}
-              icon="calendar-check-o"
-              label="Report Event"
-            />
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <Button
-              onClick={() => props.createNewEvent()}
-              icon="calendar-plus-o"
-              label="Create New Event"
-            />
-          </CustomActions>
-          {updateEndDates &&
-            <BigCalendar
-              events={updateEndDates}
-              startAccessor="start"
-              endAccessor="end"
-              popup={true}
-              selectable={true}
-              onSelectEvent={event => props.eventSelected({ id: event.id })}
-            />
-          }
-        </EventsContainer>
-      </CSSTransitionGroup>
+      <EventsContainer>
+        <CustomActions>
+          <Button
+            onClick={() => props.reportEvent()}
+            icon="calendar-check-o"
+            label="Report Event"
+          />
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <Button
+            onClick={() => props.createNewEvent()}
+            icon="calendar-plus-o"
+            label="Create New Event"
+          />
+        </CustomActions>
+        {updateEndDates &&
+          <BigCalendar
+            events={updateEndDates}
+            startAccessor="start"
+            endAccessor="end"
+            popup={true}
+            selectable={true}
+            onSelectEvent={event => props.eventSelected({ id: event.id })}
+          />
+        }
+      </EventsContainer>
     </ViewContainer>
   )
 }
 
 Events.propTypes = {
+  authenticated: PropTypes.bool,
   events: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object,
@@ -81,6 +72,7 @@ Events.defaultProps = {
 
 export default connect(
   {
+    authenticated: state`authorization.authenticated`,
     events: state`events`,
     event: state`event`,
     eventSelected: signal`event.opened`,

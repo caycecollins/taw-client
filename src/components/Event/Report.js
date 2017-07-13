@@ -6,27 +6,27 @@ import { signal, state } from 'cerebral/tags'
 import moment from 'moment'
 import { rgba } from 'polished'
 
-function CreateNewEvent (props) {
+function ReportEvent (props) {
   return (
-    <CreateNewEventContainer>
-      Create Event
-    </CreateNewEventContainer>
+    <ReportEventContainer>
+      Report Event
+    </ReportEventContainer>
   )
 }
 
-CreateNewEvent.propTypes = {
+ReportEvent.propTypes = {
 }
 
-CreateNewEvent.defaultProps = {
+ReportEvent.defaultProps = {
 }
 
 export default connect(
   {
   },
-  CreateNewEvent
+  ReportEvent
 )
 
-const CreateNewEventContainer = styled.div`
+const ReportEventContainer = styled.div`
   display: flex;
   flex-direction: column;
   font-sizeE: 0.9rem;

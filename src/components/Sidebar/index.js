@@ -8,6 +8,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 
 import ViewEvent from '../Event'
 import CreateEvent from '../Event/Create'
+import ReportEvent from '../Event/Report'
 import Button from '../Button'
 import Icon from '../Icon'
 
@@ -17,6 +18,7 @@ const views = {
   empty: Empty,
   viewEvent: ViewEvent,
   createEvent: CreateEvent,
+  reportEvent: ReportEvent,
 }
 
 const Sidebar = (props) => {
@@ -105,7 +107,7 @@ const SidebarContainer = styled.div`
   background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
   overflow-y: auto;
   overflow-x: hidden;
-  transition: all .6s cubic-bezier(.4,0,.2,1);
+  transition: all .4s cubic-bezier(.4,0,.2,1);
   z-index: 9998;
 `
 
