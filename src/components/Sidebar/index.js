@@ -4,6 +4,7 @@ import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
 import { rgba } from 'polished'
+import { CSSTransitionGroup } from 'react-transition-group'
 
 import ViewEvent from '../Event'
 import CreateEvent from '../Event/Create'
@@ -21,25 +22,41 @@ const views = {
 const Sidebar = (props) => {
   const SidebarComponent = props.sidebarView ? views[props.sidebarView] : views.empty
   return (
-    <SidebarContainer
-      active={props.sidebarActive}
-    >
-      <SidebarHeader>
-        <StyledIcon
-          name={props.sidebarIcon || ''}
-          size={32}
-        />
-        <Title>{props.sidebarTitle}</Title>
-        <Button
-          size="xs"
-          onClick={() => props.sidebarActiveToggled({ value: false })}
-          icon="close"
-        />
-      </SidebarHeader>
-      <SidebarComponentContainer>
-        <SidebarComponent />
-      </SidebarComponentContainer>
-    </SidebarContainer>
+    <div>
+      <CSSTransitionGroup
+        transitionName="view"
+        transitionAppearTimeout={500}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={300}
+        component="div"
+      >
+        {props.sidebarActive &&
+          <SidebarOverlay
+            sidebarActive={props.sidebarActive}
+            onClick={() => props.sidebarActiveToggled({ value: false })}
+          />
+        }
+      </CSSTransitionGroup>
+      <SidebarContainer
+        active={props.sidebarActive}
+      >
+        <SidebarHeader>
+          <StyledIcon
+            name={props.sidebarIcon || ''}
+            size={32}
+          />
+          <Title>{props.sidebarTitle}</Title>
+          <Button
+            size="xs"
+            onClick={() => props.sidebarActiveToggled({ value: false })}
+            icon="close"
+          />
+        </SidebarHeader>
+        <SidebarComponentContainer>
+          <SidebarComponent />
+        </SidebarComponentContainer>
+      </SidebarContainer>
+    </div>
   )
 }
 
@@ -61,6 +78,21 @@ export default connect(
   }, Sidebar
 )
 
+const SidebarOverlay = styled.div`
+  position: fixed;
+  width: 100%;
+  top: 48px;
+  right: 0;
+  left: 0;
+  height: calc(100vw - 48px);
+  background-color: rgba(0,0,0,0.8);
+  z-index: 9997;
+  overflow: hidden;
+  &:hover {
+    cursor: pointer;
+  }
+  `
+
 const SidebarContainer = styled.div`
   position: absolute;
   display: flex;
@@ -73,7 +105,7 @@ const SidebarContainer = styled.div`
   background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
   overflow-y: auto;
   overflow-x: hidden;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
+  transition: all .6s cubic-bezier(.4,0,.2,1);
   z-index: 9998;
 `
 
