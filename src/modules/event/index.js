@@ -1,7 +1,6 @@
 import { set } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 
-import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
 
 const getEvent = ({ path, http, props }) => {
@@ -15,17 +14,19 @@ export default {
   },
   signals: {
     routed: [
-      apiGet('/events', 'events'), {
+      getEvent, {
         success: [
-          getEvent, {
-            success: [
-              set(state`event`, props`result`),
-              changeView('events'),
-            ],
-            error: changeView('fourohfour'),
-          },
+          set(state`event`, props`result`),
         ],
         error: changeView('fourohfour'),
+      },
+    ],
+    selected: [
+      getEvent, {
+        success: [
+          set(state`event`, props`result`),
+        ],
+        error: set(state`event`, { error: props`result` }),
       },
     ],
   },

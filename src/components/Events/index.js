@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import { connect } from 'cerebral/react'
-import { state } from 'cerebral/tags'
+import { signal, state } from 'cerebral/tags'
 import { CSSTransitionGroup } from 'react-transition-group'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
@@ -23,6 +23,11 @@ function updateDateProps (array, prop) {
 function Events (props) {
   const updateStartDates = updateDateProps(props.events, 'start')
   const updateEndDates = updateDateProps(updateStartDates, 'end')
+  function selectEvent (event) {
+    console.log(event)
+    props.sidebarViewChanged({ view: 'event', title: event.title, icon: 'calendar-o' })
+    props.eventSelected({ id: event.id })
+  }
   return (
     <ViewContainer>
       <CSSTransitionGroup
@@ -41,7 +46,7 @@ function Events (props) {
               endAccessor="end"
               popup={true}
               selectable={true}
-
+              onSelectEvent={event => selectEvent(event)}
             />
           }
         </EventsContainer>
@@ -56,6 +61,8 @@ Events.propTypes = {
     PropTypes.object,
   ]),
   event: PropTypes.object,
+  sidebarViewChanged: PropTypes.func,
+  eventSelected: PropTypes.func,
 }
 
 Events.defaultProps = {
@@ -66,6 +73,8 @@ export default connect(
   {
     events: state`events`,
     event: state`event`,
+    sidebarViewChanged: signal`app.sidebarViewChanged`,
+    eventSelected: signal`event.selected`,
   },
   Events
 )
