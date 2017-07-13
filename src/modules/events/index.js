@@ -8,11 +8,11 @@ export default {
     routed: [
       apiGet('/events', 'events'), {
         success: [
-          (result) => { console.log(result) },
+          // (result) => { console.log(result) },
           changeView('events'),
         ],
         error: [
-          (result) => { console.log(result.props.error) },
+          // (result) => { console.log(result.props.error) },
           changeView('fourohfour'),
         ],
       },

@@ -7,13 +7,22 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment'
 import { rgba } from 'polished'
+import R from 'ramda'
 
 import ViewContainer from '../ViewContainer'
-import Link from '../Link'
 
 BigCalendar.momentLocalizer(moment)
 
+function updateDateProps (array, prop) {
+  const lens = R.lens(R.prop(prop), R.assoc(prop))
+  return array.map((obj, index) => {
+    return R.set(lens, moment(obj[prop]).toDate(), obj)
+  })
+}
+
 function Events (props) {
+  const updateStartDates = updateDateProps(props.events, 'start')
+  const updateEndDates = updateDateProps(updateStartDates, 'end')
   return (
     <ViewContainer>
       <CSSTransitionGroup
@@ -25,14 +34,16 @@ function Events (props) {
         component="span"
       >
         <EventsContainer>
-          <BigCalendar
-            events={props.events}
-            startAccessor="start"
-            endAccessor="end"
-            popup={true}
-            selectable={true}
+          {updateEndDates &&
+            <BigCalendar
+              events={updateEndDates}
+              startAccessor="start"
+              endAccessor="end"
+              popup={true}
+              selectable={true}
 
-          />
+            />
+          }
         </EventsContainer>
       </CSSTransitionGroup>
     </ViewContainer>
@@ -45,6 +56,10 @@ Events.propTypes = {
     PropTypes.object,
   ]),
   event: PropTypes.object,
+}
+
+Events.defaultProps = {
+  events: [],
 }
 
 export default connect(
