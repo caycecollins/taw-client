@@ -28,7 +28,7 @@ const App = props => {
         {props.currentView &&
           <AppContainer key="appcontainer">
             <AppBar />
-            <Sidebar />
+            {props.authenticated && <Sidebar />}
             <NavDrawer />
             <RenderView />
           </AppContainer>
