@@ -80,8 +80,7 @@ export default {
     ],
     sidebarActiveToggled,
     fieldChanged: [
-      when(state`${props`settingsField`}.value`),
-      {
+      when(state`${props`settingsField`}.value`), {
         true: [
           set(state`app.settings.showErrors`, true),
           setField(state`${props`field`}`, props`value`),

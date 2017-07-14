@@ -20,17 +20,17 @@ export default {
       () => { console.log('event.routed') },
       getEvent, {
         success: [
-          set(state`event`, props`result`),
-          apiGet('/events', 'events'), {
+          set(state`event.data`, props`result`),
+          apiGet('/events', 'events.data'), {
             success: [
               changeView('events'),
               when(state`app.previousView`), {
                 true: [],
                 false: wait(2000),
               },
-              changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: state`event.title` }),
+              changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: state`event.data.title` }),
             ],
-            error: set(state`event`, { error: props`result` }),
+            error: set(state`event.data`, props`result`),
           },
         ],
         error: changeView('fourohfour'),
@@ -42,20 +42,20 @@ export default {
       getEvent, {
         success: [
           changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: props`result.title` }),
-          set(state`event`, props`result`),
+          set(state`event.data`, props`result`),
         ],
-        error: set(state`event`, { error: props`result` }),
+        error: set(state`event.data`, props`result`),
       },
     ],
     createRouted: [
       () => { console.log('event.createRouted') },
-      apiGet('/events', 'events'), {
+      apiGet('/events', 'events.data'), {
         success: [
           changeView('events'),
           wait(2000),
           changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }),
         ],
-        error: set(state`event`, { error: props`result` }),
+        error: set(state`event.data`, props`result`),
       },
     ],
     creating: [
@@ -70,13 +70,13 @@ export default {
     ],
     reportRouted: [
       () => { console.log('event.createRouted') },
-      apiGet('/events', 'events'), {
+      apiGet('/events', 'events.data'), {
         success: [
           changeView('events'),
           wait(2000),
           changeSidebarView({ view: 'reportEvent', icon: 'calendar-check-o', title: 'Report an Event' }),
         ],
-        error: set(state`event`, { error: props`result` }),
+        error: set(state`event.data`, props`result`),
       },
     ],
     reporting: [

@@ -46,7 +46,7 @@ EventModal.defaultProps = {
 
 export default connect(
   {
-    event: state`event`,
+    event: state`event.data`,
     userTimezone: state`user.timezone`,
   },
   EventModal

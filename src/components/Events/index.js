@@ -21,8 +21,11 @@ function updateDateProps (array, prop, toTimezone) {
 }
 
 function Events (props) {
-  const updateStartDates = props.authenticated && updateDateProps(props.events, 'start', props.userTimezone)
-  const updateEndDates = props.authenticated && updateDateProps(updateStartDates, 'end', props.userTimezone)
+  function updateDates () {
+    const updateStartDates = updateDateProps(props.events, 'start', props.userTimezone)
+    return updateDateProps(updateStartDates, 'end', props.userTimezone)
+  }
+  const updatedDates = (props.events && props.authenticated) && updateDates()
   return (
     <ViewContainer>
       <EventsContainer>
@@ -39,14 +42,16 @@ function Events (props) {
             label="Create New Event"
           />
         </CustomActions>
-        {updateEndDates &&
+        {props.calendarView && updatedDates &&
           <BigCalendar
-            events={updateEndDates}
+            events={updatedDates}
             startAccessor="start"
             endAccessor="end"
             popup={true}
             selectable={true}
             onSelectEvent={event => props.eventSelected({ id: event.id })}
+            onView={(view) => props.calendarViewChanged({ view })}
+            defaultView={props.calendarView}
           />
         }
       </EventsContainer>
@@ -60,6 +65,8 @@ Events.propTypes = {
     PropTypes.array,
     PropTypes.object,
   ]),
+  calendarView: PropTypes.string,
+  calendarViewChanged: PropTypes.func,
   event: PropTypes.object,
   eventSelected: PropTypes.func,
   createNewEvent: PropTypes.func,
@@ -74,8 +81,10 @@ Events.defaultProps = {
 export default connect(
   {
     authenticated: state`authorization.authenticated`,
-    events: state`events`,
-    event: state`event`,
+    events: state`events.data`,
+    calendarView: state`events.calendarView`,
+    calendarViewChanged: signal`events.calendarViewChanged`,
+    event: state`event.data`,
     eventSelected: signal`event.opened`,
     createNewEvent: signal`event.creating`,
     reportEvent: signal`event.reporting`,
@@ -94,6 +103,7 @@ const CustomActions = styled.div`
 const EventsContainer = styled.div`
   padding: 24px;
   height: 100%;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
   .rbc-toolbar {
     margin-bottom: 24px;
     padding: 0;
