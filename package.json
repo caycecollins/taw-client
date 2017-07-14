@@ -76,6 +76,7 @@
     "highcharts": "^5.0.12",
     "jest-cli": "^20.0.4",
     "mkdirp": "^0.5.1",
+    "moment-timezone": "^0.5.13",
     "node-fetch": "^1.7.1",
     "node-sass": "^4.5.3",
     "polished": "^1.2.1",
