@@ -1,4 +1,4 @@
-import { set, wait } from 'cerebral/operators'
+import { set, wait, when } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 
 import apiGet from '../../factories/apiGet'
@@ -24,7 +24,10 @@ export default {
           apiGet('/events', 'events'), {
             success: [
               changeView('events'),
-              wait(2000),
+              when(state`app.previousView`), {
+                true: [],
+                false: wait(2000),
+              },
               changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: state`event.title` }),
             ],
             error: set(state`event`, { error: props`result` }),
@@ -35,6 +38,7 @@ export default {
     ],
     opened: [
       () => { console.log('event.opened') },
+      ({ router, props }) => router.goTo(`/events/${props.id}`),
       getEvent, {
         success: [
           changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: props`result.title` }),
