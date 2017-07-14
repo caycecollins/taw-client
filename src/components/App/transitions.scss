@@ -24,6 +24,50 @@
   opacity: 1;
   &.view-leave-active {
     opacity: 0.01;
-    transition: opacity 300ms ease-in-out;
+    transition: opacity 400ms ease-in-out;
   }
+}
+
+.sidebarOverlay-appear {
+  opacity: 0.01;
+  &.sidebarOverlay-appear-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+  }
+}
+.sidebarOverlay-enter {
+  opacity: 0.01;
+  &.sidebarOverlay-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in-out;
+  }
+}
+.sidebarOverlay-leave {
+  opacity: 1;
+  &.sidebarOverlay-leave-active {
+    opacity: 0.01;
+    transition: opacity 500ms ease-in-out;
+  }
+}
+
+.fade-enter {
+  opacity: 0.01;
+  transform: translateY(50px);
+}
+
+.fade-enter.fade-enter-active {
+  transition: opacity 250ms ease-in;
+  opacity: 1;
+}
+
+.fade-appear { opacity: 0.01; }
+.fade-appear.fade-appear-active { opacity: 1; transition: opacity 250ms ease-in; }
+
+.fade-leave {
+  opacity: 1;
+}
+
+.fade-leave.fade-leave-active {
+  opacity: 0.01;
+  transition: opacity 100ms ease-in;
 }
