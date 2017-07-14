@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components'
 import { connect } from 'cerebral/react'
 import { signal, state } from 'cerebral/tags'
 import BigCalendar from 'react-big-calendar'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { rgba } from 'polished'
 import R from 'ramda'
 
@@ -13,16 +13,16 @@ import Button from '../Button'
 
 BigCalendar.momentLocalizer(moment)
 
-function updateDateProps (array, prop) {
+function updateDateProps (array, prop, toTimezone) {
   const lens = R.lens(R.prop(prop), R.assoc(prop))
   return array.map((obj, index) => {
-    return R.set(lens, moment(obj[prop]).toDate(), obj)
+    return R.set(lens, moment.tz(obj[prop], toTimezone).toDate(), obj)
   })
 }
 
 function Events (props) {
-  const updateStartDates = props.authenticated && updateDateProps(props.events, 'start')
-  const updateEndDates = props.authenticated && updateDateProps(updateStartDates, 'end')
+  const updateStartDates = props.authenticated && updateDateProps(props.events, 'start', props.userTimezone)
+  const updateEndDates = props.authenticated && updateDateProps(updateStartDates, 'end', props.userTimezone)
   return (
     <ViewContainer>
       <EventsContainer>
@@ -64,6 +64,7 @@ Events.propTypes = {
   eventSelected: PropTypes.func,
   createNewEvent: PropTypes.func,
   reportEvent: PropTypes.func,
+  userTimezone: PropTypes.string,
 }
 
 Events.defaultProps = {
@@ -78,6 +79,7 @@ export default connect(
     eventSelected: signal`event.opened`,
     createNewEvent: signal`event.creating`,
     reportEvent: signal`event.reporting`,
+    userTimezone: state`user.timezone`,
   },
   Events
 )

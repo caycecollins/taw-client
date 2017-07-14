@@ -3,13 +3,17 @@ import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import { connect } from 'cerebral/react'
 import { signal, state } from 'cerebral/tags'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import { rgba } from 'polished'
 
 function CreateNewEvent (props) {
   return (
     <CreateNewEventContainer>
       Create Event
+      <br />
+      <br />
+      <br />
+
     </CreateNewEventContainer>
   )
 }
