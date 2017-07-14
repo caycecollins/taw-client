@@ -47,7 +47,7 @@ const RenderView = ({ sidebarActive, initialDrawerAnimation, authorizationPendin
         transitionName="view"
         transitionAppearTimeout={500}
         transitionEnterTimeout={500}
-        transitionLeaveTimeout={300}
+        transitionLeaveTimeout={400}
         component="div"
       >
         <FullWidthHeight
@@ -91,24 +91,25 @@ export default connect(
 const PageContainerAnimation = keyframes`
   from {
     top: 0px;
+    height: 100vh;
   }
   to {
     top: 48px;
+    height: calc(100vh - 48px);
   }
 `
 
 const PageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: ${props => props.initialDrawerAnimation ? '100vh' : 'calc(100vh - 48px)'};
+  height: calc(100vh - 48px);
   ${props => !props.authenticated && 'height: 100vh;'}
   left: 0;
   top: ${props => props.authenticated ? '48px' : '0px'};
   overflow-y: ${props => props.authenticated && !props.sidebarActive ? 'scroll' : 'hidden'};
   overflow-x: hidden;
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
-  transition: all .3s cubic-bezier(.4,0,.2,1);
-  ${props => props.authenticated && css`
+  ${props => props.authenticated && props.initialDrawerAnimation && css`
     animation-name: ${PageContainerAnimation};
     animation-duration: .6s;
     animation-timing-function: cubic-bezier(.4,0,.2,1);
