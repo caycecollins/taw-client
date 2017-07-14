@@ -7,8 +7,9 @@ import { rgba } from 'polished'
 import { CSSTransitionGroup } from 'react-transition-group'
 
 import ViewEvent from '../Event'
-import CreateEvent from '../Event/Create'
-import ReportEvent from '../Event/Report'
+import CreateEvent from '../Event/CreateModal'
+import ReportEvent from '../Event/ReportModal'
+import ViewProfile from '../Profile/ProfileModal'
 import Button from '../Button'
 import Icon from '../Icon'
 
@@ -19,6 +20,7 @@ const views = {
   viewEvent: ViewEvent,
   createEvent: CreateEvent,
   reportEvent: ReportEvent,
+  viewProfile: ViewProfile,
 }
 
 const Sidebar = (props) => {
