@@ -2,29 +2,51 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'cerebral/react'
-import { state } from 'cerebral/tags'
-import { CSSTransitionGroup } from 'react-transition-group'
+import { signal, state } from 'cerebral/tags'
+import { form } from '@cerebral/forms'
+import FlipMove from 'react-flip-move'
 
 import ViewContainer from '../ViewContainer'
+import Button from '../Button'
 import Link from '../Link'
+import Input from '../Input'
 
-function Games ({ games }) {
+function Games (props) {
+  function filterGames (games, term) {
+    return games.filter((game) => {
+      const gameName = game.name.toLowerCase()
+      return gameName.search(term.toLowerCase()) > -1
+    })
+  }
+  var games = filterGames(props.games, props.filterGamesTerm)
+  console.log(props.filterGamesTerm)
   return (
     <ViewContainer>
       <ViewHeader>
         Game Divisions
+        <br />
+        {Object.keys(props.form.getFields()).map((field, index) => {
+          return (
+            <Input type={props.form[field].type} name={field} key={index} path={`games.form.${field}`} label={false} placeholder="Type to filter games" />
+          )
+        })}
+        {/* <Button
+          onClick={() => props.gamesFiltered()}
+          label="filter"
+        /> */}
       </ViewHeader>
-      <CSSTransitionGroup
-        transitionName="initial"
-        transitionAppear={true}
-        transitionAppearTimeout={1000}
-        transitionEnter={false}
-        transitionLeave={false}
-        component="span"
-      >
-        <GamesContainer>
-          {games && games.map((game, index) => {
-            return (
+      <GamesContainer>
+        <FlipMove
+          easing="ease-in-out"
+          duration={200}
+          staggerDelayBy={30}
+          appearAnimation="elevator"
+          enterAnimation="none"
+          leaveAnimation="none"
+          maintainContainerHeight={true}
+        >
+          {props.showGames && games && games
+            .map((game, index) =>
               <Game
                 key={game.id}
                 routeTo="game"
@@ -33,20 +55,29 @@ function Games ({ games }) {
                 <Name>{game.name}</Name>
               </Game>
             )
-          })}
-        </GamesContainer>
-      </CSSTransitionGroup>
+          }
+        </FlipMove>
+      </GamesContainer>
     </ViewContainer>
   )
 }
 
 Games.propTypes = {
   games: PropTypes.array,
+  gamesFiltered: PropTypes.func,
+  showGames: PropTypes.bool,
+  form: PropTypes.object,
+  filterGamesTerm: PropTypes.string,
 }
 
 export default connect(
   {
-    games: state`games`,
+    form: form(state`games.form`),
+    games: state`games.data`,
+    showGames: state`games.toggle`,
+    filterGamesTerm: state`games.form.filterGamesTerm.value`,
+    filteredGames: state`games.filteredGames`,
+    gamesFiltered: signal`games.gamesFiltered`,
   },
   Games
 )
@@ -60,11 +91,13 @@ const ViewHeader = styled.div`
 `
 
 const GamesContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  padding: 24px;
+  > div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 24px;
+  }
 `
 
 const Game = styled(Link)`

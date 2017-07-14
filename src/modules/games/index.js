@@ -1,4 +1,4 @@
-import { set } from 'cerebral/operators'
+import { pop, wait, shift, splice,  set } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 
 import apiGet from '../../factories/apiGet'
@@ -12,10 +12,17 @@ import changeView from '../../factories/changeView'
 
 export default {
   state: {
+    toggle: true,
+    form: {
+      filterGamesTerm: {
+        value: '',
+        isRequired: false,
+      },
+    },
   },
   signals: {
     routed: [
-      apiGet('/games', 'games'), {
+      apiGet('/games', 'games.data'), {
         success: [
           // (result) => { console.log(result) },
           // set(state`games`, props`result`),
@@ -26,6 +33,16 @@ export default {
           changeView('fourohfour'),
         ],
       },
+    ],
+    gamesFiltered: [
+      ({ state, props }) => {
+        // const games = state.get('games.data')
+        // const filteredGames = games.filter((game) => game.name.search('Conan') > -1)
+        // state.set('games.filteredGames', filteredGames)
+      },
+    ],
+    toggleGames: [
+      // set(state`games.toggle`, props`value`),
     ],
   },
 }
