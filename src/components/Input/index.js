@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 import ErrorMessage from './ErrorMessage'
 
-function Input ({ name, type, field, path, settings, fieldChanged }) {
+function Input ({ name, type, label, field, path, placeholder, settings, fieldChanged }) {
   function onChange (e) {
     fieldChanged({
       field: path,
@@ -33,11 +33,12 @@ function Input ({ name, type, field, path, settings, fieldChanged }) {
   }
   return (
     <InputContainer>
-      <Label>{name} {field.isRequired ? <Required>*</Required> : ''}</Label>
+      {label && <Label>{name} {field.isRequired ? <Required>*</Required> : ''}</Label>}
       <StyledInput
         onChange={e => onChange(e)}
         onBlur={e => onBlur(e)}
         value={field.value}
+        placeholder={placeholder}
         type={type}
       />
       {renderError()}
@@ -52,6 +53,12 @@ Input.propTypes = {
   path: PropTypes.string,
   settings: PropTypes.object,
   fieldChanged: PropTypes.func,
+  label: PropTypes.bool,
+  placeholder: PropTypes.string,
+}
+
+Input.defaultProps = {
+  label: true,
 }
 
 export default connect(
