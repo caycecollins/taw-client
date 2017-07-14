@@ -13,7 +13,8 @@ import cerebralTheme from '../.././theme'
 import './transitions.scss'
 
 const App = props => {
-  props.authenticated ? props.getUser() : props.login()
+  !props.authenticated && props.login()
+  props.authenticated && !props.callsign && props.getUser()
   props.initialDrawerAnimation && props.startInitialDrawerAnimation()
   return (
     <CerebralThemeProvider theme={cerebralTheme}>
@@ -41,6 +42,7 @@ const App = props => {
 App.propTypes = {
   authorizationPending: PropTypes.bool,
   currentView: PropTypes.string,
+  callsign: PropTypes.string,
   getUser: PropTypes.func,
   authenticated: PropTypes.bool,
   login: PropTypes.func,
@@ -51,6 +53,7 @@ App.propTypes = {
 export default connect(
   {
     currentView: state`app.currentView`,
+    callsign: state`user.callsign`,
     getUser: signal`user.getUser`,
     login: signal`login.routed`,
     authenticated: state`authorization.authenticated`,
