@@ -1,4 +1,4 @@
-import { set, wait, when } from 'cerebral/operators'
+import { toggle, set, wait, when } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 
 import apiGet from '../../factories/apiGet'
@@ -17,38 +17,43 @@ export default {
   },
   signals: {
     routed: [
-      () => { console.log('event.routed') },
-      getEvent, {
-        success: [
-          set(state`event.data`, props`result`),
-          apiGet('/events', 'events.data'), {
+      when(state`app.initialDrawerAnimation`), {
+        true: [
+          changeView('empty'),
+          getEvent, {
             success: [
-              changeView('events'),
-              when(state`app.previousView`), {
-                true: [],
-                false: wait(2000),
-              },
-              changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: state`event.data.title` }),
+              set(state`event.data`, props`result`),
+              changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: state`event.data.title` },
+                [
+                  apiGet('/events', 'events.data'), { success: [], error: [] },
+                  toggle(state`app.sidebarImmune`),
+                  changeView('events'),
+                  toggle(state`app.sidebarImmune`),
+                ],
+              ),
             ],
-            error: set(state`event.data`, props`result`),
+            error: changeView('fourohfour'),
           },
         ],
-        error: changeView('fourohfour'),
-      },
-    ],
-    opened: [
-      () => { console.log('event.opened') },
-      ({ router, props }) => router.goTo(`/events/${props.id}`),
-      getEvent, {
-        success: [
-          changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: props`result.title` }),
-          set(state`event.data`, props`result`),
+        false: [
+          changeSidebarView({ icon: 'hourglass' },
+            [
+              set(state`event.data`, null),
+              wait(300),
+              getEvent, {
+                success: [
+                  set(state`event.data`, props`result`),
+                  // set(state`app.sidebarTitle`, props`result.title`),
+                  changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: props`result.title` }),
+                ],
+                error: [],
+              },
+            ],
+          ),
         ],
-        error: set(state`event.data`, props`result`),
       },
     ],
     createRouted: [
-      () => { console.log('event.createRouted') },
       apiGet('/events', 'events.data'), {
         success: [
           changeView('events'),
@@ -59,7 +64,6 @@ export default {
       },
     ],
     creating: [
-      () => { console.log('event.creating') },
       changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }),
     ],
     created: [
@@ -69,7 +73,6 @@ export default {
       () => { console.log('event.deleted') },
     ],
     reportRouted: [
-      () => { console.log('event.createRouted') },
       apiGet('/events', 'events.data'), {
         success: [
           changeView('events'),
@@ -80,7 +83,6 @@ export default {
       },
     ],
     reporting: [
-      () => { console.log('event.reporting') },
       changeSidebarView({ view: 'reportEvent', icon: 'calendar-check-o', title: 'Report an Event' }),
     ],
   },
