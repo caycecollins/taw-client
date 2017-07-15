@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
-import { state, signal } from 'cerebral/tags'
+import { signal } from 'cerebral/tags'
 
 import ViewContainer from '../ViewContainer'
 import Button from '../Button'

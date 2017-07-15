@@ -18,6 +18,21 @@ const getProfile = async ({ path, http, state, storage }) => {
 }
 
 export default {
+  state: {
+    editForm: {
+      timezone: {
+        type: 'select',
+        value: '',
+        isRequired: true,
+        isPristine: true,
+        validationRules: [
+          'isValue',
+        ],
+      },
+      showErrors: true,
+    },
+    updating: false,
+  },
   signals: {
     routed: [
       authenticate(changeView('profile')),
@@ -27,11 +42,9 @@ export default {
         () => { console.log('profile.opened') },
         when(state`user.callsign`), {
           true: [
-            () => { console.log('user.callsign is true') },
             changeSidebarView({ view: 'viewProfile', icon: 'user', title: state`user.callsign` }),
           ],
           false: [
-            () => { console.log('user.callsign is FALSE') },
             getProfile, {
               success: [
                 set(state`user`, props`result`),
@@ -43,11 +56,31 @@ export default {
         },
       ]),
     ],
-    edited: [
+    updated: [
       () => { console.log('profile.edited') },
+      UpdateProfile,
     ],
     deleted: [
       () => { console.log('profile.deleted') },
     ],
   },
+}
+
+function UpdateProfile ({ state, http, storage, router, forms }) {
+  state.set('profile.updating', true)
+  const fields = forms.toJSON('profile.editForm')
+  console.log(fields)
+  return http.put(`/users/${state.get('user.id')}/info`, fields)
+    .then(response => {
+      // const stringifyResponse = JSON.stringify(rawResponse)
+      // const response = JSON.parse(stringifyResponse)
+      console.log(response)
+      state.merge('user', response.result)
+      state.set('profile.updating', false)
+      forms.reset('profile.editForm')
+    }).catch(rawError => {
+      const error = JSON.stringify(rawError)
+      state.set('profile.updatError', JSON.parse(error))
+      state.set('profile.updating', false)
+    })
 }
