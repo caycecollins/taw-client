@@ -8,6 +8,7 @@ import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import R from 'ramda'
 import { CSSTransitionGroup } from 'react-transition-group'
+import _ from 'lodash'
 
 import ViewContainer from '../ViewContainer'
 import Button from '../Button'
@@ -22,14 +23,14 @@ function updateDateProps (array, prop, toTimezone) {
 }
 
 function Events (props) {
-  window.addEventListener('resize', () => {
+  window.addEventListener('resize', _.throttle(() => {
+    console.log(window.innerWidth)
     if (window.innerWidth < 768) {
-      console.log(window.innerWidth)
       props.calendarMobileUpdated({ view: 'agenda', isMobile: true })
     } else {
       props.calendarMobileUpdated({ view: props.calendarView, isMobile: false })
     }
-  })
+  }, 2500))
   function updateDates () {
     const updateStartDates = updateDateProps(props.events, 'start', props.userTimezone)
     return updateDateProps(updateStartDates, 'end', props.userTimezone)
