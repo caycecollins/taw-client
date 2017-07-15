@@ -4,6 +4,7 @@ import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled, { css, keyframes } from 'styled-components'
 import { rgba } from 'polished'
+import { CSSTransitionGroup } from 'react-transition-group'
 
 import Button from '../Button'
 import Link from '../Link'
@@ -35,11 +36,12 @@ const NavDrawer = props => {
           <ListItem
             disabled={props.currentView && item.route.search(props.currentView) > -1}
             iconOnly={!props.drawerLarge}
+            onClick={() => console.log('clicked')}
           >
             <StyledIcon label={props.drawerLarge}>
               <Icon size={props.drawerLarge ? 16 : 20} name={item.icon} />
             </StyledIcon>
-            {props.drawerLarge && <div>{item.label}</div>}
+            {props.drawerLarge && <Label>{item.label}</Label>}
           </ListItem>
         </Link>
       )
@@ -52,6 +54,20 @@ const NavDrawer = props => {
       className={props.className}
       initialDrawerAnimation={props.initialDrawerAnimation}
     >
+      <CSSTransitionGroup
+        transitionName="sidebarOverlay"
+        transitionAppearTimeout={500}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
+        component="div"
+      >
+        {props.drawerActive && props.drawerLarge &&
+          <NavDrawerMobileOverlay
+            key="drawerOverlay"
+            onClick={() => props.drawerActiveToggled({ value: false })}
+          />
+        }
+      </CSSTransitionGroup>
       <NavDrawerToggles>
         <Button
           size="xs"
@@ -67,9 +83,20 @@ const NavDrawer = props => {
           icon={props.drawerLarge ? 'angle-double-left' : 'angle-double-right'}
         />
       </NavDrawerToggles>
-      <User small={props.drawerActive && !props.drawerLarge}>
-        <Avatar />
-        {props.drawerLarge && 'Callsign'}
+      <User large={props.drawerActive && props.drawerLarge}>
+        <Avatar large={props.drawerLarge} />
+        {props.drawerLarge &&
+          <UserInfo>
+            <Callsign>Callsign</Callsign>
+            <Rank>
+              <RankIcon />
+              <RankText>Rank</RankText>
+            </Rank>
+            <Link routeTo="profile">
+              <PrimaryUnit>Primary Unit Name</PrimaryUnit>
+            </Link>
+          </UserInfo>
+        }
       </User>
       <Navigation user={true}>
         <List>{getListItems(userMenuItems)}</List>
@@ -155,10 +182,30 @@ const initialAnimationMixin = css`
   `}
 `
 
+const NavDrawerMobileOverlay = styled.div`
+  position: fixed;
+  width: 100vh;
+  height: 100vh;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  visibility: hidden;
+  background-color: ${props => { return rgba(props.theme.colors.darkGray, 0.7) }};
+  z-index: -1;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  @media (max-width: 600px) {
+    opacity: 1;
+    visibility: visible;
+  }
+`
+
 const NavDrawerContainer = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   width: ${props => props.large ? '280' : '80'}px;
   height: calc(100% - 48px);
   top: 48px;
@@ -169,6 +216,9 @@ const NavDrawerContainer = styled.div`
   transition: all .3s cubic-bezier(.4,0,.2,1);
   left: ${props => drawerLeftMixin};
   ${props => props.active && props.initialDrawerAnimation && initialAnimationMixin}
+  @media (max-width: 600px) {
+    background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.97) }};
+  }
 `
 
 const NavDrawerToggles = styled.div`
@@ -180,28 +230,69 @@ const NavDrawerToggles = styled.div`
 
 const User = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  height: ${props => props.small ? '80px' : '160px'};
-  width: 100%;
-  padding: 24px;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 160px;
+  min-height: 160px;
+  padding: ${props => props.large ? '48px 24px 8px 24px;' : '48px 8px;'};
   color: white;
-  margin-bottom: 16px;
   transition: all .3s cubic-bezier(.4,0,.2,1);
+  white-space: nowrap;
 `
 
 const Avatar = styled.img`
-  width: 100%;
-  height: auto;
+  flex: 1 0 auto;
+  width: ${props => props.large ? '80' : '56'}px;
+  ${props => !props.large && 'max-width: 80px;'}
+  height: ${props => props.large ? '80' : '60'}px;
   background-color: ${props => props.theme.colors.lightTan};
-  border-radius: 4px;
+  border-radius: 2px;
+  white-space: nowrap;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  ${props => props.image && css`
+    background-image: url(${props.image});
+    background-repeat: no-repeat;
+    backgorund-size: contain;
+    background-position: center center;
+  `}
+`
+
+const UserInfo = styled.div`
+  display: flex;
+  flex: ${props => props.large ? '1 0 auto' : '1 0 auto'};
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding-left: 16px;
+  padding-right: 28px;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  `
+
+const Callsign = styled.div`
+  font-size: 1.2rem;
+  margin-bottom: 22px;
+`
+
+const Rank = styled.div`
+  font-size: 0.8rem;
+`
+
+const RankIcon = styled.div`
+
+`
+
+const RankText = styled.div`
+  font-size: 0.9rem;
+`
+
+const PrimaryUnit = styled.div`
+  font-size: 0.8rem;
 `
 
 const Navigation = styled.div`
-  flex: ${props => !props.user && '1'};
-  padding: 0;
+  flex: ${props => !props.user && 1};
   padding: 8px 0;
   background-color: ${props => !props.user ? rgba(props.theme.colors.darkGray6, 0.6) : 'transparent'};
 `
@@ -209,6 +300,7 @@ const Navigation = styled.div`
 const List = styled.ul`
   list-style-type: none;
   padding: 0;
+  margin: 0;
 `
 
 const ListItem = styled.li`
@@ -218,11 +310,11 @@ const ListItem = styled.li`
   justify-content: flex-start;
   height: 64px;
   color: ${props => props.theme.colors.armyGreen};
-  ${props => props.iconOnly
-    ? css`padding: 8px 30px;`
-    : css`padding: 8px 16px;`}
   transition: all .3s ease-in-out;
   text-transform: uppercase;
+  ${props => props.iconOnly
+    ? css`padding: 8px 30px;`
+    : css`padding: 8px 24px;`}
   ${props => props.disabled
     ? css`
         background-color: rgba(0,0,0,.8);
@@ -242,4 +334,8 @@ const ListItem = styled.li`
 
 const StyledIcon = styled.div`
   ${props => props.label && css`padding-right: 16px;`}
+`
+
+const Label = styled.div`
+  margin-bottom: -3px;
 `
