@@ -11,9 +11,6 @@ const Dashboard = (props) => {
           <Col sm={12} md={8}>
             Dashboard
           </Col>
-          <Col hiddenDown="sm" md={4}>
-            Test: This will hide on small devices
-          </Col>
         </Row>
       </Grid>
     </ViewContainer>

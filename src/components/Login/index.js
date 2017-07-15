@@ -12,10 +12,6 @@ import Input from '../Input'
 import ErrorMessage from '../Input/ErrorMessage'
 
 const LoginForm = props => {
-  let enabled = true
-  if (props.settings.disableSubmitWhenFormIsInValid.value) {
-    enabled = props.form.isValid
-  }
   return (
     <ViewContainer centered={true}>
       <form onSubmit={(e) => e.preventDefault()}>
@@ -34,9 +30,9 @@ const LoginForm = props => {
         <Button
           onClick={e => {
             e.preventDefault()
-            enabled && props.login()
+            props.form.isValid && props.login()
           }}
-          disabled={!enabled || props.authorizationPending}
+          disabled={!props.form.isValid || props.authorizationPending}
           label={props.authorizationPending ? 'Loggin In...' : 'Login'}
           type="submit"
           icon={props.authorizationPending && 'crosshairs'}
@@ -62,7 +58,6 @@ const LoginForm = props => {
 
 LoginForm.propTypes = {
   form: PropTypes.object,
-  settings: PropTypes.object,
   onReset: PropTypes.func,
   login: PropTypes.func,
   previousCallsign: PropTypes.string,
@@ -72,7 +67,6 @@ LoginForm.propTypes = {
 export default connect(
   {
     form: form(state`login.form`),
-    settings: state`app.settings`,
     onReset: signal`app.onReset`,
     login: signal`authorization.authenticate`,
     previousCallsign: state`authorization.callsign`,
@@ -85,7 +79,7 @@ export default connect(
 const Helper = styled.div`
   margin-top: 32px;
   padding: 24px;
-  background-color: ${props => rgba(props.theme.colors.lightRed, .3)};
+  background-color: ${props => rgba(props.theme.colors.lightRed, 0.3)};
   border-radius: 4px;
   color: ${props => props.theme.colors.grayGreen};
   span {

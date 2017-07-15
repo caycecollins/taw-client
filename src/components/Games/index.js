@@ -2,12 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'cerebral/react'
-import { signal, state } from 'cerebral/tags'
+import { state } from 'cerebral/tags'
 import { form } from '@cerebral/forms'
 import FlipMove from 'react-flip-move'
 
 import ViewContainer from '../ViewContainer'
-import Button from '../Button'
 import Link from '../Link'
 import Input from '../Input'
 
@@ -19,21 +18,21 @@ function Games (props) {
     })
   }
   var games = filterGames(props.games, props.filterGamesTerm)
-  console.log(props.filterGamesTerm)
   return (
     <ViewContainer>
       <ViewHeader>
         Game Divisions
         <br />
-        {Object.keys(props.form.getFields()).map((field, index) => {
-          return (
-            <Input type={props.form[field].type} name={field} key={index} path={`games.form.${field}`} label={false} placeholder="Type to filter games" />
-          )
-        })}
-        {/* <Button
-          onClick={() => props.gamesFiltered()}
-          label="filter"
-        /> */}
+        {Object.keys(props.form.getFields()).map((field, index) =>
+          <Input
+            type={props.form[field].type}
+            name={field}
+            key={index}
+            path={`games.form.${field}`}
+            label={false}
+            placeholder="Type to filter games"
+          />
+        )}
       </ViewHeader>
       <GamesContainer>
         <FlipMove
@@ -50,7 +49,7 @@ function Games (props) {
               <Game
                 key={game.id}
                 routeTo="game"
-                routeParams={{ id: JSON.stringify(game.id) }}
+                routeParams={{ id: game.id.toString() }}
               >
                 <Name>{game.name}</Name>
               </Game>
@@ -64,7 +63,6 @@ function Games (props) {
 
 Games.propTypes = {
   games: PropTypes.array,
-  gamesFiltered: PropTypes.func,
   showGames: PropTypes.bool,
   form: PropTypes.object,
   filterGamesTerm: PropTypes.string,
@@ -77,7 +75,6 @@ export default connect(
     showGames: state`games.toggle`,
     filterGamesTerm: state`games.form.filterGamesTerm.value`,
     filteredGames: state`games.filteredGames`,
-    gamesFiltered: signal`games.gamesFiltered`,
   },
   Games
 )
