@@ -118,7 +118,6 @@ export default connect(
 
 const EventsContainerResponsive = css`
 @media (max-width: 767px) {
-  padding: 16px 8px;
   .rbc-agenda-content {
     font-size: 0.8rem;
   }
@@ -133,7 +132,6 @@ const CustomActions = styled.div`
 `
 
 const EventsContainer = styled.div`
-padding: 24px;
 height: 100%;
 transition: all .3s cubic-bezier(.4,0,.2,1);
 > span {

@@ -77,18 +77,26 @@ const ViewHeader = styled.div`
   display: flex;
   align-items: center;
   font-size: 24px;
-  padding: 16px 40px;
+  padding: 16px 0;
   text-transform: uppercase;
   color: ${props => props.theme.colors.lightTan};
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  @media (max-width: 768px) {
+    justify-content: center;
+  }
 `
 
 const GamesContainer = styled.div`
   > div {
     display: flex;
+    flex: 1;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    padding: 24px;
+    transition: all .3s cubic-bezier(.4,0,.2,1);
+    @media (max-width: 768px) {
+      justify-content: center;
+    }
   }
 `
 
@@ -99,12 +107,20 @@ const Game = styled(Link)`
   flex-wrap: wrap;
   width: 150px;
   height: 150px;
-  margin: 16px;
+  margin: 16px 32px 16px 0;
   padding: 16px;
   background-color: rgba(0,0,0,.3);
   transition: all .3s cubic-bezier(.4,0,.2,1);
+  border-radius: 2px;
   &:hover {
     background-color: rgba(0,0,0,.6);
+  }
+  @media (max-width: 768px) {
+    margin: 16px;
+  }
+  @media (max-width: 420px) {
+    margin: 16px 0px;
+    width: 100%;
   }
 `
 
