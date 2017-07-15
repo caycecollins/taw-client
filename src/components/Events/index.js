@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { connect } from 'cerebral/react'
 import { signal, state } from 'cerebral/tags'
 import BigCalendar from 'react-big-calendar'
@@ -49,7 +49,7 @@ function Events (props) {
             endAccessor="end"
             popup={true}
             selectable={true}
-            onSelectEvent={event => props.eventSelected({ id: event.id })}
+            onSelectEvent={event => props.eventSelected({ id: event.id.toString() })}
             onView={(view) => props.calendarViewChanged({ view })}
             defaultView={props.calendarView}
           />
@@ -85,7 +85,7 @@ export default connect(
     calendarView: state`events.calendarView`,
     calendarViewChanged: signal`events.calendarViewChanged`,
     event: state`event.data`,
-    eventSelected: signal`event.opened`,
+    eventSelected: signal`event.routed`,
     createNewEvent: signal`event.creating`,
     reportEvent: signal`event.reporting`,
     userTimezone: state`user.timezone`,

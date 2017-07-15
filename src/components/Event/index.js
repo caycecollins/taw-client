@@ -1,15 +1,21 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { connect } from 'cerebral/react'
-import { signal, state } from 'cerebral/tags'
+import { state } from 'cerebral/tags'
 import moment from 'moment-timezone'
 
 function EventModal (props) {
   const tableData = [
-    ['title', props.event.title],
-    ['start', moment.tz(props.event.start, props.userTimezone).format('dddd, MMMM Do YYYY @ HHmm (h:mm a) z')],
-    ['end', moment.tz(props.event.end, props.userTimezone).format('dddd, MMMM Do YYYY @ HHmm (h:mm a) z')],
+    ['title', props.event.title || 'Loading...'],
+    ['start', moment.tz(props.event.start, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
+    ['end', moment.tz(props.event.end, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
+    ['duration', props.event.duration / 60 + 'hr(s)'],
+    ['type', props.event.type],
+    ['description', props.event.description],
+    ['mandatory', props.event.mandatory && 'Yes'],
+    ['repeats', props.event.recurring.length > 0 && 'Yes (will calculate daysOfWeek later)'],
+    ['created by', props.event.creatorCallsign],
   ]
 
   return (
@@ -64,8 +70,9 @@ const Section = styled.div`
   > table {
     tbody {
       tr {
-        height: 40px;
         td {
+          vertical-align: top;
+          padding: 8px;
           &:first-of-type {
             padding-right: 24px;
             font-size: 0.95rem;
