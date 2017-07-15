@@ -90,4 +90,7 @@ const Container = styled.div`
     animation-timing-function: cubic-bezier(.4,0,.2,1);
     animation-fill-mode: backwards;
   `}
+  @media (max-width: 767px) {
+    padding: 0;
+  }
 `

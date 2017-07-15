@@ -1,12 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
 import { connect } from 'cerebral/react'
 import { signal, state } from 'cerebral/tags'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment-timezone'
+import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import R from 'ramda'
+import { CSSTransitionGroup } from 'react-transition-group'
 
 import ViewContainer from '../ViewContainer'
 import Button from '../Button'
@@ -21,11 +22,19 @@ function updateDateProps (array, prop, toTimezone) {
 }
 
 function Events (props) {
+  window.addEventListener('resize', () => {
+    if (window.innerWidth < 768) {
+      console.log(window.innerWidth)
+      props.calendarMobileUpdated({ view: 'agenda', isMobile: true })
+    } else {
+      props.calendarMobileUpdated({ view: props.calendarView, isMobile: false })
+    }
+  })
   function updateDates () {
     const updateStartDates = updateDateProps(props.events, 'start', props.userTimezone)
     return updateDateProps(updateStartDates, 'end', props.userTimezone)
   }
-  const updatedDates = (props.events && props.authenticated) && updateDates()
+  const updatedDates = (props.events && props.authenticated) ? updateDates() : []
   return (
     <ViewContainer>
       <EventsContainer>
@@ -42,8 +51,15 @@ function Events (props) {
             label="Create New Event"
           />
         </CustomActions>
-        {props.calendarView && updatedDates &&
+        <CSSTransitionGroup
+          transitionName="view"
+          transitionAppearTimeout={500}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}
+          component="span"
+        >
           <BigCalendar
+            key="bigcal"
             events={updatedDates}
             startAccessor="start"
             endAccessor="end"
@@ -51,9 +67,12 @@ function Events (props) {
             selectable={true}
             onSelectEvent={event => props.eventSelected({ id: event.id.toString() })}
             onView={(view) => props.calendarViewChanged({ view })}
-            defaultView={props.calendarView}
+            view={props.calendarMobile ? 'agenda' : props.calendarView}
+            defaultView={props.calendarMobile ? 'agenda' : props.calendarView}
+            toolbar={!props.calendarMobile}
           />
-        }
+        </CSSTransitionGroup>
+        <br />
       </EventsContainer>
     </ViewContainer>
   )
@@ -66,6 +85,8 @@ Events.propTypes = {
     PropTypes.object,
   ]),
   calendarView: PropTypes.string,
+  calendarMobileUpdated: PropTypes.func,
+  calendarMobile: PropTypes.bool,
   calendarViewChanged: PropTypes.func,
   event: PropTypes.object,
   eventSelected: PropTypes.func,
@@ -83,6 +104,8 @@ export default connect(
     authenticated: state`authorization.authenticated`,
     events: state`events.data`,
     calendarView: state`events.calendarView`,
+    calendarMobileUpdated: signal`events.calendarMobileUpdated`,
+    calendarMobile: state`events.calendarMobile`,
     calendarViewChanged: signal`events.calendarViewChanged`,
     event: state`event.data`,
     eventSelected: signal`event.routed`,
@@ -93,6 +116,15 @@ export default connect(
   Events
 )
 
+const EventsContainerResponsive = css`
+@media (max-width: 767px) {
+  padding: 16px 8px;
+  .rbc-agenda-content {
+    font-size: 0.8rem;
+  }
+}
+`
+
 const CustomActions = styled.div`
   display: flex;
   align-items: center;
@@ -101,28 +133,38 @@ const CustomActions = styled.div`
 `
 
 const EventsContainer = styled.div`
-  padding: 24px;
+padding: 24px;
+height: 100%;
+transition: all .3s cubic-bezier(.4,0,.2,1);
+> span {
+  width: 100%;
   height: 100%;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
-  .rbc-toolbar {
-    margin-bottom: 24px;
-    padding: 0;
-    button {
-        height: 29px;
-        padding: 4px 14px;
-        margin: 0 8px;
-        border-radius: 2px;
-        border: 1px solid ${props => props.theme.colors.armyGreen};
-        background-color: transparent;
-        color: ${props => props.theme.colors.armyGreen};
-        font-size: .7rem;
-        text-transform: uppercase;
-        transition: all .3s ease-in-out;
-        box-shadow: none;
-        &:hover {
-          &:not(.rbc-active) {
-            background-color: rgba(0,0,0,.3);
-            cursor: pointer;
+}
+.rbc-agenda-view {
+  flex: 1;
+  table {
+    border: 1px solid transparent;
+  }
+}
+.rbc-toolbar {
+  margin-bottom: 24px;
+  padding: 0;
+  button {
+    height: 29px;
+    padding: 4px 14px;
+    margin: 0 8px;
+    border-radius: 2px;
+    border: 1px solid ${props => props.theme.colors.armyGreen};
+    background-color: transparent;
+    color: ${props => props.theme.colors.armyGreen};
+    font-size: .7rem;
+    text-transform: uppercase;
+    transition: all .3s ease-in-out;
+    box-shadow: none;
+    &:hover {
+      &:not(.rbc-active) {
+        background-color: rgba(0,0,0,.3);
+        cursor: pointer;
             color: ${props => props.theme.colors.armyWhite};
           }
         }
@@ -145,7 +187,7 @@ const EventsContainer = styled.div`
     background-color: ${props => rgba(props.theme.colors.darkGray6, 0.6)};
     border-bottom: 1px solid ${props => rgba(props.theme.colors.gray, 0.6)};
   }
-  .rbc-month-view, .rbc-time-view, .rbc-agenda-view table {
+  .rbc-month-view, .rbc-time-view {
     border: 1px solid ${props => rgba(props.theme.colors.gray, 0.6)};
   }
   .rbc-month-row + .rbc-month-row, .rbc-day-slot .rbc-time-slot {
@@ -200,5 +242,7 @@ const EventsContainer = styled.div`
   .rbc-selected-cell {
     background-color: ${props => rgba(props.theme.colors.lightRed, 0.2)};
   }
+
+  ${EventsContainerResponsive}
 
 `

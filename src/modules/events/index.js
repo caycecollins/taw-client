@@ -1,26 +1,43 @@
 import { parallel } from 'cerebral'
-import { set } from 'cerebral/operators'
+import { wait, when, debounce, set } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 import { setStorage } from '@cerebral/storage/operators'
 
 import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
 
+const calculateCalendarView = window.innerWidth > 768 ? 'month' : 'agenda'
+
+const getEvents = [
+  apiGet('/events', 'events.data'), {
+    success: [
+      ({ state, storage }) => state.set('events.calendarView', calculateCalendarView || storage.get('events.calendarView') || 'month'),
+    ],
+    error: [
+      changeView('fourohfour'),
+    ],
+  },
+]
+
 export default {
   state: {
-    calendarView: 'month',
+    calendarView: calculateCalendarView || 'month',
     data: null,
   },
   signals: {
     routed: [
-      apiGet('/events', 'events.data'), {
-        success: [
+      when(state`app.initialDrawerAnimation`), {
+        true: [
+          changeView('empty'),
+          wait(300),
           changeView('events'),
-          ({ state, storage }) => state.set('events.calendarView', storage.get('events.calendarView') || 'month'),
-          // setStorage('events.calendarView', props`view`),
+          wait(600),
+          getEvents,
         ],
-        error: [
-          changeView('fourohfour'),
+        false: [
+          changeView('events'),
+          wait(300),
+          getEvents,
         ],
       },
     ],
@@ -28,5 +45,15 @@ export default {
       setStorage('events.calendarView', props`view`),
       set(state`events.calendarView`, props`view`),
     ]),
+    calendarMobileUpdated: [
+      debounce(500), {
+        continue: [
+          set(state`events.calendarMobile`, props`isMobile`),
+          set(state`events.calendarView`, props`view`),
+          setStorage('events.calendarView', props`view`),
+        ],
+        discard: [],
+      },
+    ],
   },
 }

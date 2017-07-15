@@ -39,7 +39,7 @@ export default {
           changeSidebarView({ icon: 'hourglass' },
             [
               set(state`event.data`, null),
-              wait(300),
+              wait(250),
               getEvent, {
                 success: [
                   set(state`event.data`, props`result`),
