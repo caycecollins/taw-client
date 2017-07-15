@@ -50,6 +50,21 @@
   }
 }
 
+.sidebarView-appear {
+  opacity: 0.01;
+  &.sidebarView-appear-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+.sidebarView-enter {
+  opacity: 0.01;
+  &.sidebarView-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+
 .fade-enter {
   opacity: 0.01;
   transform: translateY(50px);

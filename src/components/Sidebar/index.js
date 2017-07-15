@@ -36,6 +36,7 @@ const Sidebar = (props) => {
       >
         {props.sidebarActive &&
           <SidebarOverlay
+            key="sidebaroverlay"
             sidebarActive={props.sidebarActive}
             onClick={() => props.sidebarActiveToggled({ value: false })}
           />
@@ -55,10 +56,10 @@ const Sidebar = (props) => {
           />
         </SidebarHeader>
         <CSSTransitionGroup
-          transitionName="view"
-          transitionAppearTimeout={500}
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={400}
+          transitionName="sidebarView"
+          transitionAppearTimeout={300}
+          transitionEnterTimeout={300}
+          transitionLeave={false}
           component="div"
         >
           <SidebarComponentContainer key={props.sidebarView}>
