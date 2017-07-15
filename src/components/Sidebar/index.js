@@ -54,9 +54,17 @@ const Sidebar = (props) => {
             icon="close"
           />
         </SidebarHeader>
-        <SidebarComponentContainer>
-          <SidebarComponent />
-        </SidebarComponentContainer>
+        <CSSTransitionGroup
+          transitionName="view"
+          transitionAppearTimeout={500}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={400}
+          component="div"
+        >
+          <SidebarComponentContainer key={props.sidebarView}>
+            <SidebarComponent />
+          </SidebarComponentContainer>
+        </CSSTransitionGroup>
       </SidebarContainer>
     </div>
   )
@@ -93,7 +101,7 @@ const SidebarOverlay = styled.div`
   &:hover {
     cursor: pointer;
   }
-  transition: all .5s cubic-bezier(.4,0,.2,1);
+  transition: all .4s cubic-bezier(.4,0,.2,1);
   `
 
 const SidebarContainer = styled.div`
@@ -108,7 +116,7 @@ const SidebarContainer = styled.div`
   background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
   overflow-y: auto;
   overflow-x: hidden;
-  transition: all .5s cubic-bezier(.4,0,.2,1);
+  transition: all .3s cubic-bezier(.4,0,.2,1);
   z-index: 9998;
 `
 
@@ -132,5 +140,8 @@ const Title = styled.div`
 `
 
 const SidebarComponentContainer = styled.div`
+  position: absolute;
+  width: 100%;
+  height: auto;
   padding: 40px;
 `
