@@ -4,7 +4,7 @@ import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
 import styled, { css, keyframes } from 'styled-components'
 import { CSSTransitionGroup } from 'react-transition-group'
-import config from 'config'
+// import config from 'config'
 
 // import Signup from '../Signup'
 import Login from '../Login'
@@ -16,10 +16,10 @@ import Reports from '../Reports'
 import Profile from '../Profile'
 import Notifications from '../Notifications'
 import FourOhFour from '../FourOhFour'
+import ViewContainer from '../ViewContainer'
 
 const views = {
   // signup: Signup,
-  login: Login,
   profile: Profile,
   notifications: Notifications,
   dashboard: Dashboard,
@@ -28,15 +28,16 @@ const views = {
   games: Games,
   reports: Reports,
   fourohfour: FourOhFour,
+  empty: ViewContainer,
 }
 
 const RenderView = ({ sidebarActive, initialDrawerAnimation, authorizationPending, authenticated, currentView, lastVisited, drawerActive, drawerLarge }) => {
-  if (!config.production) {
-    views[currentView]
-      ? console.log(`mounting ${currentView} component`)
-      : console.log(`There is no component for "${currentView}", using "dashboard" component instead.`)
-  }
-  const Component = views[currentView] || views.fourohfour
+  // if (!config.production) {
+  //   views[currentView]
+  //     ? console.log(`mounting ${currentView} component`)
+  //     : console.log(`There is no component for "${currentView}", using "dashboard" component instead.`)
+  // }
+  const Component = currentView ? views[currentView] || views.fourohfour : views.empty
   return (
     <PageContainer
       initialDrawerAnimation={initialDrawerAnimation}

@@ -25,6 +25,7 @@ export default function ({ state, http, storage, router }) {
     })
     const getMe = await http.get('/users/me')
     state.set('user', getMe.result)
+    state.set('app.currentView', 'empty')
     router.goTo('/')
     state.set('authorization.pending', false)
   }).catch(rawError => {

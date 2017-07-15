@@ -105,7 +105,7 @@ const StyledAppBar = styled.div`
   transition: all .3s cubic-bezier(.4,0,.2,1);
   ${props => props.authenticated && css`
     animation-name: ${AppBarAnimation};
-    animation-duration: .6s;
+    animation-duration: .3s;
     animation-timing-function: cubic-bezier(.4,0,.2,1);
     animation-fill-mode: backwards;
   `}

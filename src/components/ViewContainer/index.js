@@ -75,6 +75,8 @@ const Container = styled.div`
   height: auto;
   padding: 24px;
   padding-left: ${leftPaddingMixin};
+  color: white;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
   ${props => props.backgroundImage && css`
     background: url(${props.backgroundImage});
     background-repeat: no-repeat;
@@ -82,13 +84,10 @@ const Container = styled.div`
     background-size: cover;
     background-attachment: fixed;
   `}
-  color: white;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
   ${props => props.initialDrawerAnimation && css`
     animation-name: ${viewContainerAnimation};
-    animation-duration: .6s;
+    animation-duration: .3s;
     animation-timing-function: cubic-bezier(.4,0,.2,1);
     animation-fill-mode: backwards;
-    animation-delay: .6s;
   `}
 `

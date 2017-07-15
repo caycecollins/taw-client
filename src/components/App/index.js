@@ -26,14 +26,12 @@ const App = props => {
         transitionLeave={false}
         component="div"
       >
-        {props.currentView &&
-          <AppContainer key="appcontainer">
-            <AppBar />
-            {props.authenticated && <Sidebar />}
-            <NavDrawer />
-            <RenderView />
-          </AppContainer>
-        }
+        <AppContainer key="appcontainer">
+          <AppBar />
+          {props.authenticated && <Sidebar />}
+          <NavDrawer />
+          <RenderView />
+        </AppContainer>
       </CSSTransitionGroup>
     </CerebralThemeProvider>
   )

@@ -28,7 +28,10 @@ const NavDrawer = props => {
   function getListItems (items) {
     return items.map((item, index) => {
       return (
-        <Link routeTo={item.route} key={item.route}>
+        <Link
+          routeTo={item.route}
+          key={item.route}
+        >
           <ListItem
             disabled={props.currentView && item.route.search(props.currentView) > -1}
             iconOnly={!props.drawerLarge}
@@ -145,10 +148,10 @@ const initialAnimationMixin = css`
   ${props => css`
     left: ${drawerLeftMixin};
     animation-name: ${animationName};
-    animation-duration: .6s;
+    animation-duration: .3s;
     animation-timing-function: cubic-bezier(.4,0,.2,1);
     animation-fill-mode: forwards;
-    animation-delay: .6s;
+    animation-delay: .2s;
   `}
 `
 

@@ -28,7 +28,7 @@ function determineDrawerLarge () {
 
 export default {
   state: {
-    currentView: null,
+    currentView: 'empty',
     previousView: null,
     drawerActive: determineDrawerActive(),
     drawerLarge: determineDrawerLarge(),
@@ -37,6 +37,7 @@ export default {
     sidebarView: null,
     sidebarTitle: null,
     sidebarIcon: null,
+    sidebarImmune: false,
     sidebarPreviousView: null,
     settings: {
       validateOnChange: {
@@ -90,6 +91,9 @@ export default {
         ],
       },
     ],
-    onReset: [resetForm(state`${props`formPath`}`)],
+    onReset: resetForm(state`${props`formPath`}`),
+    setFieldDefaultValue: [
+      set(state`${props`field`}.defaultValue`, props`value`),
+    ],
   },
 }
