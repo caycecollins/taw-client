@@ -24,18 +24,14 @@ export default {
     routed: [
       apiGet('/games', 'games.data'), {
         success: [
-          // (result) => { console.log(result) },
-          // set(state`games`, props`result`),
           changeView('games'),
         ],
         error: [
-          // (result) => { console.log(result.props.error) },
           changeView('fourohfour'),
         ],
       },
     ],
     toggleGames: [
-      // set(state`games.toggle`, props`value`),
     ],
   },
 }

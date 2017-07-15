@@ -10,19 +10,17 @@ import ViewContainer from '../ViewContainer'
 import Link from '../Link'
 import Input from '../Input'
 
+function filterGames (games, term) {
+  return games.filter((game) => {
+    const gameName = game.name.toLowerCase()
+    return gameName.search(term.toLowerCase()) > -1
+  })
+}
 function Games (props) {
-  function filterGames (games, term) {
-    return games.filter((game) => {
-      const gameName = game.name.toLowerCase()
-      return gameName.search(term.toLowerCase()) > -1
-    })
-  }
-  var games = filterGames(props.games, props.filterGamesTerm)
+  const games = props.games && filterGames(props.games, props.filterGamesTerm)
   return (
     <ViewContainer>
       <ViewHeader>
-        Game Divisions
-        <br />
         {Object.keys(props.form.getFields()).map((field, index) =>
           <Input
             type={props.form[field].type}
@@ -44,17 +42,15 @@ function Games (props) {
           leaveAnimation="none"
           maintainContainerHeight={true}
         >
-          {props.showGames && games && games
-            .map((game, index) =>
-              <Game
-                key={game.id}
-                routeTo="game"
-                routeParams={{ id: game.id.toString() }}
-              >
-                <Name>{game.name}</Name>
-              </Game>
-            )
-          }
+          {games && games.map((game, index) =>
+            <Game
+              key={game.id}
+              routeTo="game"
+              routeParams={{ id: game.id.toString() }}
+            >
+              <Name>{game.name}</Name>
+            </Game>
+          )}
         </FlipMove>
       </GamesContainer>
     </ViewContainer>
@@ -63,7 +59,6 @@ function Games (props) {
 
 Games.propTypes = {
   games: PropTypes.array,
-  showGames: PropTypes.bool,
   form: PropTypes.object,
   filterGamesTerm: PropTypes.string,
 }
@@ -72,7 +67,6 @@ export default connect(
   {
     form: form(state`games.form`),
     games: state`games.data`,
-    showGames: state`games.toggle`,
     filterGamesTerm: state`games.form.filterGamesTerm.value`,
     filteredGames: state`games.filteredGames`,
   },
@@ -80,9 +74,10 @@ export default connect(
 )
 
 const ViewHeader = styled.div`
-  margin: 24px 0;
+  display: flex;
+  align-items: center;
   font-size: 24px;
-  padding-left: 40px;
+  padding: 16px 40px;
   text-transform: uppercase;
   color: ${props => props.theme.colors.lightTan};
 `
@@ -107,6 +102,7 @@ const Game = styled(Link)`
   margin: 16px;
   padding: 16px;
   background-color: rgba(0,0,0,.3);
+  transition: all .3s cubic-bezier(.4,0,.2,1);
   &:hover {
     background-color: rgba(0,0,0,.6);
   }
