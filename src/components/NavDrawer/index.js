@@ -36,7 +36,6 @@ const NavDrawer = props => {
           <ListItem
             disabled={props.currentView && item.route.search(props.currentView) > -1}
             iconOnly={!props.drawerLarge}
-            onClick={() => console.log('clicked')}
           >
             <StyledIcon label={props.drawerLarge}>
               <Icon size={props.drawerLarge ? 16 : 20} name={item.icon} />
