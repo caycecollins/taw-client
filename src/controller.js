@@ -30,7 +30,7 @@ const jwtToken = localStorageToken
 
 const controller = Controller({
   devtools: config.cerebral && config.cerebral.debugger
-    ? Devtools({ host: config.cerebral.remote || null })
+    ? Devtools({ host: config.cerebral.remote || null, bigComponentsWarning: 15 })
     : null,
   state: {
     config,

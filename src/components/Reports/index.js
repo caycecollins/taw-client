@@ -42,7 +42,7 @@ function Reports (props) {
           <br />
           <br />
           <br />
-          <LineChart colors={globalHighchartsStyles.colors} height="400px" library={globalHighchartsStyles} data={data} legend={true} curve={false} download={true} />>
+          <LineChart colors={globalHighchartsStyles.colors} height="400px" library={globalHighchartsStyles} data={data} legend={true} curve={false} download={true} />
           <br />
         </div>
       }
