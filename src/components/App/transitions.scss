@@ -28,6 +28,28 @@
   }
 }
 
+.sidebarView-appear {
+  opacity: 0.01;
+  &.sidebarView-appear-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+.sidebarView-enter {
+  opacity: 0.01;
+  &.sidebarView-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+.sidebarView-leave {
+  opacity: 1;
+  &.sidebarView-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+
 .sidebarOverlay-appear {
   opacity: 0.01;
   &.sidebarOverlay-appear-active {
@@ -47,21 +69,6 @@
   &.sidebarOverlay-leave-active {
     opacity: 0.01;
     transition: opacity 500ms ease-in-out;
-  }
-}
-
-.sidebarView-appear {
-  opacity: 0.01;
-  &.sidebarView-appear-active {
-    opacity: 1;
-    transition: opacity 300ms ease-in-out;
-  }
-}
-.sidebarView-enter {
-  opacity: 0.01;
-  &.sidebarView-enter-active {
-    opacity: 1;
-    transition: opacity 300ms ease-in-out;
   }
 }
 

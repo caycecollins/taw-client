@@ -28,46 +28,41 @@ export default {
   },
   signals: {
     routed: [
-      ({ router, props }) => {
-        // router.redirect(`/events/${props.id}`)
-        // console.log(props)
-        // console.log(moment.unix(props.s).tz('America/Dawson').format())
-      },
-      when(state`app.initialDrawerAnimation`), {
-        true: [
-          changeView('empty'),
-          getEvent, {
-            success: [
-              setOccurenceInfo,
-              changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: state`event.data.title` },
-                [
+      authenticate([
+        when(state`app.initialDrawerAnimation`), {
+          true: [
+            changeView('empty'),
+            getEvent, {
+              success: [
+                setOccurenceInfo,
+                changeSidebarView({ view: 'viewEvent', tab: 'general', title: props`result.title` }, [
                   apiGet('/events', 'events.data'), { success: [], error: [] },
                   toggle(state`app.sidebarImmune`),
+                  wait(250),
                   changeView('events'),
                   toggle(state`app.sidebarImmune`),
-                ],
-              ),
-            ],
-            error: changeView('fourohfour'),
-          },
-        ],
-        false: [
-          changeSidebarView({ icon: 'hourglass' },
-            [
-              set(state`event.data`, null),
-              wait(500),
-              getEvent, {
-                success: [
-                  setOccurenceInfo,
-                  // set(state`app.sidebarTitle`, props`result.title`),
-                  changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: props`result.title` }),
-                ],
-                error: [],
-              },
-            ],
-          ),
-        ],
-      },
+                ]),
+              ],
+              error: changeView('fourohfour'),
+            },
+          ],
+          false: [
+            changeSidebarView({ icon: 'hourglass' },
+              [
+                set(state`event.data`, null),
+                wait(350),
+                getEvent, {
+                  success: [
+                    setOccurenceInfo,
+                    changeSidebarView({ view: 'viewEvent', tab: 'general', title: props`result.title` }),
+                  ],
+                  error: [],
+                },
+              ],
+            ),
+          ],
+        },
+      ]),
     ],
     createRouted: [
       apiGet('/events', 'events.data'), {

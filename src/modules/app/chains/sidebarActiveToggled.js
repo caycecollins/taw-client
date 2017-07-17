@@ -4,6 +4,8 @@ export default [
     if (!props.value) {
       state.set('app.sidebarPreviousView', state.get('app.sidebarView'))
       setTimeout(() => {
+        state.set('app.sidebarTab', null)
+        state.set('app.sidebarView', null)
         return router.goTo(`/${state.get('app.currentView')}`)
       }, 450)
     }
