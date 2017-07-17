@@ -39,16 +39,15 @@ export default {
     ],
     opened: [
       authenticate([
-        () => { console.log('profile.opened') },
         when(state`user.callsign`), {
           true: [
-            changeSidebarView({ view: 'viewProfile', icon: 'user', title: state`user.callsign` }),
+            changeSidebarView({ view: 'viewProfile', tab: 'general', title: state`user.callsign` }),
           ],
           false: [
             getProfile, {
               success: [
                 set(state`user`, props`result`),
-                changeSidebarView({ view: 'viewProfile', icon: 'user', title: state`user.callsign` }),
+                changeSidebarView({ view: 'viewProfile', tab: 'general', title: state`user.callsign` }),
               ],
               error: set(state`user`, { error: props`result` }),
             },
