@@ -1,5 +1,6 @@
 import { toggle, set, wait, when } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
+import moment from 'moment-timezone'
 
 import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
@@ -12,17 +13,32 @@ const getEvent = ({ state, path, http, props }) => {
     .catch(path.error)
 }
 
+const setOccurenceInfo = (event, props) => {
+  if (event.recurring) return event
+  console.log(props)
+  return event
+  // Object.assign({}, occurence, {
+  //   start: moment,
+  //   end: ,
+  // })
+}
+
 export default {
   state: {
   },
   signals: {
     routed: [
+      ({ router, props }) => {
+        // router.redirect(`/events/${props.id}`)
+        // console.log(props)
+        // console.log(moment.unix(props.s).tz('America/Dawson').format())
+      },
       when(state`app.initialDrawerAnimation`), {
         true: [
           changeView('empty'),
           getEvent, {
             success: [
-              set(state`event.data`, props`result`),
+              set(state`event.data`, setOccurenceInfo(props`result`), props),
               changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: state`event.data.title` },
                 [
                   apiGet('/events', 'events.data'), { success: [], error: [] },
@@ -39,7 +55,7 @@ export default {
           changeSidebarView({ icon: 'hourglass' },
             [
               set(state`event.data`, null),
-              wait(250),
+              wait(500),
               getEvent, {
                 success: [
                   set(state`event.data`, props`result`),

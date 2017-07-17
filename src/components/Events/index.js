@@ -6,20 +6,26 @@ import BigCalendar from 'react-big-calendar'
 import moment from 'moment-timezone'
 import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
-import R from 'ramda'
 import { CSSTransitionGroup } from 'react-transition-group'
 import _ from 'lodash'
+import { RRule } from 'rrule'
 
 import ViewContainer from '../ViewContainer'
 import Button from '../Button'
 
 BigCalendar.momentLocalizer(moment)
 
-function updateDateProps (array, prop, toTimezone) {
-  const lens = R.lens(R.prop(prop), R.assoc(prop))
-  return array.map((obj, index) => {
-    return R.set(lens, moment.tz(obj[prop], toTimezone).toDate(), obj)
-  })
+function isExcluded (date, excludedDates) {
+  var excluded, i
+  i = 0
+  while (i < excludedDates.length) {
+    excluded = excludedDates[i]
+    if (date.isSame(excluded)) {
+      return true
+    }
+    i++
+  }
+  return false
 }
 
 function Events (props) {
@@ -31,11 +37,58 @@ function Events (props) {
       props.calendarMobileUpdated({ view: props.calendarView, isMobile: false })
     }
   }, 2500))
-  function updateDates () {
-    const updateStartDates = updateDateProps(props.events, 'start', props.userTimezone)
-    return updateDateProps(updateStartDates, 'end', props.userTimezone)
+
+  function occurencesFromRecursiveEvent (events) {
+    const allEvents = []
+    const timezone = props.userTimezone
+    events.forEach(event => {
+      if (event.recurring.length > 0) {
+        const occurrences = new RRule({
+          freq: RRule.WEEKLY,
+          interval: 1,
+          byweekday: event.recurring,
+          dtstart: moment(event.start).tz(timezone).toDate(),
+          until: moment(event.end).tz(timezone).toDate(),
+        })
+        occurrences.all().forEach(occurrence => {
+          if (!isExcluded(event.start, event.excludedDates)) {
+            const eventObject = {
+              id: event.id,
+              start: moment(occurrence).toDate(),
+              end: moment.tz(occurrence, timezone).add(event.duration, 'm').toDate(),
+              title: event.title,
+              recurring: true,
+            }
+            allEvents.push(eventObject)
+          }
+        })
+      } else {
+        const eventObject = {
+          id: event.id,
+          start: moment(event.start).tz(timezone).toDate(),
+          end: moment(event.end).tz(timezone).toDate(),
+          title: event.title,
+        }
+        allEvents.push(eventObject)
+      }
+    })
+    return allEvents
   }
-  const updatedDates = (props.events && props.authenticated) ? updateDates() : []
+
+  function selectEvent (event) {
+    if (!event.recurring) return props.eventSelected({ id: event.id.toString() })
+    const { id, start, end } = event
+    return props.eventSelected({
+      id: id.toString(),
+      // s: moment.tz(start, props.userTimezone).format(),
+      // e: moment.tz(end, props.userTimezone).format(),
+      s: moment.tz(start, props.userTimezone).unix(),
+      e: moment.tz(end, props.userTimezone).unix(),
+    })
+  }
+
+  const events = props.events ? occurencesFromRecursiveEvent(props.events) : []
+
   return (
     <ViewContainer>
       <EventsContainer>
@@ -61,15 +114,15 @@ function Events (props) {
         >
           <BigCalendar
             key="bigcal"
-            events={updatedDates}
+            events={events}
             startAccessor="start"
             endAccessor="end"
             popup={true}
             selectable={true}
-            onSelectEvent={event => props.eventSelected({ id: event.id.toString() })}
+            onSelectEvent={selectEvent}
             onView={(view) => props.calendarViewChanged({ view })}
-            view={props.calendarMobile ? 'agenda' : props.calendarView}
-            defaultView={props.calendarMobile ? 'agenda' : props.calendarView}
+            view={props.calendarView}
+            defaultView={props.calendarView}
             toolbar={!props.calendarMobile}
           />
         </CSSTransitionGroup>
@@ -133,51 +186,51 @@ const CustomActions = styled.div`
 `
 
 const EventsContainer = styled.div`
-height: 100%;
-transition: all .3s cubic-bezier(.4,0,.2,1);
-> span {
-  width: 100%;
   height: 100%;
-}
-.rbc-agenda-view {
-  flex: 1;
-  table {
-    border: 1px solid transparent;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
+  > span {
+    width: 100%;
+    height: 100%;
   }
-}
-.rbc-toolbar {
-  margin-bottom: 24px;
-  padding: 0;
-  button {
-    height: 29px;
-    padding: 4px 14px;
-    margin: 0 8px;
-    border-radius: 2px;
-    border: 1px solid ${props => props.theme.colors.armyGreen};
-    background-color: transparent;
-    color: ${props => props.theme.colors.armyGreen};
-    font-size: .7rem;
-    text-transform: uppercase;
-    transition: all .3s ease-in-out;
-    box-shadow: none;
-    &:hover {
-      &:not(.rbc-active) {
-        background-color: rgba(0,0,0,.3);
-        cursor: pointer;
-            color: ${props => props.theme.colors.armyWhite};
-          }
-        }
-        &:first-of-type {
-          margin-left: 0;
-        }
-        &:last-of-type {
-          margin-right: 0;
-        }
-        &.rbc-active {
-          background-color: transparent;
+  .rbc-agenda-view {
+    flex: 1;
+    table {
+      border: 1px solid transparent;
+    }
+  }
+  .rbc-toolbar {
+    margin-bottom: 24px;
+    padding: 0;
+    button {
+      height: 29px;
+      padding: 4px 14px;
+      margin: 0 8px;
+      border-radius: 2px;
+      border: 1px solid ${props => props.theme.colors.armyGreen};
+      background-color: transparent;
+      color: ${props => props.theme.colors.armyGreen};
+      font-size: .7rem;
+      text-transform: uppercase;
+      transition: all .3s ease-in-out;
+      box-shadow: none;
+      &:hover {
+        &:not(.rbc-active) {
+          background-color: rgba(0,0,0,.3);
+          cursor: pointer;
           color: ${props => props.theme.colors.armyWhite};
-          border: 1px solid transparent;
         }
+      }
+      &:first-of-type {
+        margin-left: 0;
+      }
+      &:last-of-type {
+        margin-right: 0;
+      }
+      &.rbc-active {
+        background-color: transparent;
+        color: ${props => props.theme.colors.armyWhite};
+        border: 1px solid transparent;
+      }
     }
   }
   .rbc-header {
