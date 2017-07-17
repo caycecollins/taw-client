@@ -80,8 +80,6 @@ function Events (props) {
     const { id, start, end } = event
     return props.eventSelected({
       id: id.toString(),
-      // s: moment.tz(start, props.userTimezone).format(),
-      // e: moment.tz(end, props.userTimezone).format(),
       s: moment.tz(start, props.userTimezone).unix(),
       e: moment.tz(end, props.userTimezone).unix(),
     })

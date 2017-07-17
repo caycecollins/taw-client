@@ -2,6 +2,7 @@ import { toggle, set, wait, when } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 import moment from 'moment-timezone'
 
+import authenticate from '../../factories/authenticate'
 import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
 import changeSidebarView from '../../factories/changeSidebarView'
@@ -13,14 +14,13 @@ const getEvent = ({ state, path, http, props }) => {
     .catch(path.error)
 }
 
-const setOccurenceInfo = (event, props) => {
-  if (event.recurring) return event
-  console.log(props)
-  return event
-  // Object.assign({}, occurence, {
-  //   start: moment,
-  //   end: ,
-  // })
+const setOccurenceInfo = ({ props, state }) => {
+  const event = props.result
+  const timezone = state.get('user.timezone')
+  state.set('event.data', Object.assign({}, event, {
+    start: moment.unix(props.s).tz(timezone).toDate(),
+    end: moment.unix(props.e).tz(timezone).toDate(),
+  }))
 }
 
 export default {
@@ -38,7 +38,7 @@ export default {
           changeView('empty'),
           getEvent, {
             success: [
-              set(state`event.data`, setOccurenceInfo(props`result`), props),
+              setOccurenceInfo,
               changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: state`event.data.title` },
                 [
                   apiGet('/events', 'events.data'), { success: [], error: [] },
@@ -58,7 +58,7 @@ export default {
               wait(500),
               getEvent, {
                 success: [
-                  set(state`event.data`, props`result`),
+                  setOccurenceInfo,
                   // set(state`app.sidebarTitle`, props`result.title`),
                   changeSidebarView({ view: 'viewEvent', icon: 'calendar-o', title: props`result.title` }),
                 ],
