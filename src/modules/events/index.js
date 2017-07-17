@@ -6,12 +6,15 @@ import { setStorage } from '@cerebral/storage/operators'
 import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
 
-const calculateCalendarView = window.innerWidth > 768 ? JSON.parse(window.localStorage.getItem('events.calendarView')) || 'month' : 'agenda'
+function calculateCalendarView () {
+  return window.innerWidth > 768
+    ? JSON.parse(window.localStorage.getItem('events.calendarView')) || 'month'
+    : 'agenda'
+}
+
 const getEvents = [
   apiGet('/events', 'events.data'), {
-    success: [
-      set(state`events.calendarView`, calculateCalendarView),
-    ],
+    success: ({ state }) => state.set('events.calendarView', calculateCalendarView()),
     error: [
       changeView('fourohfour'),
     ],
@@ -20,7 +23,7 @@ const getEvents = [
 
 export default {
   state: {
-    calendarView: calculateCalendarView,
+    calendarView: calculateCalendarView(),
     data: null,
   },
   signals: {
