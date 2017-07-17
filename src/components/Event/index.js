@@ -6,7 +6,7 @@ import { state } from 'cerebral/tags'
 import moment from 'moment-timezone'
 
 function EventModal (props) {
-  const tableData = [
+  const tableData = props.event && [
     ['title', props.event.title || 'Loading...'],
     ['start', moment.tz(props.event.start, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
     ['end', moment.tz(props.event.end, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
@@ -26,7 +26,7 @@ function EventModal (props) {
         <br />
         <table>
           <tbody>
-            {tableData.map((item, index) => {
+            {tableData && tableData.map((item, index) => {
               return (
                 <tr key={index}>
                   <td>{item[0].toUpperCase()}</td>
@@ -47,7 +47,6 @@ EventModal.propTypes = {
 }
 
 EventModal.defaultProps = {
-  event: {},
 }
 
 export default connect(
