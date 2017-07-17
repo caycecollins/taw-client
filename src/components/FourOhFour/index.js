@@ -14,7 +14,7 @@ function FourOhFour (props) {
       The database is still not populated with real TAW data. Get very comfortable with this page :)
       <br />
       <br />
-      {props.previousView
+      {props.previousView && props.previousView !== 'empty'
         ? <span>
           <Link routeTo={props.previousView}>
             <Button icon="angle-left" label="Go Back" />
