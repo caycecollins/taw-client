@@ -13,7 +13,6 @@ import cerebralTheme from '../.././theme'
 import './transitions.scss'
 
 const App = props => {
-  !props.authenticated && props.login()
   props.authenticated && !props.callsign && props.getUser()
   props.initialDrawerAnimation && props.startInitialDrawerAnimation()
   return (

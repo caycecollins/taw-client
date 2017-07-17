@@ -7,7 +7,6 @@ export default (continueSequence = []) => {
     when(state`authorization.authenticated`), {
       true: continueSequence,
       false: [
-        set(state`authorization.routeFailed`, true),
         goTo('/login'),
       ],
     },

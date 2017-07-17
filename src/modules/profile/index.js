@@ -58,7 +58,7 @@ export default {
     ],
     updated: [
       () => { console.log('profile.edited') },
-      UpdateProfile,
+      // UpdateProfile,
     ],
     deleted: [
       () => { console.log('profile.deleted') },

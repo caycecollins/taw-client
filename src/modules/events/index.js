@@ -3,6 +3,7 @@ import { wait, when, debounce, set } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 import { setStorage } from '@cerebral/storage/operators'
 
+import authenticate from '../../factories/authenticate'
 import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
 
@@ -28,20 +29,22 @@ export default {
   },
   signals: {
     routed: [
-      when(state`app.initialDrawerAnimation`), {
-        true: [
-          changeView('empty'),
-          wait(300),
-          changeView('events'),
-          wait(600),
-          getEvents,
-        ],
-        false: [
-          changeView('events'),
-          wait(300),
-          getEvents,
-        ],
-      },
+      authenticate([
+        when(state`app.initialDrawerAnimation`), {
+          true: [
+            changeView('empty'),
+            wait(300),
+            changeView('events'),
+            wait(600),
+            getEvents,
+          ],
+          false: [
+            changeView('events'),
+            wait(300),
+            getEvents,
+          ],
+        },
+      ]),
     ],
     calendarViewChanged: parallel([
       setStorage('events.calendarView', props`view`),

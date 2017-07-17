@@ -17,7 +17,6 @@ export default {
     error: null,
     token: jwtToken || null,
     callsign: null,
-    routeFailed: false,
   },
   signals: {
     authenticate,

@@ -19,6 +19,7 @@ import FourOhFour from '../FourOhFour'
 import ViewContainer from '../ViewContainer'
 
 const views = {
+  login: Login,
   // signup: Signup,
   profile: Profile,
   notifications: Notifications,
@@ -57,7 +58,7 @@ const RenderView = ({ sidebarActive, initialDrawerAnimation, authorizationPendin
           drawerLarge={drawerLarge}
           sidebarActive={sidebarActive}
         >
-          {currentView === 'login' ? <Login /> : <Component />}
+          <Component />
         </FullWidthHeight>
       </CSSTransitionGroup>
     </PageContainer>

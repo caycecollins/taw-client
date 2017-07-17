@@ -1,3 +1,4 @@
+import authenticate from '../../factories/authenticate'
 import changeView from '../../factories/changeView'
 
 const getUser = async ({ path, http, state, storage }) => {
@@ -23,12 +24,14 @@ export default {
   state: null,
   signals: {
     getUser: [
-      getUser, {
-        redirected: [
-          changeView('login'),
-        ],
-        continue: [],
-      },
+      authenticate([
+        getUser, {
+          redirected: [
+            changeView('login'),
+          ],
+          continue: [],
+        },
+      ]),
     ],
   },
 }

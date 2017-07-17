@@ -1,6 +1,7 @@
 import { set } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 
+import authenticate from '../../factories/authenticate'
 import changeView from '../../factories/changeView'
 
 const getGame = ({ path, http, props }) => {
@@ -14,13 +15,15 @@ export default {
   },
   signals: {
     routed: [
-      getGame, {
-        success: [
-          set(state`game`, props`result`),
-          changeView('game'),
-        ],
-        error: changeView('fourohfour'),
-      },
+      authenticate([
+        getGame, {
+          success: [
+            set(state`game`, props`result`),
+            changeView('game'),
+          ],
+          error: changeView('fourohfour'),
+        },
+      ]),
     ],
   },
 }

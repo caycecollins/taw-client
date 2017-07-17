@@ -1,14 +1,6 @@
-// import { pop, wait, shift, splice,  set } from 'cerebral/operators'
-// import { state, props } from 'cerebral/tags'
-
+import authenticate from '../../factories/authenticate'
 import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
-
-// const getGames = ({ path, http, props }) => {
-//   return http.get(`/games`)
-//     .then(path.success)
-//     .catch(path.error)
-// }
 
 export default {
   state: {
@@ -22,14 +14,16 @@ export default {
   },
   signals: {
     routed: [
-      apiGet('/games', 'games.data'), {
-        success: [
-          changeView('games'),
-        ],
-        error: [
-          changeView('fourohfour'),
-        ],
-      },
+      authenticate([
+        apiGet('/games', 'games.data'), {
+          success: [
+            changeView('games'),
+          ],
+          error: [
+            changeView('fourohfour'),
+          ],
+        },
+      ]),
     ],
     toggleGames: [
     ],
