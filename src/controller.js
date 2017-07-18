@@ -20,7 +20,6 @@ import game from './modules/game'
 import events from './modules/events'
 import event from './modules/event'
 import reports from './modules/reports'
-import user from './modules/user'
 import fourohfour from './modules/fourohfour'
 
 const localStorageToken = window.localStorage.getItem('authorization.token')
@@ -49,7 +48,6 @@ const controller = Controller({
     games,
     game,
     reports,
-    user,
     fourohfour,
   },
   providers: [
