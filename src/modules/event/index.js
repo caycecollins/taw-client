@@ -29,7 +29,7 @@ export default {
   signals: {
     routed: [
       authenticate([
-        when(state`app.initialDrawerAnimation`), {
+        when(state`app.initialAnimation`), {
           true: [
             changeView('empty'),
             getEvent, {

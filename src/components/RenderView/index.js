@@ -35,7 +35,7 @@ const RenderView = props => {
   const Component = props.currentView ? views[props.currentView] || views.fourohfour : views.empty
   return (
     <PageContainer
-      initialDrawerAnimation={props.initialDrawerAnimation}
+      initialAnimation={props.initialAnimation}
       authenticated={props.authenticated && !props.authorizationPending}
       sidebarActive={props.sidebarActive}
     >
@@ -67,7 +67,7 @@ RenderView.propTypes = {
   sidebarActive: PropTypes.bool,
   authenticated: PropTypes.bool,
   authorizationPending: PropTypes.bool,
-  initialDrawerAnimation: PropTypes.bool,
+  initialAnimation: PropTypes.bool,
 }
 
 export default connect(
@@ -79,7 +79,7 @@ export default connect(
     sidebarActive: state`app.sidebarActive`,
     authenticated: state`authorization.authenticated`,
     authorizationPending: state`authorization.pending`,
-    initialDrawerAnimation: state`app.initialDrawerAnimation`,
+    initialAnimation: state`app.initialAnimation`,
   },
   RenderView
 )
@@ -105,7 +105,7 @@ const PageContainer = styled.div`
   overflow-y: ${props => props.authenticated && !props.sidebarActive ? 'scroll' : 'hidden'};
   overflow-x: hidden;
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
-  ${props => props.authenticated && props.initialDrawerAnimation && css`
+  ${props => props.authenticated && props.initialAnimation && css`
     animation-name: ${PageContainerAnimation};
     animation-duration: .6s;
     animation-timing-function: cubic-bezier(.4,0,.2,1);

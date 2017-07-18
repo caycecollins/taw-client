@@ -33,7 +33,7 @@ export default {
     previousView: null,
     drawerActive: determineDrawerActive(),
     drawerLarge: determineDrawerLarge(),
-    initialDrawerAnimation: true,
+    initialAnimation: true,
     sidebarActive: null,
     sidebarView: null,
     sidebarPreviousView: null,
@@ -77,9 +77,9 @@ export default {
     deviceSizeUpdated: set(state`app.deviceSize`, props`size`),
     drawerActiveToggled,
     drawerLargeToggled,
-    startInitialDrawerAnimation: [
+    initialAnimationStarted: [
       wait(2000),
-      set(state`app.initialDrawerAnimation`, false),
+      set(state`app.initialAnimation`, false),
     ],
     sidebarActiveToggled,
     sidebarTabChanged,

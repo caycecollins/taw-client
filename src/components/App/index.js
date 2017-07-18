@@ -24,7 +24,7 @@ const App = props =>
       component="div"
     >
       <AppContainer key="appcontainer">
-        {props.initialDrawerAnimation && props.startInitialDrawerAnimation({ deviceSize: window.innerWidth < 768 ? 'small' : 'medium' })}
+        {props.initialAnimation && props.initialAnimationStarted({ deviceSize: window.innerWidth < 768 ? 'small' : 'medium' })}
         <AppBar />
         {props.authenticated && <Sidebar />}
         <NavDrawer />
@@ -41,8 +41,8 @@ App.propTypes = {
   getUser: PropTypes.func,
   authenticated: PropTypes.bool,
   login: PropTypes.func,
-  initialDrawerAnimation: PropTypes.bool,
-  startInitialDrawerAnimation: PropTypes.func,
+  initialAnimation: PropTypes.bool,
+  initialAnimationStarted: PropTypes.func,
 }
 
 export default connect(
@@ -55,8 +55,8 @@ export default connect(
     authenticated: state`authorization.authenticated`,
     drawerActive: state`app.drawerActive`,
     drawerLarge: state`app.drawerLarge`,
-    initialDrawerAnimation: state`app.initialDrawerAnimation`,
-    startInitialDrawerAnimation: signal`app.startInitialDrawerAnimation`,
+    initialAnimation: state`app.initialAnimation`,
+    initialAnimationStarted: signal`app.initialAnimationStarted`,
   },
   App
 )

@@ -8,7 +8,7 @@ export default (obj, continuesequence = []) => {
     set(state`app.sidebarTitle`, obj.title || null),
     set(state`app.sidebarActive`, true),
     ({ state, props }) => {
-      const time = state.get('app.initialDrawerAnimation') ? 300 : 300
+      const time = state.get('app.initialAnimation') ? 300 : 300
       setTimeout(() => state.set('app.sidebarTab', obj.tab || null), time)
     },
     continuesequence,

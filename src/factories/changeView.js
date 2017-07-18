@@ -7,7 +7,7 @@ export default (view, continuesequence = []) => {
       true: [],
       false: set(state`app.sidebarActive`, false),
     },
-    when(state`app.initialDrawerAnimation`), {
+    when(state`app.initialAnimation`), {
       true: wait(450),
       false: [],
     },

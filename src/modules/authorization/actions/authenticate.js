@@ -15,7 +15,7 @@ export default function ({ state, http, storage, router }) {
     state.set('authorization.error', null)
     state.set('authorization.token', response.result.token)
     state.set('authorization.authenticated', true)
-    state.set('app.initialDrawerAnimation', true)
+    state.set('app.initialAnimation', true)
     storage.set('authorization.token', response.result.token)
     storage.set('authorization.callsign', state.get('authorization.callsign'))
     http.updateOptions({

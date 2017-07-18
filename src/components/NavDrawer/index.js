@@ -49,7 +49,7 @@ const NavDrawer = props =>
     active={!props.authorizationPending && props.authenticated && props.drawerActive}
     large={props.drawerLarge}
     className={props.className}
-    initialDrawerAnimation={props.initialDrawerAnimation}
+    initialAnimation={props.initialAnimation}
   >
     <CSSTransitionGroup
       transitionName="sidebarOverlay"
@@ -107,7 +107,7 @@ const NavDrawer = props =>
 NavDrawer.propTypes = {
   authorizationPending: PropTypes.bool,
   currentView: PropTypes.string,
-  initialDrawerAnimation: PropTypes.bool,
+  initialAnimation: PropTypes.bool,
   drawerActive: PropTypes.bool,
   drawerActiveToggled: PropTypes.func,
   drawerLarge: PropTypes.bool,
@@ -122,7 +122,7 @@ export default connect(
   {
     authorizationPending: state`authorization.pending`,
     currentView: state`app.currentView`,
-    initialDrawerAnimation: state`app.initialDrawerAnimation`,
+    initialAnimation: state`app.initialAnimation`,
     drawerActive: state`app.drawerActive`,
     drawerActiveToggled: signal`app.drawerActiveToggled`,
     drawerLarge: state`app.drawerLarge`,
@@ -153,7 +153,7 @@ const navDrawerSmallAnimation = keyframes`
 
 const drawerLeftMixin = css`
   ${props => {
-    if (props.active && !props.initialDrawerAnimation) {
+    if (props.active && !props.initialAnimation) {
       return '0px'
     } else {
       if (props.large) return '-280px'
@@ -210,7 +210,7 @@ const NavDrawerContainer = styled.div`
   overflow-x: hidden;
   transition: all .3s cubic-bezier(.4,0,.2,1);
   left: ${props => drawerLeftMixin};
-  ${props => props.active && props.initialDrawerAnimation && initialAnimationMixin}
+  ${props => props.active && props.initialAnimation && initialAnimationMixin}
   @media (max-width: 600px) {
     background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.97) }};
   }

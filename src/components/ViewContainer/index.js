@@ -8,7 +8,7 @@ const ViewContainer = props =>
   <Container
     drawerActive={!props.authorizationPending && props.authenticated && props.drawerActive}
     drawerLarge={props.drawerLarge}
-    initialDrawerAnimation={props.initialDrawerAnimation}
+    initialAnimation={props.initialAnimation}
     authenticated={props.authenticated}
     backgroundImage={props.backgroundImage}
     className={props.className}
@@ -18,7 +18,7 @@ const ViewContainer = props =>
   </Container>
 
 ViewContainer.propTypes = {
-  initialDrawerAnimation: PropTypes.bool,
+  initialAnimation: PropTypes.bool,
   drawerActive: PropTypes.bool,
   drawerLarge: PropTypes.bool,
   children: PropTypes.node,
@@ -31,7 +31,7 @@ ViewContainer.propTypes = {
 
 export default connect(
   {
-    initialDrawerAnimation: state`app.initialDrawerAnimation`,
+    initialAnimation: state`app.initialAnimation`,
     authenticated: state`authorization.authenticated`,
     authorizationPending: state`authorization.pending`,
     drawerActive: state`app.drawerActive`,
@@ -81,7 +81,7 @@ const Container = styled.div`
     background-size: cover;
     background-attachment: fixed;
   `}
-  ${props => props.initialDrawerAnimation && css`
+  ${props => props.initialAnimation && css`
     animation-name: ${viewContainerAnimation};
     animation-duration: .3s;
     animation-timing-function: cubic-bezier(.4,0,.2,1);

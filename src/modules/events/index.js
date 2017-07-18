@@ -30,17 +30,16 @@ export default {
   signals: {
     routed: [
       authenticate([
-        when(state`app.initialDrawerAnimation`), {
+        when(state`app.initialAnimation`), {
           true: [
-            changeView('empty'),
-            wait(300),
+            wait(400),
             changeView('events'),
-            wait(600),
+            wait(800),
             getEvents,
           ],
           false: [
             changeView('events'),
-            wait(300),
+            wait(250),
             getEvents,
           ],
         },
@@ -50,15 +49,5 @@ export default {
       setStorage('events.calendarView', props`view`),
       set(state`events.calendarView`, props`view`),
     ]),
-    calendarMobileUpdated: [
-      debounce(200), {
-        continue: [
-          set(state`events.calendarMobile`, props`isMobile`),
-          set(state`events.calendarView`, props`view`),
-          setStorage('events.calendarView', props`view`),
-        ],
-        discard: [],
-      },
-    ],
   },
 }

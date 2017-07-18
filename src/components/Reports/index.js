@@ -26,7 +26,7 @@ const data = {
 
 const Reports = props =>
   <ViewContainer>
-    {!props.initialDrawerAnimation &&
+    {!props.initialAnimation &&
       <div>
         Report Tests:
         <br />
@@ -48,12 +48,12 @@ const Reports = props =>
   </ViewContainer>
 
 Reports.propTypes = {
-  initialDrawerAnimation: PropTypes.bool,
+  initialAnimation: PropTypes.bool,
 }
 
 export default connect(
   {
-    initialDrawerAnimation: state`app.initialDrawerAnimation`,
+    initialAnimation: state`app.initialAnimation`,
   },
   Reports
 )
