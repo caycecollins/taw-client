@@ -25,6 +25,72 @@ const setOccurenceInfo = ({ props, state }) => {
 
 export default {
   state: {
+    scheduleEventForm: {
+      name: {
+        value: '',
+        isRequired: true,
+        isPristine: true,
+        validationRules: [
+          'isValue',
+        ],
+      },
+      description: {
+        value: '',
+        isRequired: true,
+        isPristine: true,
+        validationRules: [
+          'isValue',
+        ],
+      },
+      mandatory: {
+        type: 'checkbox',
+        value: '',
+        isRequired: true,
+        isPristine: true,
+        validationRules: [
+          'isValue',
+        ],
+      },
+      type: {
+        type: 'select',
+        value: '',
+        isRequired: true,
+        isPristine: true,
+        validationRules: [
+          'isValue',
+        ],
+      },
+      start: {
+        type: 'date',
+        value: '',
+        isRequired: true,
+        isPristine: true,
+        validationRules: [
+          'isValue',
+        ],
+      },
+      end: {
+        type: 'date',
+        value: '',
+        isRequired: true,
+        isPristine: true,
+        validationRules: [
+          'isValue',
+        ],
+      },
+      repeat: {
+        type: 'select',
+        defaultValue: 0,
+        value: '',
+        isRequired: true,
+        isPristine: true,
+        validationRules: [
+          'isValue',
+        ],
+      },
+      showErrors: true,
+    },
+    updating: false,
   },
   signals: {
     routed: [
