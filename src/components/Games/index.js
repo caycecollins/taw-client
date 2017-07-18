@@ -41,7 +41,7 @@ const Games = props =>
         leaveAnimation="none"
         maintainContainerHeight={true}
       >
-        {props.games && filterGames(props.games, props.filterGamesTerm).map((game, index) =>
+        {filterGames(props.games, props.filterGamesTerm).map((game, index) =>
           <Game
             key={game.id}
             routeTo="game"
@@ -58,6 +58,10 @@ Games.propTypes = {
   games: PropTypes.array,
   form: PropTypes.object,
   filterGamesTerm: PropTypes.string,
+}
+
+Games.defaultProps = {
+  games: [],
 }
 
 export default connect(

@@ -15,9 +15,9 @@ export default {
   signals: {
     routed: [
       authenticate([
+        changeView('games'),
         apiGet('/games', 'games.data'), {
           success: [
-            changeView('games'),
           ],
           error: [
             changeView('fourohfour'),
