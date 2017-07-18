@@ -6,21 +6,18 @@ import { signal } from 'cerebral/tags'
 import ViewContainer from '../ViewContainer'
 import Button from '../Button'
 
-function Profile (props) {
-  return (
-    <ViewContainer backgroundImage="/images/profile-bg.jpg">
-      Profile
-      <br />
-      <br />
-      <br />
-      <Button
-        onClick={() => props.editProfile()}
-        icon="edit"
-        label="Edit Profile"
-      />
-    </ViewContainer>
-  )
-}
+const Profile = props =>
+  <ViewContainer backgroundImage="/images/profile-bg.jpg">
+    Profile
+    <br />
+    <br />
+    <br />
+    <Button
+      onClick={() => props.editProfile()}
+      icon="edit"
+      label="Edit Profile"
+    />
+  </ViewContainer>
 
 Profile.propTypes = {
   editProfile: PropTypes.func,

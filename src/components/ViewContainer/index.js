@@ -4,21 +4,18 @@ import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
 import styled, { css, keyframes } from 'styled-components'
 
-function ViewContainer (props) {
-  return (
-    <Container
-      drawerActive={!props.authorizationPending && props.authenticated && props.drawerActive}
-      drawerLarge={props.drawerLarge}
-      initialDrawerAnimation={props.initialDrawerAnimation}
-      authenticated={props.authenticated}
-      backgroundImage={props.backgroundImage}
-      className={props.className}
-      centered={props.centered}
-    >
-      {props.children}
-    </Container>
-  )
-}
+const ViewContainer = props =>
+  <Container
+    drawerActive={!props.authorizationPending && props.authenticated && props.drawerActive}
+    drawerLarge={props.drawerLarge}
+    initialDrawerAnimation={props.initialDrawerAnimation}
+    authenticated={props.authenticated}
+    backgroundImage={props.backgroundImage}
+    className={props.className}
+    centered={props.centered}
+  >
+    {props.children}
+  </Container>
 
 ViewContainer.propTypes = {
   initialDrawerAnimation: PropTypes.bool,

@@ -7,7 +7,6 @@ import moment from 'moment-timezone'
 import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import { CSSTransitionGroup } from 'react-transition-group'
-import _ from 'lodash'
 import { RRule } from 'rrule'
 
 import ViewContainer from '../ViewContainer'
@@ -15,7 +14,7 @@ import Button from '../Button'
 
 BigCalendar.momentLocalizer(moment)
 
-function isExcluded (date, excludedDates) {
+const isExcluded = (date, excludedDates) => {
   var excluded, i
   i = 0
   while (i < excludedDates.length) {
@@ -28,117 +27,100 @@ function isExcluded (date, excludedDates) {
   return false
 }
 
-function Events (props) {
-  window.addEventListener('resize', _.throttle(() => {
-    console.log(window.innerWidth)
-    if (window.innerWidth < 768) {
-      props.calendarMobileUpdated({ view: 'agenda', isMobile: true })
-    } else {
-      props.calendarMobileUpdated({ view: props.calendarView, isMobile: false })
-    }
-  }, 2500))
-
-  function occurencesFromRecursiveEvent (events) {
-    const allEvents = []
-    const timezone = props.userTimezone
-    events.forEach(event => {
-      if (event.recurring.length > 0) {
-        const occurrences = new RRule({
-          freq: RRule.WEEKLY,
-          interval: 1,
-          byweekday: event.recurring,
-          dtstart: moment(event.start).tz(timezone).toDate(),
-          until: moment(event.end).tz(timezone).toDate(),
-        })
-        occurrences.all().forEach(occurrence => {
-          if (!isExcluded(event.start, event.excludedDates)) {
-            const eventObject = {
-              id: event.id,
-              start: moment(occurrence).toDate(),
-              end: moment.tz(occurrence, timezone).add(event.duration, 'm').toDate(),
-              title: event.title,
-              recurring: true,
-            }
-            allEvents.push(eventObject)
+const occurencesFromRecursiveEvent = props => {
+  const allEvents = []
+  props.events.forEach(event => {
+    if (event.recurring.length > 0) {
+      const occurrences = new RRule({
+        freq: RRule.WEEKLY,
+        interval: 1,
+        byweekday: event.recurring,
+        dtstart: moment(event.start).tz(props.userTimezone).toDate(),
+        until: moment(event.end).tz(props.userTimezone).toDate(),
+      })
+      occurrences.all().forEach(occurrence => {
+        if (!isExcluded(event.start, event.excludedDates)) {
+          const eventObject = {
+            id: event.id,
+            start: moment(occurrence).toDate(),
+            end: moment.tz(occurrence, props.userTimezone).add(event.duration, 'm').toDate(),
+            title: event.title,
+            recurring: true,
           }
-        })
-      } else {
-        const eventObject = {
-          id: event.id,
-          start: moment(event.start).tz(timezone).toDate(),
-          end: moment(event.end).tz(timezone).toDate(),
-          title: event.title,
+          allEvents.push(eventObject)
         }
-        allEvents.push(eventObject)
+      })
+    } else {
+      const eventObject = {
+        id: event.id,
+        start: moment(event.start).tz(props.userTimezone).toDate(),
+        end: moment(event.end).tz(props.userTimezone).toDate(),
+        title: event.title,
       }
-    })
-    return allEvents
-  }
-
-  function selectEvent (event) {
-    if (!event.recurring) return props.eventSelected({ id: event.id.toString() })
-    const { id, start, end } = event
-    return props.eventSelected({
-      id: id.toString(),
-      s: moment.tz(start, props.userTimezone).unix(),
-      e: moment.tz(end, props.userTimezone).unix(),
-    })
-  }
-
-  const events = props.events ? occurencesFromRecursiveEvent(props.events) : []
-
-  return (
-    <ViewContainer>
-      <EventsContainer>
-        <CustomActions>
-          <Button
-            onClick={() => props.reportEvent()}
-            icon="calendar-check-o"
-            label="Report Event"
-          />
-          &nbsp;&nbsp;&nbsp;&nbsp;
-          <Button
-            onClick={() => props.createNewEvent()}
-            icon="calendar-plus-o"
-            label="Create New Event"
-          />
-        </CustomActions>
-        <CSSTransitionGroup
-          transitionName="view"
-          transitionAppearTimeout={500}
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={500}
-          component="span"
-        >
-          <BigCalendar
-            key="bigcal"
-            events={events}
-            startAccessor="start"
-            endAccessor="end"
-            popup={true}
-            selectable={true}
-            onSelectEvent={selectEvent}
-            onView={(view) => props.calendarViewChanged({ view })}
-            view={props.calendarView}
-            defaultView={props.calendarView}
-            toolbar={!props.calendarMobile}
-          />
-        </CSSTransitionGroup>
-        <br />
-      </EventsContainer>
-    </ViewContainer>
-  )
+      allEvents.push(eventObject)
+    }
+  })
+  return allEvents
 }
+
+const selectEvent = (event, props) => {
+  if (!event.recurring) return props.eventSelected({ id: event.id.toString() })
+  return props.eventSelected({
+    id: event.id.toString(),
+    s: moment.tz(event.start, props.userTimezone).unix(),
+    e: moment.tz(event.end, props.userTimezone).unix(),
+  })
+}
+
+const Events = props =>
+  <ViewContainer>
+    <EventsContainer>
+      <CustomActions>
+        <Button
+          onClick={() => props.reportEvent()}
+          icon="calendar-check-o"
+          label="Report Event"
+        />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <Button
+          onClick={() => props.createNewEvent()}
+          icon="calendar-plus-o"
+          label="Create New Event"
+        />
+      </CustomActions>
+      <CSSTransitionGroup
+        transitionName="view"
+        transitionAppearTimeout={500}
+        transitionEnterTimeout={500}
+        transitionLeaveTimeout={500}
+        component="span"
+      >
+        <BigCalendar
+          key="bigcal"
+          events={props.events ? occurencesFromRecursiveEvent(props) : []}
+          startAccessor="start"
+          endAccessor="end"
+          popup={true}
+          selectable={true}
+          onSelectEvent={event => selectEvent(event, props)}
+          onView={(view) => props.calendarViewChanged({ view })}
+          view={props.calendarView}
+          defaultView={props.calendarView}
+          toolbar={!props.deviceSize !== 'mobile'}
+        />
+      </CSSTransitionGroup>
+      <br />
+    </EventsContainer>
+  </ViewContainer>
 
 Events.propTypes = {
   authenticated: PropTypes.bool,
+  deviceSize: PropTypes.string,
   events: PropTypes.oneOfType([
     PropTypes.array,
     PropTypes.object,
   ]),
   calendarView: PropTypes.string,
-  calendarMobileUpdated: PropTypes.func,
-  calendarMobile: PropTypes.bool,
   calendarViewChanged: PropTypes.func,
   event: PropTypes.object,
   eventSelected: PropTypes.func,
@@ -154,10 +136,9 @@ Events.defaultProps = {
 export default connect(
   {
     authenticated: state`authorization.authenticated`,
+    deviceSize: state`app.deviceSize`,
     events: state`events.data`,
     calendarView: state`events.calendarView`,
-    calendarMobileUpdated: signal`events.calendarMobileUpdated`,
-    calendarMobile: state`events.calendarMobile`,
     calendarViewChanged: signal`events.calendarViewChanged`,
     event: state`event.data`,
     eventSelected: signal`event.routed`,

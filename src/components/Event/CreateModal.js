@@ -6,22 +6,16 @@ import { signal, state } from 'cerebral/tags'
 import moment from 'moment-timezone'
 import { rgba } from 'polished'
 
-function CreateNewEvent (props) {
-  return (
-    <CreateNewEventContainer>
-      Create Event
-      <br />
-      <br />
-      <br />
+const CreateNewEvent = props =>
+  <CreateNewEventContainer>
+    Create Event
+    <br />
+    <br />
+    <br />
 
-    </CreateNewEventContainer>
-  )
-}
+  </CreateNewEventContainer>
 
 CreateNewEvent.propTypes = {
-}
-
-CreateNewEvent.defaultProps = {
 }
 
 export default connect(

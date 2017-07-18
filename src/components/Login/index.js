@@ -11,50 +11,47 @@ import Button from '../Button'
 import Input from '../Input'
 import ErrorMessage from '../Input/ErrorMessage'
 
-const LoginForm = props => {
-  return (
-    <ViewContainer centered={true}>
-      <form onSubmit={(e) => e.preventDefault()}>
-        {Object.keys(props.form.getFields()).map((field, index) => {
-          return (
-            <Input type={props.form[field].type} name={field} key={index} path={`login.form.${field}`} />
-          )
-        })}
-        <br />
-        <Button
-          onClick={e => props.onReset({ formPath: 'login.form' })}
-          label="Reset"
-          type="button"
-        />
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <Button
-          onClick={e => {
-            e.preventDefault()
-            props.form.isValid && props.login()
-          }}
-          disabled={!props.form.isValid || props.authorizationPending}
-          label={props.authorizationPending ? 'Loggin In...' : 'Login'}
-          type="submit"
-          icon={props.authorizationPending && 'crosshairs'}
-          iconSpin={props.authorizationPending && true}
-        />
-        <br />
-        <br />
-      </form>
-      {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
-        <ErrorMessage>The username/password was invalid.</ErrorMessage>
-      }
-      <Helper>
-        Test Credentials:
-        <br />
-        <br />
-        Callsign: &nbsp; <span>inergy</span>
-        <br />
-        Password: &nbsp; <span>password</span>
-      </Helper>
-    </ViewContainer>
-  )
-}
+const LoginForm = props =>
+  <ViewContainer centered={true}>
+    <form onSubmit={(e) => e.preventDefault()}>
+      {Object.keys(props.form.getFields()).map((field, index) => {
+        return (
+          <Input type={props.form[field].type} name={field} key={index} path={`login.form.${field}`} />
+        )
+      })}
+      <br />
+      <Button
+        onClick={e => props.onReset({ formPath: 'login.form' })}
+        label="Reset"
+        type="button"
+      />
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <Button
+        onClick={e => {
+          e.preventDefault()
+          props.form.isValid && props.login()
+        }}
+        disabled={!props.form.isValid || props.authorizationPending}
+        label={props.authorizationPending ? 'Loggin In...' : 'Login'}
+        type="submit"
+        icon={props.authorizationPending && 'crosshairs'}
+        iconSpin={props.authorizationPending && true}
+      />
+      <br />
+      <br />
+    </form>
+    {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
+      <ErrorMessage>The username/password was invalid.</ErrorMessage>
+    }
+    <Helper>
+      Test Credentials:
+      <br />
+      <br />
+      Callsign: &nbsp; <span>inergy</span>
+      <br />
+      Password: &nbsp; <span>password</span>
+    </Helper>
+  </ViewContainer>
 
 LoginForm.propTypes = {
   form: PropTypes.object,

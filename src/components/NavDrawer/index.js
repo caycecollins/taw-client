@@ -25,88 +25,84 @@ const adminMenuItems = [
   { label: 'Reports', route: 'reports', icon: 'line-chart' },
 ]
 
-const NavDrawer = props => {
-  function getListItems (items) {
-    return items.map((item, index) => {
-      return (
-        <Link
-          routeTo={item.route}
-          key={item.route}
-        >
-          <ListItem
-            disabled={props.currentView && item.route.search(props.currentView) > -1}
-            iconOnly={!props.drawerLarge}
-          >
-            <StyledIcon label={props.drawerLarge}>
-              <Icon size={props.drawerLarge ? 16 : 20} name={item.icon} />
-            </StyledIcon>
-            {props.drawerLarge && <Label>{item.label}</Label>}
-          </ListItem>
-        </Link>
-      )
-    })
-  }
+const getListItems = (props, items) => items.map((item, index) => {
   return (
-    <NavDrawerContainer
-      active={!props.authorizationPending && props.authenticated && props.drawerActive}
-      large={props.drawerLarge}
-      className={props.className}
-      initialDrawerAnimation={props.initialDrawerAnimation}
+    <Link
+      routeTo={item.route}
+      key={item.route}
     >
-      <CSSTransitionGroup
-        transitionName="sidebarOverlay"
-        transitionAppearTimeout={500}
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
-        component="div"
+      <ListItem
+        disabled={props.currentView && item.route.search(props.currentView) > -1}
+        iconOnly={!props.drawerLarge}
       >
-        {props.drawerActive && props.drawerLarge &&
-          <NavDrawerMobileOverlay
-            key="drawerOverlay"
-            onClick={() => props.drawerActiveToggled({ value: false })}
-          />
-        }
-      </CSSTransitionGroup>
-      <NavDrawerToggles>
-        <Button
-          size="xs"
-          iconSize={12}
-          outline={false}
-          onClick={() => props.drawerActiveToggled({ value: false })}
-          icon="close"
-        />
-        <Button
-          size="xs"
-          outline={false}
-          onClick={() => props.drawerLargeToggled({ value: !props.drawerLarge })}
-          icon={props.drawerLarge ? 'angle-double-left' : 'angle-double-right'}
-        />
-      </NavDrawerToggles>
-      <User large={props.drawerActive && props.drawerLarge}>
-        <Avatar large={props.drawerLarge} />
-        {props.drawerLarge &&
-          <UserInfo>
-            <Callsign>Callsign</Callsign>
-            <Rank>
-              <RankIcon />
-              <RankText>Rank</RankText>
-            </Rank>
-            <Link routeTo="profile">
-              <PrimaryUnit>Primary Unit Name</PrimaryUnit>
-            </Link>
-          </UserInfo>
-        }
-      </User>
-      <Navigation user={true}>
-        <List>{getListItems(userMenuItems)}</List>
-      </Navigation>
-      <Navigation>
-        <List>{getListItems(menuItems)}</List>
-        <List>{getListItems(adminMenuItems)}</List>
-      </Navigation>
-    </NavDrawerContainer>
+        <StyledIcon label={props.drawerLarge}>
+          <Icon size={props.drawerLarge ? 16 : 20} name={item.icon} />
+        </StyledIcon>
+        {props.drawerLarge && <Label>{item.label}</Label>}
+      </ListItem>
+    </Link>
   )
-}
+})
+
+const NavDrawer = props =>
+  <NavDrawerContainer
+    active={!props.authorizationPending && props.authenticated && props.drawerActive}
+    large={props.drawerLarge}
+    className={props.className}
+    initialDrawerAnimation={props.initialDrawerAnimation}
+  >
+    <CSSTransitionGroup
+      transitionName="sidebarOverlay"
+      transitionAppearTimeout={500}
+      transitionEnterTimeout={500}
+      transitionLeaveTimeout={500}
+      component="div"
+    >
+      {props.drawerActive && props.drawerLarge &&
+        <NavDrawerMobileOverlay
+          key="drawerOverlay"
+          onClick={() => props.drawerActiveToggled({ value: false })}
+        />
+      }
+    </CSSTransitionGroup>
+    <NavDrawerToggles>
+      <Button
+        size="xs"
+        iconSize={12}
+        outline={false}
+        onClick={() => props.drawerActiveToggled({ value: false })}
+        icon="close"
+      />
+      <Button
+        size="xs"
+        outline={false}
+        onClick={() => props.drawerLargeToggled({ value: !props.drawerLarge })}
+        icon={props.drawerLarge ? 'angle-double-left' : 'angle-double-right'}
+      />
+    </NavDrawerToggles>
+    <User large={props.drawerActive && props.drawerLarge}>
+      <Avatar large={props.drawerLarge} />
+      {props.drawerLarge &&
+        <UserInfo>
+          <Callsign>Callsign</Callsign>
+          <Rank>
+            <RankIcon />
+            <RankText>Rank</RankText>
+          </Rank>
+          <Link routeTo="profile">
+            <PrimaryUnit>Primary Unit Name</PrimaryUnit>
+          </Link>
+        </UserInfo>
+      }
+    </User>
+    <Navigation user={true}>
+      <List>{getListItems(props, userMenuItems)}</List>
+    </Navigation>
+    <Navigation>
+      <List>{getListItems(props, menuItems)}</List>
+      <List>{getListItems(props, adminMenuItems)}</List>
+    </Navigation>
+  </NavDrawerContainer>
 
 NavDrawer.propTypes = {
   authorizationPending: PropTypes.bool,

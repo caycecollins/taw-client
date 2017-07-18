@@ -4,27 +4,22 @@ import styled from 'styled-components'
 import { connect } from 'cerebral/react'
 import { signal, props } from 'cerebral/tags'
 
-function Link ({ onClick, route, routeParams, label, className, children }) {
-  return (
-    <StyledLink
-      onClick={() => onClick ? onClick() : route(routeParams || {})}
-      className={className} // used to override incoming styled-component changes
-    >
-      {label && <Label>{label}</Label>}
-      {children}
-    </StyledLink>
-  )
-}
+const Link = props =>
+  <StyledLink
+    onClick={() => props.onClick ? props.onClick() : props.route(props.routeParams || {})}
+    className={props.className}
+  >
+    {props.label && <Label>{props.label}</Label>}
+    {props.children}
+  </StyledLink>
 
 Link.propTypes = {
-  viewChanged: PropTypes.func,
   label: PropTypes.string,
   routeParams: PropTypes.object,
   route: PropTypes.func,
   children: PropTypes.node,
   className: PropTypes.string,
   onClick: PropTypes.func,
-  routeTo: PropTypes.string,
 }
 
 Link.defaultProps = {

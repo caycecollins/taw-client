@@ -7,7 +7,7 @@ import styled, { css, keyframes } from 'styled-components'
 import Button from '../Button'
 import Link from '../Link'
 
-const LoginButton = () => (
+const LoginButton = () =>
   <Link routeTo="login">
     <Button
       label="Login"
@@ -15,9 +15,8 @@ const LoginButton = () => (
       outline={false}
     />
   </Link>
-)
 
-const LogoutButton = props => (
+const LogoutButton = props =>
   <Link
     onClick={() => props.logout()}
     routeTo="login"
@@ -28,33 +27,29 @@ const LogoutButton = props => (
       outline={false}
     />
   </Link>
-)
 
 LogoutButton.propTypes = {
   logout: PropTypes.func,
 }
 
-const AppBar = props => {
-  return (
-    <StyledAppBar
-      className={props.className}
-      authenticated={props.authenticated && !props.authorizationPending}
-    >
-      <LogoContainer>
-        {(!props.drawerActive && props.authenticated) &&
-          <Button
-            icon="bars"
-            outline={false}
-            onClick={() => props.drawerActiveToggled({ value: !props.drawerActive })} />
-        }
-        <Link routeTo="dashboard">
-          <Logo />
-        </Link>
-      </LogoContainer>
-      {props.authenticated ? <LogoutButton logout={props.logout} /> : <LoginButton />}
-    </StyledAppBar>
-  )
-}
+const AppBar = props =>
+  <StyledAppBar
+    className={props.className}
+    authenticated={props.authenticated && !props.authorizationPending}
+  >
+    <LogoContainer>
+      {(!props.drawerActive && props.authenticated) &&
+        <Button
+          icon="bars"
+          outline={false}
+          onClick={() => props.drawerActiveToggled({ value: !props.drawerActive })} />
+      }
+      <Link routeTo="dashboard">
+        <Logo />
+      </Link>
+    </LogoContainer>
+    {props.authenticated ? <LogoutButton logout={props.logout} /> : <LoginButton />}
+  </StyledAppBar>
 
 AppBar.propTypes = {
   drawerActive: PropTypes.bool,

@@ -2,13 +2,10 @@ import React from 'react'
 
 import ViewContainer from '../ViewContainer'
 
-function Notifications (props) {
-  return (
-    <ViewContainer>
-      Notifications
-    </ViewContainer>
-  )
-}
+const Notifications = props =>
+  <ViewContainer>
+    Notifications
+  </ViewContainer>
 
 Notifications.propTypes = {
 }

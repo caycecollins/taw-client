@@ -4,41 +4,39 @@ import styled, { css } from 'styled-components'
 
 import Icon from '../Icon'
 
-const Button = props => {
-  function calculateIconSize () {
-    if (props.icon && !props.iconSize) {
-      if (props.size === 'xs') return 14
-      if (props.size === 'sm') return 15
-      if (!props.size || props.size === 'md') return 16
-      if (props.size === 'lg') return 18
-    } else {
-      return props.iconSize
-    }
-    return 16
+const calculateIconSize = props => {
+  if (props.icon && !props.iconSize) {
+    if (props.size === 'xs') return 14
+    if (props.size === 'sm') return 15
+    if (!props.size || props.size === 'md') return 16
+    if (props.size === 'lg') return 18
+  } else {
+    return props.iconSize
   }
-  return (
-    <StyledButton
-      type={props.type}
-      outline={props.outline}
-      size={props.size}
-      onClick={props.onClick}
-      disabled={props.disabled}
-    >
-      {props.icon &&
-        <StyledIcon label={props.label}>
-          <Icon
-            name={props.icon}
-            size={calculateIconSize()}
-            spin={props.iconSpin}
-            pulse={props.iconPulse}
-            inverse={props.iconInverse}
-          />
-        </StyledIcon>
-      }
-      <Label>{props.label}</Label>
-    </StyledButton>
-  )
+  return 16
 }
+
+const Button = props =>
+  <StyledButton
+    type={props.type}
+    outline={props.outline}
+    size={props.size}
+    onClick={props.onClick}
+    disabled={props.disabled}
+  >
+    {props.icon &&
+      <StyledIcon label={props.label}>
+        <Icon
+          name={props.icon}
+          size={calculateIconSize(props)}
+          spin={props.iconSpin}
+          pulse={props.iconPulse}
+          inverse={props.iconInverse}
+        />
+      </StyledIcon>
+    }
+    <Label>{props.label}</Label>
+  </StyledButton>
 
 Button.propTypes = {
   type: PropTypes.string,

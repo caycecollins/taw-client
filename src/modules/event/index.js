@@ -50,7 +50,7 @@ export default {
             changeSidebarView({ icon: 'hourglass' },
               [
                 set(state`event.data`, null),
-                wait(350),
+                wait(360),
                 getEvent, {
                   success: [
                     setOccurenceInfo,

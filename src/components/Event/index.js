@@ -5,41 +5,39 @@ import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
 import moment from 'moment-timezone'
 
-function EventModal (props) {
-  const tableData = props.event && [
-    ['title', props.event.title || 'Loading...'],
-    ['start', moment.tz(props.event.start, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
-    ['end', moment.tz(props.event.end, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
-    ['duration', props.event.duration / 60 + 'hr(s)'],
-    ['type', props.event.type],
-    ['description', props.event.description],
-    ['mandatory', props.event.mandatory && 'Yes'],
-    ['repeats', props.event.recurring.length > 0 && 'Yes (will calculate daysOfWeek later)'],
-    ['created by', props.event.creatorCallsign],
-  ]
+const eventInfo = props => [
+  ['title', props.event.title || 'Loading...'],
+  ['start', moment.tz(props.event.start, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
+  ['end', moment.tz(props.event.end, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
+  ['duration', props.event.duration / 60 + 'hr(s)'],
+  ['type', props.event.type],
+  ['description', props.event.description],
+  ['mandatory', props.event.mandatory && 'Yes'],
+  ['repeats', props.event.recurring.length > 0 && 'Yes (will calculate daysOfWeek later)'],
+  ['created by', props.event.creatorCallsign],
+]
 
-  return (
-    <EventContainer>
-      <Section>
-        Details
-        <br />
-        <br />
-        <table>
-          <tbody>
-            {tableData && tableData.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td>{item[0].toUpperCase()}</td>
-                  <td>{item[1]}</td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </Section>
-    </EventContainer>
-  )
-}
+const EventModal = props =>
+  <EventContainer>
+    <Section>
+      Details
+      <br />
+      <br />
+      <table>
+        <tbody>
+          {props.event && eventInfo(props).map((item, index) => {
+            console.assert(item)
+            return (
+              <tr key={index}>
+                <td>{item[0].toUpperCase()}</td>
+                <td>{item[1]}</td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </Section>
+  </EventContainer>
 
 EventModal.propTypes = {
   event: PropTypes.object,

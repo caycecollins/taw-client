@@ -47,12 +47,13 @@ const views = {
   },
 }
 
+const determineSidebarComponent = props => {
+  if (props.sidebarTab) return views[props.sidebarView].tabs[props.sidebarTab]
+  return views[props.sidebarView].defaultTab || views[props.sidebarView].component
+}
+
 const Sidebar = (props) => {
-  function determineSidebarComponent () {
-    if (props.sidebarTab) return views[props.sidebarView].tabs[props.sidebarTab]
-    return views[props.sidebarView].defaultTab || views[props.sidebarView].component
-  }
-  const SidebarComponent = props.sidebarView ? determineSidebarComponent() : views.empty
+  const SidebarComponent = props.sidebarView ? determineSidebarComponent(props) : views.empty
   return (
     <div>
       <CSSTransitionGroup

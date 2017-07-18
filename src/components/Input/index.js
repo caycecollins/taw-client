@@ -8,48 +8,56 @@ import { rgba } from 'polished'
 
 import ErrorMessage from './ErrorMessage'
 
-function Input ({ value, children, name, type, label, field, path, placeholder, settings, fieldChanged }) {
-  const inputValue = field.value || value || field.defaultValue
-  const InputType = type === 'select' ? StyledSelect : StyledInput
-  function onChange (e) {
-    e.target.value !== inputValue &&
-      fieldChanged({
-        field: path,
-        value: e.target.value,
-        settingsField: 'app.settings.validateOnChange',
-      })
-  }
-  function onBlur (e) {
-    e.target.value !== inputValue &&
-      fieldChanged({
-        field: path,
-        value: e.target.value,
-        settingsField: 'app.settings.validateInputOnBlur',
-      })
-  }
-  function renderError () {
-    const { errorMessage } = field
-    const { showErrors } = settings
-    return (
-      <ErrorMessage size="xs">
-        {showErrors && errorMessage}
-      </ErrorMessage>
-    )
-  }
+const onChange = (props, e) => {
+  const inputValue = props.field.value || props.value || props.field.defaultValue
+  e.target.value !== inputValue &&
+  props.fieldChanged({
+    field: props.path,
+    value: e.target.value,
+    settingsField: 'app.settings.validateOnChange',
+  })
+}
+
+const onBlur = (props, e) => {
+  const inputValue = props.field.value || props.value || props.field.defaultValue
+  e.target.value !== inputValue &&
+    props.fieldChanged({
+      field: props.path,
+      value: e.target.value,
+      settingsField: 'app.settings.validateInputOnBlur',
+    })
+}
+
+const renderError = props =>
+  <ErrorMessage size="xs">
+    {props.field.errorMessage}
+  </ErrorMessage>
+
+renderError.propTypes = { field: PropTypes.object }
+
+const Input = props => {
+  const InputType = props.type === 'select' ? StyledSelect : StyledInput
   return (
     <InputContainer>
-      {label && <Label>{name} {field.isRequired ? <Required>*</Required> : ''}</Label>}
+      {props.label &&
+        <Label>
+          {props.name} {props.field.isRequired
+            ? <Required>*</Required>
+            : '&nbsp;'
+          }
+        </Label>
+      }
       <InputType
-        onChange={e => onChange(e)}
-        onBlur={e => onBlur(e)}
-        value={inputValue}
-        placeholder={placeholder}
-        type={type}
-        isPristine={field.isPristine}
+        onChange={e => onChange(props, e)}
+        onBlur={e => onBlur(props, e)}
+        value={props.field.value || props.value || props.field.defaultValue}
+        placeholder={props.placeholder}
+        type={props.type}
+        isPristine={props.field.isPristine}
       >
-        {children}
+        {props.children}
       </InputType>
-      {renderError()}
+      {renderError(props)}
     </InputContainer>
   )
 }

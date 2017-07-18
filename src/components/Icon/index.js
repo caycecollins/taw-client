@@ -3,19 +3,16 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import FAIcon from 'react-fa'
 
-function Icon (props) {
-  return (
-    <StyledIcon size={props.size}>
-      <FAIcon
-        name={props.name}
-        spin={props.spin}
-        pulse={props.pulse}
-        inverse={props.inverse}
-        className={props.className}
-      />
-    </StyledIcon>
-  )
-}
+const Icon = props =>
+  <StyledIcon size={props.size}>
+    <FAIcon
+      name={props.name}
+      spin={props.spin}
+      pulse={props.pulse}
+      inverse={props.inverse}
+      className={props.className}
+    />
+  </StyledIcon>
 
 Icon.propTypes = {
   size: PropTypes.number,

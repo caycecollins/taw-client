@@ -10,52 +10,49 @@ import ViewContainer from '../ViewContainer'
 import Link from '../Link'
 import Input from '../Input'
 
-function filterGames (games, term) {
+const filterGames = (games, term) => {
   return games.filter((game) => {
     const gameName = game.name.toLowerCase()
     return gameName.search(term.toLowerCase()) > -1
   })
 }
-function Games (props) {
-  const games = props.games && filterGames(props.games, props.filterGamesTerm)
-  return (
-    <ViewContainer>
-      <ViewHeader>
-        {Object.keys(props.form.getFields()).map((field, index) =>
-          <Input
-            type={props.form[field].type}
-            name={field}
-            key={index}
-            path={`games.form.${field}`}
-            label={false}
-            placeholder="Type to filter games"
-          />
+
+const Games = props =>
+  <ViewContainer>
+    <ViewHeader>
+      {Object.keys(props.form.getFields()).map((field, index) =>
+        <Input
+          type={props.form[field].type}
+          name={field}
+          key={index}
+          path={`games.form.${field}`}
+          label={false}
+          placeholder="Type to filter games"
+        />
+      )}
+    </ViewHeader>
+    <GamesContainer>
+      <FlipMove
+        easing="ease-in-out"
+        duration={200}
+        staggerDelayBy={30}
+        appearAnimation="elevator"
+        enterAnimation="none"
+        leaveAnimation="none"
+        maintainContainerHeight={true}
+      >
+        {props.games && filterGames(props.games, props.filterGamesTerm).map((game, index) =>
+          <Game
+            key={game.id}
+            routeTo="game"
+            routeParams={{ id: game.id.toString() }}
+          >
+            <Name>{game.name}</Name>
+          </Game>
         )}
-      </ViewHeader>
-      <GamesContainer>
-        <FlipMove
-          easing="ease-in-out"
-          duration={200}
-          staggerDelayBy={30}
-          appearAnimation="elevator"
-          enterAnimation="none"
-          leaveAnimation="none"
-          maintainContainerHeight={true}
-        >
-          {games && games.map((game, index) =>
-            <Game
-              key={game.id}
-              routeTo="game"
-              routeParams={{ id: game.id.toString() }}
-            >
-              <Name>{game.name}</Name>
-            </Game>
-          )}
-        </FlipMove>
-      </GamesContainer>
-    </ViewContainer>
-  )
-}
+      </FlipMove>
+    </GamesContainer>
+  </ViewContainer>
 
 Games.propTypes = {
   games: PropTypes.array,
@@ -112,6 +109,7 @@ const Game = styled(Link)`
   background-color: rgba(0,0,0,.3);
   transition: all .3s cubic-bezier(.4,0,.2,1);
   border-radius: 2px;
+  font-size: 0.9rem;
   &:hover {
     background-color: rgba(0,0,0,.6);
   }

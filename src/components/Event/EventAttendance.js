@@ -5,20 +5,14 @@ import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
 import moment from 'moment-timezone'
 
-function EventAttendance (props) {
-  return (
-    <Container>
-      Attendance
-    </Container>
-  )
-}
+const EventAttendance = props =>
+  <Container>
+    Attendance
+  </Container>
 
 EventAttendance.propTypes = {
   event: PropTypes.object,
   userTimezone: PropTypes.string,
-}
-
-EventAttendance.defaultProps = {
 }
 
 export default connect(

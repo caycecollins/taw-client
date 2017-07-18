@@ -36,10 +36,9 @@ export default {
     initialDrawerAnimation: true,
     sidebarActive: null,
     sidebarView: null,
-    sidebarTitle: null,
-    sidebarIcon: null,
-    sidebarImmune: false,
     sidebarPreviousView: null,
+    sidebarImmune: false,
+    sidebarTitle: null,
     sidebarTab: null,
     settings: {
       validateOnChange: {
@@ -75,6 +74,7 @@ export default {
     },
   },
   signals: {
+    deviceSizeUpdated: set(state`app.deviceSize`, props`size`),
     drawerActiveToggled,
     drawerLargeToggled,
     startInitialDrawerAnimation: [

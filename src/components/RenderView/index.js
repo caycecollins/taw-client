@@ -4,7 +4,6 @@ import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
 import styled, { css, keyframes } from 'styled-components'
 import { CSSTransitionGroup } from 'react-transition-group'
-// import config from 'config'
 
 // import Signup from '../Signup'
 import Login from '../Login'
@@ -32,18 +31,13 @@ const views = {
   empty: ViewContainer,
 }
 
-const RenderView = ({ sidebarActive, initialDrawerAnimation, authorizationPending, authenticated, currentView, lastVisited, drawerActive, drawerLarge }) => {
-  // if (!config.production) {
-  //   views[currentView]
-  //     ? console.log(`mounting ${currentView} component`)
-  //     : console.log(`There is no component for "${currentView}", using "dashboard" component instead.`)
-  // }
-  const Component = currentView ? views[currentView] || views.fourohfour : views.empty
+const RenderView = props => {
+  const Component = props.currentView ? views[props.currentView] || views.fourohfour : views.empty
   return (
     <PageContainer
-      initialDrawerAnimation={initialDrawerAnimation}
-      authenticated={authenticated && !authorizationPending}
-      sidebarActive={sidebarActive}
+      initialDrawerAnimation={props.initialDrawerAnimation}
+      authenticated={props.authenticated && !props.authorizationPending}
+      sidebarActive={props.sidebarActive}
     >
       <CSSTransitionGroup
         transitionName="view"
@@ -53,10 +47,10 @@ const RenderView = ({ sidebarActive, initialDrawerAnimation, authorizationPendin
         component="div"
       >
         <FullWidthHeight
-          key={currentView}
-          drawerActive={drawerActive}
-          drawerLarge={drawerLarge}
-          sidebarActive={sidebarActive}
+          key={props.currentView}
+          drawerActive={props.drawerActive}
+          drawerLarge={props.drawerLarge}
+          sidebarActive={props.sidebarActive}
         >
           <Component />
         </FullWidthHeight>

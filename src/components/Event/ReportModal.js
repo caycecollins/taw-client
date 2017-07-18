@@ -6,18 +6,12 @@ import { signal, state } from 'cerebral/tags'
 import moment from 'moment'
 import { rgba } from 'polished'
 
-function ReportEvent (props) {
-  return (
-    <ReportEventContainer>
-      Report Event
-    </ReportEventContainer>
-  )
-}
+const ReportEvent = props =>
+  <ReportEventContainer>
+    Report Event
+  </ReportEventContainer>
 
 ReportEvent.propTypes = {
-}
-
-ReportEvent.defaultProps = {
 }
 
 export default connect(

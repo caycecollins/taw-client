@@ -51,7 +51,7 @@ export default {
       set(state`events.calendarView`, props`view`),
     ]),
     calendarMobileUpdated: [
-      debounce(500), {
+      debounce(200), {
         continue: [
           set(state`events.calendarMobile`, props`isMobile`),
           set(state`events.calendarView`, props`view`),

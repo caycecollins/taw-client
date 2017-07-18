@@ -7,25 +7,19 @@ import ViewContainer from '../ViewContainer'
 import Link from '../Link'
 import Button from '../Button'
 
-function Games ({ game }) {
-  // const game = games.find((game) => { return game.id === parseInt(gameId) })
-  // console.log(game, gameId)
-  return (
-    <ViewContainer backgroundImage="/images/bf1-background.jpg">
-      <Link routeTo="games">
-        <Button icon="angle-left" label="Back to all games" />
-      </Link>
-      <br />
-
-      <br />
-      <br />
-      <br />
-      <div style={{ backgroundColor: 'rgba(0,0,0,.6)', height: 'calc(100% - 69px)', margin: '-24px' }}>
-        {game && game.name} (id: {game && game.id})
-      </div>
-    </ViewContainer>
-  )
-}
+const Games = game =>
+  <ViewContainer backgroundImage="/images/bf1-background.jpg">
+    <Link routeTo="games">
+      <Button icon="angle-left" label="Back to all games" />
+    </Link>
+    <br />
+    <br />
+    <br />
+    <br />
+    <div style={{ backgroundColor: 'rgba(0,0,0,.6)', height: 'calc(100% - 69px)', margin: '-24px' }}>
+      {game && game.name} (id: {game && game.id})
+    </div>
+  </ViewContainer>
 
 Games.propTypes = {
   game: PropTypes.object,
