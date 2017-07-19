@@ -35,7 +35,8 @@ const dateConfigOptions = (props, field) => {
 }
 
 const selectOptions = (props, field) => {
-  const options = ['one', 'two', 'three'].map((option, index) => {
+  const options = ['one', 'two', 'three']
+  const updatedOptions = options.map((option, index) => {
     return (
       <option
         key={`${field}-${index}`}
@@ -45,8 +46,8 @@ const selectOptions = (props, field) => {
       </option>
     )
   })
-  options.unshift(<option key="empty" value="">Select...</option>)
-  return options
+  updatedOptions.unshift(<option key="empty" value="">Select...</option>)
+  return updatedOptions
 }
 
 const setDefaultValue = (props, field) => {
