@@ -14,8 +14,13 @@ import ErrorMessage from './ErrorMessage'
 // TODO: make sure the following is patched when rebuilding packages!!!!
 // https://github.com/chmln/flatpickr/commit/6dd2adc56a71a1166c0529def27a052059f042e3#diff-51ad6ed16e74144ae6e17bbd53d35a5b
 
-const onChange = (props, e) => {
+const determineInputValue = props => {
   const inputValue = props.field.value || props.value || props.field.defaultValue || ''
+  return inputValue
+}
+
+const onChange = (props, e) => {
+  const inputValue = determineInputValue(props)
   const determineValue = () => {
     switch (props.type) {
       case 'date': return moment(moment.tz(e[0], props.userTimezone).toDate()).format()
@@ -34,7 +39,7 @@ const onChange = (props, e) => {
 }
 
 const onBlur = (props, e) => {
-  const inputValue = props.field.value || props.value || props.field.defaultValue || ''
+  const inputValue = determineInputValue(props)
   const targetValue = props.type === 'date' ? moment.tz(e[0], props.userTimezone).format() : e.target.value
   targetValue !== inputValue &&
     props.fieldChanged({
@@ -65,27 +70,25 @@ const Input = props => {
   return (
     <InputContainer>
       {props.label &&
-        <Label>
-          {props.name} {props.field.isRequired
-            ? <Required>*</Required>
-            : '&nbsp;'
-          }
+        <Label isPristine={props.field.isPristine || !props.field.hasValue}>
+          {props.name} {props.field.isRequired && <Required>*</Required>}
         </Label>
       }
       <InputComponentContainer checkbox={props.type === 'checkbox'}>
         <InputComponent
           onChange={e => onChange(props, e)}
           onBlur={e => props.type !== 'date' && onBlur(props, e)}
-          value={props.field.value || props.value || props.field.defaultValue || ''}
+          value={determineInputValue(props)}
+          checked={props.type === 'checkbox' && determineInputValue(props)}
           placeholder={props.placeholder}
           type={props.type || 'text'}
-          isPristine={props.field.isPristine}
+          isPristine={props.field.isPristine || !props.field.hasValue}
           options={props.dateOptions}
           id={`checkbox-${props.keyIndex}`}
         >
-          {props.children}
+          {props.type === 'select' ? props.options || props.children : props.children}
         </InputComponent>
-        {props.type == 'checkbox' && <CheckBoxLabel htmlFor={`checkbox-${props.keyIndex}`} />}
+        {props.type === 'checkbox' && <CheckBoxLabel htmlFor={`checkbox-${props.keyIndex}`} />}
       </InputComponentContainer>
       {renderError(props)}
     </InputContainer>
@@ -108,6 +111,7 @@ Input.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
+  options: PropTypes.node,
 }
 
 Input.defaultProps = {
@@ -164,11 +168,12 @@ const CheckBoxLabel = styled.label`
 const sharedInputStyles = css`
   padding: 6px 16px 4px 16px;
   background-color: transparent;
-  color: ${props => !props.isPristine ? props.theme.colors.armyWhite : props.theme.colors.gray};
-  border: 1px solid ${props => !props.isPristine ? rgba(props.theme.colors.armyWhite, 0.7) : props.theme.colors.gray};
+  color: ${props => props.isPristine ? props.theme.colors.gray : props.theme.colors.armyWhite};
+  border: 1px solid ${props => props.isPristine ? props.theme.colors.gray : rgba(props.theme.colors.armyWhite, 0.7)};
   border-radius: 2px;
   font-family: industry, sans-serif;
   font-size: 1rem;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 const StyledInput = styled.input`
   ${sharedInputStyles}
@@ -194,6 +199,7 @@ const Label = styled.div`
   font-size: 0.9rem;
   margin-bottom: 4px;
   text-transform: capitalize;
+  color: ${props => props.isPristine ? props.theme.colors.gray : 'inherit'};
 `
 
 const Required = styled.div`
