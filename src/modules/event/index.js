@@ -45,7 +45,7 @@ export default {
       mandatory: {
         type: 'checkbox',
         value: '',
-        isRequired: true,
+        isRequired: false,
         isPristine: true,
         validationRules: [
           'isValue',
