@@ -71,7 +71,7 @@ const Sidebar = (props) => {
           />
         }
       </CSSTransitionGroup>
-      <SidebarContainer active={props.sidebarActive}>
+      <SidebarContainer active={props.sidebarActive && !props.loggingOut}>
         <CSSTransitionGroup
           transitionName="sidebarView"
           transitionAppearTimeout={300}
@@ -131,6 +131,7 @@ Sidebar.propTypes = {
   sidebarTitle: PropTypes.string,
   sidebarIcon: PropTypes.string,
   sidebarTab: PropTypes.string,
+  loggingOut: PropTypes.bool,
 }
 
 export default connect(
@@ -142,6 +143,7 @@ export default connect(
     sidebarTitle: state`app.sidebarTitle`,
     sidebarIcon: state`app.sidebarIcon`,
     sidebarTab: state`app.sidebarTab`,
+    loggingOut: state`authorization.loggingOut`,
   }, Sidebar
 )
 
