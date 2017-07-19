@@ -13,44 +13,46 @@ import ErrorMessage from '../Input/ErrorMessage'
 
 const LoginForm = props =>
   <ViewContainer centered={true}>
-    <form onSubmit={(e) => e.preventDefault()}>
-      {Object.keys(props.form.getFields()).map((field, index) => {
-        return (
-          <Input type={props.form[field].type} name={field} key={index} path={`login.form.${field}`} />
-        )
-      })}
-      <br />
-      <Button
-        onClick={e => props.onReset({ formPath: 'login.form' })}
-        label="Reset"
-        type="button"
-      />
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <Button
-        onClick={e => {
-          e.preventDefault()
-          props.form.isValid && props.login()
-        }}
-        disabled={!props.form.isValid || props.authorizationPending}
-        label={props.authorizationPending ? 'Loggin In...' : 'Login'}
-        type="submit"
-        icon={props.authorizationPending && 'crosshairs'}
-        iconSpin={props.authorizationPending && true}
-      />
-      <br />
-      <br />
-    </form>
-    {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
-      <ErrorMessage>The username/password was invalid.</ErrorMessage>
-    }
-    <Helper>
-      Test Credentials:
-      <br />
-      <br />
-      Callsign: &nbsp; <span>inergy</span>
-      <br />
-      Password: &nbsp; <span>password</span>
-    </Helper>
+    <LoginContainer>
+      <form onSubmit={(e) => e.preventDefault()}>
+        {Object.keys(props.form.getFields()).map((field, index) => {
+          return (
+            <Input type={props.form[field].type} name={field} key={index} path={`login.form.${field}`} />
+          )
+        })}
+        <br />
+        <Button
+          onClick={e => props.onReset({ formPath: 'login.form' })}
+          label="Reset"
+          type="button"
+        />
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        <Button
+          onClick={e => {
+            e.preventDefault()
+            props.form.isValid && props.login()
+          }}
+          disabled={!props.form.isValid || props.authorizationPending}
+          label={props.authorizationPending ? 'Loggin In...' : 'Login'}
+          type="submit"
+          icon={props.authorizationPending && 'crosshairs'}
+          iconSpin={props.authorizationPending && true}
+        />
+        <br />
+        <br />
+      </form>
+      {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
+        <ErrorMessage>The username/password was invalid.</ErrorMessage>
+      }
+      <Helper>
+        Test Credentials:
+        <br />
+        <br />
+        Callsign: &nbsp; <span>inergy</span>
+        <br />
+        Password: &nbsp; <span>password</span>
+      </Helper>
+    </LoginContainer>
   </ViewContainer>
 
 LoginForm.propTypes = {
@@ -72,6 +74,20 @@ export default connect(
   },
   LoginForm
 )
+
+const LoginContainer = styled.div`
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+`
 
 const Helper = styled.div`
   margin-top: 32px;

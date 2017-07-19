@@ -123,4 +123,5 @@ const FullWidthHeight = styled.div`
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
   padding-right: ${props => props.sidebarActive ? '17px' : '0px'};
   transition: padding-right 0s ease;
+  z-index: 10;
 `

@@ -1,4 +1,4 @@
-import { set } from 'cerebral/operators'
+import { wait, set } from 'cerebral/operators'
 import { state } from 'cerebral/tags'
 import { removeStorage } from '@cerebral/storage/operators'
 import { goTo } from '@cerebral/router/operators'
@@ -21,7 +21,8 @@ export default {
   signals: {
     authenticate,
     logout: [
-      set(state`authorization.authenticated`, false),
+      set(state`authorization.loggingOut`, true),
+      wait(400),
       set(state`authorization.callsign`, null),
       set(state`authorization.error`, null),
       set(state`authorization.pending`, false),
@@ -40,7 +41,10 @@ export default {
       removeStorage('user'),
       removeStorage('games'),
       removeStorage('events'),
+      set(state`authorization.authenticated`, false),
       goTo('/login'),
+      wait(600),
+      set(state`authorization.loggingOut`, false),
     ],
   },
 }

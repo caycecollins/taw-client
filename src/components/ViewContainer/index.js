@@ -13,6 +13,7 @@ const ViewContainer = props =>
     backgroundImage={props.backgroundImage}
     className={props.className}
     centered={props.centered}
+    loggingOut={props.loggingOut}
   >
     {props.children}
   </Container>
@@ -27,6 +28,7 @@ ViewContainer.propTypes = {
   authenticated: PropTypes.bool,
   authorizationPending: PropTypes.bool,
   centered: PropTypes.bool,
+  loggingOut: PropTypes.bool,
 }
 
 export default connect(
@@ -34,6 +36,7 @@ export default connect(
     initialAnimation: state`app.initialAnimation`,
     authenticated: state`authorization.authenticated`,
     authorizationPending: state`authorization.pending`,
+    loggingOut: state`authorization.loggingOut`,
     drawerActive: state`app.drawerActive`,
     drawerLarge: state`app.drawerLarge`,
   },
@@ -53,10 +56,19 @@ const leftPaddingMixin = css`
 
 const viewContainerAnimation = keyframes`
   from {
-    padding-left: 24px;
+    margin-top: 100px;
   }
   to {
-    padding-left: ${leftPaddingMixin};
+    margin-top: 0px;
+  }
+`
+
+const viewContainerLogoutAnimation = keyframes`
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 `
 
@@ -73,6 +85,7 @@ const Container = styled.div`
   padding: 24px;
   padding-left: ${leftPaddingMixin};
   color: white;
+  opacity: 1;
   transition: all .3s cubic-bezier(.4,0,.2,1);
   ${props => props.backgroundImage && css`
     background: url(${props.backgroundImage});
@@ -81,12 +94,10 @@ const Container = styled.div`
     background-size: cover;
     background-attachment: fixed;
   `}
-  ${props => props.initialAnimation && css`
-    animation-name: ${viewContainerAnimation};
-    animation-duration: .3s;
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-    animation-fill-mode: backwards;
-  `}
+  ${props => props.loggingOut && css`animation-name: ${viewContainerLogoutAnimation};`}
+  ${props => props.initialAnimation && css`animation-name: ${viewContainerAnimation};`}
+  animation-duration: .3s;
+  animation-fill-mode: forwards;
   @media (max-width: 500px) {
     padding: 16px;
   }
