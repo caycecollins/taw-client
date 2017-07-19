@@ -34,8 +34,7 @@ LogoutButton.propTypes = {
 
 const AppBar = props =>
   <StyledAppBar
-    className={props.className}
-    authenticated={props.authenticated && !props.authorizationPending}
+    authenticated={props.authenticated}
   >
     <LogoContainer>
       {(!props.drawerActive && props.authenticated) &&
@@ -56,7 +55,6 @@ AppBar.propTypes = {
   drawerActiveToggled: PropTypes.func,
   drawerLarge: PropTypes.bool,
   drawerLargeToggled: PropTypes.func,
-  className: PropTypes.string,
   logout: PropTypes.func,
   authorizationPending: PropTypes.bool,
   authenticated: PropTypes.bool,

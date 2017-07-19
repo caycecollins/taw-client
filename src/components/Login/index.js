@@ -41,9 +41,11 @@ const LoginForm = props =>
         <br />
         <br />
       </form>
-      {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
-        <ErrorMessage>The username/password was invalid.</ErrorMessage>
-      }
+      <ErrorMessageContainer>
+        {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
+          <ErrorMessage>The username/password was invalid.</ErrorMessage>
+        }
+      </ErrorMessageContainer>
       <Helper>
         Test Credentials:
         <br />
@@ -87,6 +89,10 @@ const LoginContainer = styled.div`
   align-items: center;
   justify-content: center;
   z-index: 9999;
+`
+
+const ErrorMessageContainer = styled.div`
+  height: 24px;
 `
 
 const Helper = styled.div`

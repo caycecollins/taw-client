@@ -92,7 +92,7 @@ const StyledButton = styled.button`
     if (props.size === 'lg') return '1rem'
   }};
   text-transform: uppercase;
-  transition: all .3s ease-in-out;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
   ${props => !props.disabled &&
     css`&:hover {
       background-color: rgba(0,0,0,.3);

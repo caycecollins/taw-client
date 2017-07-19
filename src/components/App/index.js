@@ -1,10 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled, { ThemeProvider as CerebralThemeProvider } from 'styled-components'
 import { CSSTransitionGroup } from 'react-transition-group'
-import _ from 'lodash'
 
 import RenderView from '../RenderView'
 import AppBar from '../AppBar'
@@ -34,25 +33,14 @@ const App = props =>
   </CerebralThemeProvider>
 
 App.propTypes = {
-  authorizationPending: PropTypes.bool,
-  deviceSizeUpdated: PropTypes.func,
-  currentView: PropTypes.string,
-  callsign: PropTypes.string,
   authenticated: PropTypes.bool,
-  login: PropTypes.func,
   initialAnimation: PropTypes.bool,
   initialAnimationStarted: PropTypes.func,
 }
 
 export default connect(
   {
-    currentView: state`app.currentView`,
-    deviceSizeUpdated: signal`app.deviceSizeUpdated`,
-    callsign: state`user.callsign`,
-    login: signal`login.routed`,
     authenticated: state`authorization.authenticated`,
-    drawerActive: state`app.drawerActive`,
-    drawerLarge: state`app.drawerLarge`,
     initialAnimation: state`app.initialAnimation`,
     initialAnimationStarted: signal`app.initialAnimationStarted`,
   },

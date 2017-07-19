@@ -88,10 +88,12 @@ const PageContainerAnimation = keyframes`
   from {
     top: 0px;
     height: 100vh;
+    width: calc(100% + 17px);
   }
   to {
     top: 48px;
     height: calc(100vh - 48px);
+    width: 100%;
   }
 `
 
