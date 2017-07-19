@@ -93,9 +93,6 @@ const GamesContainer = styled.div`
     grid-gap: 24px;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     transition: all .3s cubic-bezier(.4,0,.2,1);
-    @media (max-width: 768px) {
-      justify-content: center;
-    }
   }
 `
 
@@ -114,10 +111,9 @@ const Game = styled(Link)`
     background-color: rgba(0,0,0,.6);
   }
   @media (max-width: 768px) {
-    margin: 16px;
+    justify-self: center;
   }
   @media (max-width: 420px) {
-    margin: 16px 0px;
     width: 100%;
   }
 `
