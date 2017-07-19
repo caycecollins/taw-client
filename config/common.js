@@ -6,5 +6,10 @@
 */
 
 export default {
-
+  api: {
+    protocol: 'http',
+    host: 'localhost',
+    port: 5000,
+    baseUrl: 'api',
+  },
 }

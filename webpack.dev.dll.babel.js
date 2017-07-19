@@ -11,6 +11,7 @@ module.exports = {
     path: Path.join(__dirname, 'dist', 'dll'),
     filename: 'dll.[name].js',
     library: '[name]',
+    publicPath: '/',
   },
   module: {
     rules: [

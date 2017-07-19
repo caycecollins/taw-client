@@ -52,7 +52,7 @@ const controller = Controller({
   },
   providers: [
     HttpProvider({
-      baseUrl: `${window.location.protocol}//${window.location.hostname}:6100/api`,
+      baseUrl: `${config.api.protocol}://${config.api.host}:${config.api.port}/${config.api.baseUrl}`,
       headers: {
         'Content-Type': 'application/json; charset=UTF-8',
         'Accept': 'application/json',

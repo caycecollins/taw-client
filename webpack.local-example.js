@@ -8,8 +8,7 @@
  */
 
 export default {
-  // host: '0.0.0.0', // '0.0.0.0' enables outside connections, 'localhost' is default
-  // port: 3000, // change the port
-  // compress: true, // gzip compression
+  host: '0.0.0.0', // '0.0.0.0' enables outside connections, 'localhost' is default
+  port: 9000, // change the port
+  compress: false, // gzip compression
 }
-

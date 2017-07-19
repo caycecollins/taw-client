@@ -36,10 +36,6 @@ module.exports = {
         'NODE_ENV': JSON.stringify('production'),
       },
     }),
-    new Webpack.LoaderOptionsPlugin({
-      minimize: true,
-      debug: false,
-    }),
     new Webpack.DllPlugin({
       path: Path.join(__dirname, 'dll', '[name]-manifest.json'),
       name: '[name]',
@@ -50,6 +46,10 @@ module.exports = {
       compress: {
         warnings: false,
       },
+    }),
+    new Webpack.LoaderOptionsPlugin({
+      minimize: true,
+      debug: false,
     }),
   ],
   resolve: {
