@@ -9,19 +9,6 @@ import moment from 'moment-timezone'
 import Button from '../Button'
 import Input from '../Input'
 
-const getHostingUnits = props => {
-  return (
-    <option
-      key={'key'}
-      value={'value'}
-    >
-      option
-    </option>
-  )
-}
-
-// someSelect.unshift(<option key="empty" value="">Select...</option>)
-
 const getFields = props => Object.keys(props.form.getFields()) || []
 
 const formPath = 'event.scheduleEventForm'
@@ -38,30 +25,59 @@ const setDefaultDate = (props, field) => {
   }
 }
 
-const CreateEvent = props => {
-  const dateOptions = field => {
-    return {
-      allowInput: true,
-      enableTime: true,
-      time_24hr: !!props.userHourFormat || true,
-      minDate: moment().tz(props.userTimezone).format(),
-    }
+const dateConfigOptions = (props, field) => {
+  return {
+    allowInput: true,
+    enableTime: true,
+    time_24hr: !!props.userHourFormat || true,
+    minDate: moment().tz(props.userTimezone).format(),
   }
+}
+
+const selectOptions = (props, field) => {
+  const options = ['one', 'two', 'three'].map((option, index) => {
+    return (
+      <option
+        key={`${field}-${index}`}
+        value={option}
+      >
+        {option}
+      </option>
+    )
+  })
+  options.unshift(<option key="empty" value="">Select...</option>)
+  return options
+}
+
+const setDefaultValue = (props, field) => {
+  switch (field) {
+    case 'repeat': return `${field}-2`
+    case 'type': return `${field}-2`
+  }
+}
+
+const submitForm = (props, e) => {
+  e.preventDefault()
+  props.form.isValid && props.submitForm()
+}
+
+const CreateEvent = props => {
   return (
     <CreateEventContainer>
-      <form onSubmit={(e) => e.preventDefault()}>
+      <form onSubmit={e => e.preventDefault()}>
         {getFields(props).map((field, index) => {
           const fieldType = props.form[field].type
           return (
             <Input
               type={fieldType}
-              options={fieldType === 'select' && getHostingUnits()}
+              options={fieldType === 'select' && selectOptions(props, field)}
               name={field}
               key={index}
               keyIndex={index}
               path={`${formPath}.${field}`}
-              dateOptions={fieldType === 'date' ? dateOptions(field) : {}}
+              dateOptions={fieldType === 'date' ? dateConfigOptions(props, field) : {}}
               defaultDate={fieldType === 'date' ? setDefaultDate(props, field) : {}}
+              value={fieldType === 'select' ? setDefaultValue(props, field) : null}
             />
           )
         })}
@@ -74,10 +90,7 @@ const CreateEvent = props => {
         />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <Button
-          onClick={e => {
-            e.preventDefault()
-            !props.form.isPristine && props.form.isValid && props.submitForm()
-          }}
+          onClick={e => submitForm(props, e)}
           disabled={!props.form.isValid || props.formSaving}
           label={props.formSaving ? 'Saving...' : 'Save'}
           type="submit"
@@ -107,7 +120,7 @@ export default connect(
     userTimezone: state`user.timezone`,
     userTimezoneText: state`user.timezoneText`,
     submitForm: signal`event.creating`,
-    formSaving: state`event.scheduleEventForm.saving`,
+    formSaving: state`event.scheduleEventForm.updating`,
     resetForm: signal`app.onReset`,
     setFieldDefaultValue: signal`app.setFieldDefaultValue`,
     userHourFormat: state`user.timeformat`,
