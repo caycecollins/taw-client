@@ -81,17 +81,19 @@ const NavDrawer = props =>
       />
     </NavDrawerToggles>
     <User large={props.drawerActive && props.drawerLarge}>
-      <Avatar large={props.drawerLarge} />
-      {props.drawerLarge &&
+      <Link routeTo="profile">
+        <Avatar large={props.drawerLarge} />
+      </Link>
+      {props.user && props.drawerLarge &&
         <UserInfo>
-          <Callsign>Callsign</Callsign>
+          <Link routeTo="profile">
+            <Callsign>{props.user.callsign}</Callsign>
+          </Link>
           <Rank>
             <RankIcon />
-            <RankText>Rank</RankText>
+            <RankText>{props.user.rank.name}</RankText>
           </Rank>
-          <Link routeTo="profile">
-            <PrimaryUnit>Primary Unit Name</PrimaryUnit>
-          </Link>
+          <PrimaryUnit>{props.user.highestPosition.unit.name}</PrimaryUnit>
         </UserInfo>
       }
     </User>
@@ -129,6 +131,7 @@ export default connect(
     drawerLargeToggled: signal`app.drawerLargeToggled`,
     drawerMinimal: state`app.drawerMinimal`,
     authenticated: state`authorization.authenticated`,
+    user: state`user`,
   },
   NavDrawer
 )
@@ -267,7 +270,7 @@ const UserInfo = styled.div`
 
 const Callsign = styled.div`
   font-size: 1.2rem;
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 `
 
 const Rank = styled.div`
