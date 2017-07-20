@@ -3,13 +3,15 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'cerebral/react'
 import { signal, state } from 'cerebral/tags'
-import { form, field } from '@cerebral/forms'
 import moment from 'moment-timezone'
 
+import Form from '../Form'
+import SubmitButton from '../Form/SubmitButton'
 import Button from '../Button'
 import Input from '../Input'
+import ErrorMessage from '../Input/ErrorMessage'
 
-const formPath = 'event.scheduleEventForm'
+const formPath = 'event.createEventForm'
 
 const roundDate = (date, duration, method, userTimezone) => {
   const rounded = moment(Math[method]((+date) / (+duration)) * (+duration))
@@ -30,32 +32,10 @@ const dateConfigOptions = (props, field) => {
   return options
 }
 
-const handleSubmitForm = (props, e) => {
-  e.preventDefault()
-  props.form.isValid && props.submitForm()
-}
-
-const SubmitButton = connect(
-  {
-    form: form(state`event.scheduleEventForm`),
-    submitForm: signal`event.creating`,
-    formSaving: state`event.creating`,
-  },
-  props =>
-    <Button
-      onClick={e => handleSubmitForm(props, e)}
-      disabled={!props.form.isValid || props.formSaving}
-      label={props.formSaving ? 'Saving...' : 'Save'}
-      type="submit"
-      icon={props.formSaving && 'crosshairs'}
-      iconSpin={props.formSaving && true}
-    />
-)
-
 const CreateEvent = props => {
   return (
     <CreateEventContainer>
-      <form onSubmit={e => e.preventDefault()}>
+      <Form>
         <Input
           label="name"
           path={`${formPath}.name`}
@@ -106,32 +86,32 @@ const CreateEvent = props => {
           type="button"
         />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <SubmitButton />
-      </form>
+        <SubmitButton form={formPath} />
+      </Form>
+      <br />
+      {props.underConstruction && <ErrorMessage>Under construciton, check back soon.</ErrorMessage>}
     </CreateEventContainer>
   )
 }
 
 CreateEvent.propTypes = {
   userTimezone: PropTypes.string,
-  formSaving: PropTypes.bool,
-  submitForm: PropTypes.func,
+  userHourFormat: PropTypes.string,
   resetForm: PropTypes.func,
-  setFieldDefaultValue: PropTypes.func,
   repeatEnabled: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,
   ]),
+  underConstruction: PropTypes.bool,
 }
 
 export default connect(
   {
     userTimezone: state`user.timezone`,
-    userTimezoneText: state`user.timezoneText`,
     resetForm: signal`app.onReset`,
-    setFieldDefaultValue: signal`app.setFieldDefaultValue`,
     userHourFormat: state`user.timeformat`,
     repeatEnabled: state`${formPath}.repeat.value`,
+    underConstruction: state`${formPath}.underConstruction`,
   },
   CreateEvent
 )
