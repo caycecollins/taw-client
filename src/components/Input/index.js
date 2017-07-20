@@ -111,10 +111,6 @@ Input.propTypes = {
   is: PropTypes.string,
 }
 
-Input.defaultProps = {
-  label: true,
-}
-
 export default connect(
   {
     field: field(state`${props`path`}`),

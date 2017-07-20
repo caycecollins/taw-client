@@ -1,4 +1,4 @@
-import { set, when } from 'cerebral/operators'
+import { when } from 'cerebral/operators'
 import { goTo } from '@cerebral/router/operators'
 import { state } from 'cerebral/tags'
 

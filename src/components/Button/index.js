@@ -63,6 +63,11 @@ export default Button
 const StyledButton = styled.button`
   display: inline-flex;
   align-items: center;
+  border-radius: 2px;
+  background-color: transparent;
+  color: ${props => !props.disabled ? props.theme.colors.armyGreen : props.theme.colors.gray};
+  text-transform: uppercase;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
   height: ${props => {
     if (props.size === 'xs') return '29px'
     if (!props.size || props.size === 'sm') return '33px'
@@ -75,7 +80,6 @@ const StyledButton = styled.button`
     if (props.size === 'md') return '8px 20px 7px 20px'
     if (props.size === 'lg') return '10px 22px 8px 22px'
   }};
-  border-radius: 2px;
   ${props => props.outline
     ? css`
       border: 1px solid ${!props.disabled ? props.theme.colors.armyGreen : props.theme.colors.gray};
@@ -83,16 +87,12 @@ const StyledButton = styled.button`
     : css`
       border: 1px solid transparent;
   `}
-  background-color: transparent;
-  color: ${props => !props.disabled ? props.theme.colors.armyGreen : props.theme.colors.gray};
   font-size: ${props => {
     if (props.size === 'xs') return '.65rem'
     if (!props.size || props.size === 'sm') return '.72rem'
     if (props.size === 'md') return '.85rem'
     if (props.size === 'lg') return '1rem'
   }};
-  text-transform: uppercase;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
   ${props => !props.disabled &&
     css`&:hover {
       background-color: rgba(0,0,0,.3);
@@ -104,7 +104,9 @@ const StyledButton = styled.button`
 
 const StyledIcon = styled.div`
   margin-bottom: 2px;
-  ${props => props.label && css`padding-right: 8px;`}
+  ${props => props.label && css`
+    padding-right: 8px;
+  `}
 `
 
 const Label = styled.div`

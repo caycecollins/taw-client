@@ -1,4 +1,4 @@
-import { wait, set, when } from 'cerebral/operators'
+import { wait, set } from 'cerebral/operators'
 import { state, props } from 'cerebral/tags'
 import { setField, resetForm } from '@cerebral/forms/operators'
 
