@@ -2,6 +2,7 @@ import { when } from 'cerebral/operators'
 import { state } from 'cerebral/tags'
 import { goTo } from '@cerebral/router/operators'
 
+import authenticate from '../authorization/chains/authenticate'
 import changeView from '../../factories/changeView'
 
 export default {
@@ -34,5 +35,6 @@ export default {
         false: changeView('login'),
       },
     ],
+    formSubmitted: authenticate,
   },
 }
