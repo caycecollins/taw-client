@@ -1,5 +1,4 @@
-import { when, set } from 'cerebral/operators'
-import { state, props } from 'cerebral/tags'
+import { state } from 'cerebral/tags'
 
 import authenticate from '../../factories/authenticate'
 import changeView from '../../factories/changeView'
@@ -21,7 +20,7 @@ export default {
       },
       showErrors: true,
     },
-    updating: false,
+    pending: false,
   },
   signals: {
     routed: [
@@ -32,7 +31,7 @@ export default {
         changeSidebarView({ view: 'viewProfile', tab: 'general', title: state`user.callsign` }),
       ]),
     ],
-    updated: profileUpdated,
+    editFormSubmitted: profileUpdated,
     deleted: [
       () => { console.log('profile.deleted') },
     ],
