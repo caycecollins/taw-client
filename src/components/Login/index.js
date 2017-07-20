@@ -7,42 +7,37 @@ import styled from 'styled-components'
 import { rgba } from 'polished'
 
 import ViewContainer from '../ViewContainer'
+import Form from '../Form'
+import SubmitButton from '../Form/SubmitButton'
 import Button from '../Button'
 import Input from '../Input'
 import ErrorMessage from '../Input/ErrorMessage'
 
+const formPath = 'login.form'
+
 const LoginForm = props =>
   <ViewContainer centered={true}>
     <LoginContainer>
-      <form onSubmit={(e) => e.preventDefault()}>
-        {Object.keys(props.form.getFields()).map((field, index) => {
-          return (
-            <Input type={props.form[field].type} name={field} key={index} path={`login.form.${field}`} />
-          )
-        })}
+      <Form>
+        <Input label="callsign" path={`${formPath}.callsign`} />
+        <Input type="password" label="password" path={`${formPath}.password`} />
         <br />
         <Button
-          onClick={e => props.onReset({ formPath: 'login.form' })}
+          onClick={e => props.onReset({ formPath })}
           label="Reset"
           type="button"
         />
         &nbsp;&nbsp;&nbsp;&nbsp;
-        <Button
-          onClick={e => {
-            e.preventDefault()
-            props.form.isValid && props.login()
-          }}
-          disabled={!props.form.isValid || props.authorizationPending}
-          label={props.authorizationPending ? 'Loggin In...' : 'Login'}
-          type="submit"
-          icon={props.authorizationPending && 'crosshairs'}
-          iconSpin={props.authorizationPending && true}
+        <SubmitButton
+          form={formPath}
+          signal="authorization.authenitcate"
+          stateCheck={`authorization.pending`}
         />
         <br />
         <br />
-      </form>
+      </Form>
       <ErrorMessageContainer>
-        {(!props.authorizationPending && props.authorizationError && props.previousCallsign === props.form.callsign.value && !props.form.password.hasValue) &&
+        {(!props.authorizationPending && props.authorizationError) &&
           <ErrorMessage>The username/password was invalid.</ErrorMessage>
         }
       </ErrorMessageContainer>
@@ -58,10 +53,7 @@ const LoginForm = props =>
   </ViewContainer>
 
 LoginForm.propTypes = {
-  form: PropTypes.object,
   onReset: PropTypes.func,
-  login: PropTypes.func,
-  previousCallsign: PropTypes.string,
   authorizationPending: PropTypes.bool,
   authorizationError: PropTypes.object,
 }
