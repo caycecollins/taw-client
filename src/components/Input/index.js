@@ -14,27 +14,36 @@ import ErrorMessage from './ErrorMessage'
 // TODO: make sure the following is patched when rebuilding packages!!!!
 // https://github.com/chmln/flatpickr/commit/6dd2adc56a71a1166c0529def27a052059f042e3#diff-51ad6ed16e74144ae6e17bbd53d35a5b
 
+const determineInputComponent = props => {
+  switch (props.type) {
+    case 'date': return StyledDate
+    case 'select': return StyledSelect
+    case 'checkbox': return StyledCheck
+    default: return StyledInput
+  }
+}
+
 const determineInputValue = props => {
+  if (props.type === 'date') return props.field.value || props.dateOptions.defaultDate
+  if (props.type === 'checkbox') return props.field.value
   const inputValue = props.field.value || props.value || props.field.defaultValue || ''
   return inputValue
 }
 
 const onChange = (props, e) => {
   const inputValue = determineInputValue(props)
-  const determineValue = () => {
+  const updateValue = () => {
     switch (props.type) {
       case 'date': return moment(moment.tz(e[0], props.userTimezone).toDate()).format()
       case 'checkbox': return e.target.checked
-      case 'text': return e.target.value
       default: return e.target.value
     }
   }
-  const targetValue = determineValue()
-  targetValue !== inputValue &&
+  const updatedValue = updateValue()
+  updatedValue !== inputValue &&
     props.fieldChanged({
       field: props.path,
-      value: targetValue,
-      settingsField: 'app.settings.validateOnChange',
+      value: updatedValue,
     })
 }
 
@@ -45,36 +54,22 @@ const onBlur = (props, e) => {
     props.fieldChanged({
       field: props.path,
       value: targetValue,
-      settingsField: 'app.settings.validateInputOnBlur',
     })
-}
-
-const renderError = props =>
-  <ErrorMessage size="xs">
-    {props.field.errorMessage}
-  </ErrorMessage>
-
-renderError.propTypes = { field: PropTypes.object }
-
-const determineInputComponent = props => {
-  switch (props.type) {
-    case 'date': return StyledDate
-    case 'select': return StyledSelect
-    case 'checkbox': return StyledCheck
-    default: return StyledInput
-  }
 }
 
 const Input = props => {
   const InputComponent = props.type ? determineInputComponent(props) : StyledInput
   return (
-    <InputContainer>
+    <InputContainer isCheckboxGroup={props.is === 'checkbox-group'}>
       {props.label &&
         <Label isPristine={props.field.isPristine || !props.field.hasValue}>
-          {props.name} {props.field.isRequired && <Required>*</Required>}
+          {props.label} {props.field.isRequired && <Required>*</Required>}
         </Label>
       }
-      <InputComponentContainer checkbox={props.type === 'checkbox'}>
+      <InputComponentContainer
+        checkbox={props.type === 'checkbox'}
+        isCheckboxGroup={props.is === 'checkbox-group'}
+      >
         <InputComponent
           onChange={e => onChange(props, e)}
           onBlur={e => props.type !== 'date' && onBlur(props, e)}
@@ -84,13 +79,16 @@ const Input = props => {
           type={props.type || 'text'}
           isPristine={props.field.isPristine || !props.field.hasValue}
           options={props.dateOptions}
-          id={`checkbox-${props.keyIndex}`}
+          id={props.label}
+          name={props.name}
         >
-          {props.type === 'select' ? props.options || props.children : props.children}
+          {props.children}
         </InputComponent>
-        {props.type === 'checkbox' && <CheckBoxLabel htmlFor={`checkbox-${props.keyIndex}`} />}
+        {props.type === 'checkbox' && <CheckBoxLabel htmlFor={props.label} />}
       </InputComponentContainer>
-      {renderError(props)}
+      <ErrorMessage size="xs">
+        {props.field.errorMessage}
+      </ErrorMessage>
     </InputContainer>
   )
 }
@@ -100,9 +98,8 @@ Input.propTypes = {
   type: PropTypes.string,
   field: PropTypes.object,
   path: PropTypes.string,
-  settings: PropTypes.object,
   fieldChanged: PropTypes.func,
-  label: PropTypes.bool,
+  label: PropTypes.string,
   placeholder: PropTypes.string,
   children: PropTypes.node,
   value: PropTypes.string,
@@ -111,7 +108,7 @@ Input.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]),
-  options: PropTypes.node,
+  is: PropTypes.string,
 }
 
 Input.defaultProps = {
@@ -121,7 +118,6 @@ Input.defaultProps = {
 export default connect(
   {
     field: field(state`${props`path`}`),
-    settings: state`app.settings`,
     fieldChanged: signal`app.fieldChanged`,
   },
   Input
@@ -129,6 +125,10 @@ export default connect(
 
 const InputContainer = styled.div`
   margin-top: 16px;
+  ${props => props.isCheckboxGroup && css`
+    display: inline-block;
+    margin-right: 16px;
+  `}
 `
 
 const InputComponentContainer = styled.div`
@@ -151,6 +151,7 @@ const CheckBoxLabel = styled.label`
   background: transparent;
   border: 1px solid ${props => props.theme.colors.gray};
   border-radius: 2px;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
   &:after {
     opacity: 0;
     content: 'x';
@@ -160,7 +161,7 @@ const CheckBoxLabel = styled.label`
   }
   &:hover {
     &::after {
-      opacity: .5;
+      opacity: .2;
     }
   }
 `
@@ -200,6 +201,7 @@ const Label = styled.div`
   margin-bottom: 4px;
   text-transform: capitalize;
   color: ${props => props.isPristine ? props.theme.colors.gray : 'inherit'};
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 
 const Required = styled.div`
