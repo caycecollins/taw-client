@@ -114,7 +114,7 @@ const Sidebar = (props) => {
           transitionLeaveTimeout={300}
           component="span"
         >
-          <SidebarComponentContainer key={props.sidebarTab}>
+          <SidebarComponentContainer key={props.sidebarTab || props.sidebarView}>
             {props.sidebarView && <SidebarComponent/>}
           </SidebarComponentContainer>
         </CSSTransitionGroup>
