@@ -7,6 +7,8 @@ import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
 import changeSidebarView from '../../factories/changeSidebarView'
 
+import eventCreated from './chains/eventCreated'
+
 const getEvent = ({ state, path, http, props }) => {
   if (!state.get('authorization.authenticated')) return path.error()
   return http.get(`/events/${props.id}`)
@@ -43,25 +45,12 @@ export default {
         ],
       },
       mandatory: {
-        type: 'checkbox',
         value: '',
         isRequired: false,
         isPristine: true,
-        validationRules: [
-          'isValue',
-        ],
-      },
-      type: {
-        type: 'select',
-        value: '',
-        isRequired: true,
-        isPristine: true,
-        validationRules: [
-          'isValue',
-        ],
+        validationRules: [],
       },
       start: {
-        type: 'date',
         value: '',
         isRequired: true,
         isPristine: true,
@@ -70,7 +59,6 @@ export default {
         ],
       },
       end: {
-        type: 'date',
         value: '',
         isRequired: true,
         isPristine: true,
@@ -79,18 +67,22 @@ export default {
         ],
       },
       repeat: {
-        type: 'select',
-        defaultValue: 0,
         value: '',
-        isRequired: true,
+        isRequired: false,
         isPristine: true,
-        validationRules: [
-          'isValue',
-        ],
+        validationRules: [],
+      },
+      repeatWeekly: {
+        value: '',
+        isRequired: false,
+        isPristine: true,
+        validationRules: [],
       },
       showErrors: true,
     },
+    creating: false,
     updating: false,
+    deleting: false,
   },
   signals: {
     routed: [
@@ -131,21 +123,30 @@ export default {
       ]),
     ],
     createRouted: [
-      apiGet('/events', 'events.data'), {
-        success: [
-          changeView('events'),
-          wait(2000),
-          changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }),
-        ],
-        error: set(state`event.data`, props`result`),
-      },
+      authenticate([
+        when(state`app.initialAnimation`), {
+          true: [
+            changeView('empty'),
+            changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }, [
+              apiGet('/events', 'events.data'), { success: [], error: [] },
+              toggle(state`app.sidebarImmune`),
+              wait(250),
+              changeView('events'),
+              toggle(state`app.sidebarImmune`),
+            ]),
+          ],
+          false: [
+            changeSidebarView({ icon: 'hourglass' },
+              [
+                wait(300),
+                changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }),
+              ],
+            ),
+          ],
+        },
+      ]),
     ],
-    creating: [
-      changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }),
-    ],
-    created: [
-      () => { console.log('event.created') },
-    ],
+    creating: eventCreated,
     deleted: [
       () => { console.log('event.deleted') },
     ],

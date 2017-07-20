@@ -142,7 +142,7 @@ export default connect(
     calendarViewChanged: signal`events.calendarViewChanged`,
     event: state`event.data`,
     eventSelected: signal`event.routed`,
-    createNewEvent: signal`event.creating`,
+    createNewEvent: signal`event.createRouted`,
     reportEvent: signal`event.reporting`,
     userTimezone: state`user.timezone`,
   },

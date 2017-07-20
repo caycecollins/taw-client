@@ -3,85 +3,101 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'cerebral/react'
 import { signal, state } from 'cerebral/tags'
-import { form } from '@cerebral/forms'
+import { form, field } from '@cerebral/forms'
 import moment from 'moment-timezone'
 
 import Button from '../Button'
 import Input from '../Input'
 
-const getFields = props => Object.keys(props.form.getFields()) || []
-
 const formPath = 'event.scheduleEventForm'
 
-const roundDate = (date, duration, method) => moment(Math[method]((+date) / (+duration)) * (+duration))
-
-const setDefaultDate = (props, field) => {
-  const roundedStart = roundDate(moment(), moment.duration(15, 'minutes'), 'ceil')
-  const roundedEnd = roundDate(moment(), moment.duration(75, 'minutes'), 'ceil')
-  switch (field) {
-    case 'start': return props.setFieldDefaultValue({ field: `${formPath}.${field}`, value: moment(roundedStart).tz(props.userTimezone).format() })
-    case 'end': return props.setFieldDefaultValue({ field: `${formPath}.${field}`, value: moment(roundedEnd).tz(props.userTimezone).format() })
-    default: return null
-  }
+const roundDate = (date, duration, method, userTimezone) => {
+  const rounded = moment(Math[method]((+date) / (+duration)) * (+duration))
+  const converted = moment(rounded).tz(userTimezone).toDate()
+  return converted
 }
 
 const dateConfigOptions = (props, field) => {
-  return {
+  const options = {
     allowInput: true,
     enableTime: true,
     time_24hr: !!props.userHourFormat || true,
     minDate: moment().tz(props.userTimezone).format(),
+    defaultDate: roundDate(moment(), moment.duration(30, 'minutes'), 'ceil', props.userTimezone),
   }
+  if (field === 'start') options.defaultDate = roundDate(moment(), moment.duration(30, 'minutes'), 'ceil', props.userTimezone)
+  if (field === 'end') options.defaultDate = roundDate(moment(), moment.duration(90, 'minutes'), 'ceil', props.userTimezone)
+  return options
 }
 
-const selectOptions = (props, field) => {
-  const options = ['one', 'two', 'three']
-  const updatedOptions = options.map((option, index) => {
-    return (
-      <option
-        key={`${field}-${index}`}
-        value={option}
-      >
-        {option}
-      </option>
-    )
-  })
-  updatedOptions.unshift(<option key="empty" value="">Select...</option>)
-  return updatedOptions
-}
-
-const setDefaultValue = (props, field) => {
-  switch (field) {
-    case 'repeat': return `${field}-2`
-    case 'type': return `${field}-2`
-  }
-}
-
-const submitForm = (props, e) => {
+const handleSubmitForm = (props, e) => {
   e.preventDefault()
   props.form.isValid && props.submitForm()
 }
+
+const SubmitButton = connect(
+  {
+    form: form(state`event.scheduleEventForm`),
+    submitForm: signal`event.creating`,
+    formSaving: state`event.creating`,
+  },
+  props =>
+    <Button
+      onClick={e => handleSubmitForm(props, e)}
+      disabled={!props.form.isValid || props.formSaving}
+      label={props.formSaving ? 'Saving...' : 'Save'}
+      type="submit"
+      icon={props.formSaving && 'crosshairs'}
+      iconSpin={props.formSaving && true}
+    />
+)
 
 const CreateEvent = props => {
   return (
     <CreateEventContainer>
       <form onSubmit={e => e.preventDefault()}>
-        {getFields(props).map((field, index) => {
-          const fieldType = props.form[field].type
-          return (
-            <Input
-              type={fieldType}
-              options={fieldType === 'select' && selectOptions(props, field)}
-              name={field}
-              key={index}
-              keyIndex={index}
-              path={`${formPath}.${field}`}
-              dateOptions={fieldType === 'date' ? dateConfigOptions(props, field) : {}}
-              defaultDate={fieldType === 'date' ? setDefaultDate(props, field) : {}}
-              value={fieldType === 'select' ? setDefaultValue(props, field) : null}
-            />
-          )
-        })}
+        <Input
+          label="name"
+          path={`${formPath}.name`}
+        />
+        <Input
+          label="description"
+          path={`${formPath}.description`}
+        />
+        <Input
+          label="mandatory"
+          type="checkbox"
+          path={`${formPath}.mandatory`}
+        />
+        <Input
+          label="start"
+          type="date"
+          path={`${formPath}.start`}
+          dateOptions={dateConfigOptions(props, 'start')}
+        />
+        <Input
+          label="end"
+          type="date"
+          path={`${formPath}.end`}
+          dateOptions={dateConfigOptions(props, 'end')}
+        />
+        <Input
+          label="repeat"
+          type="checkbox"
+          path={`${formPath}.repeat`}
+        />
+        {props.repeatEnabled && ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].map((weekday, index) =>
+          <Input
+            key={`repeat-${weekday}`}
+            label={weekday}
+            name="repeatWeekday"
+            type="checkbox"
+            is="checkbox-group"
+            path={`${formPath}.repeatWeekly.${weekday}`}
+            value={weekday}
+          />
+        )}
+        <br />
         <br />
         <br />
         <Button
@@ -90,41 +106,32 @@ const CreateEvent = props => {
           type="button"
         />
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <Button
-          onClick={e => submitForm(props, e)}
-          disabled={!props.form.isValid || props.formSaving}
-          label={props.formSaving ? 'Saving...' : 'Save'}
-          type="submit"
-          icon={props.formSaving && 'crosshairs'}
-          iconSpin={props.formSaving && true}
-        />
+        <SubmitButton />
       </form>
     </CreateEventContainer>
   )
 }
 
 CreateEvent.propTypes = {
-  form: PropTypes.object,
   userTimezone: PropTypes.string,
   formSaving: PropTypes.bool,
   submitForm: PropTypes.func,
   resetForm: PropTypes.func,
   setFieldDefaultValue: PropTypes.func,
-}
-
-CreateEvent.defaultProps = {
+  repeatEnabled: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+  ]),
 }
 
 export default connect(
   {
-    form: form(state`event.scheduleEventForm`),
     userTimezone: state`user.timezone`,
     userTimezoneText: state`user.timezoneText`,
-    submitForm: signal`event.creating`,
-    formSaving: state`event.scheduleEventForm.updating`,
     resetForm: signal`app.onReset`,
     setFieldDefaultValue: signal`app.setFieldDefaultValue`,
     userHourFormat: state`user.timeformat`,
+    repeatEnabled: state`${formPath}.repeat.value`,
   },
   CreateEvent
 )
