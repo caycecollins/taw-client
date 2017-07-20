@@ -84,15 +84,15 @@ export default {
     sidebarActiveToggled,
     sidebarTabChanged,
     fieldChanged: [
-      when(state`${props`settingsField`}.value`), {
-        true: [
-          set(state`app.settings.showErrors`, true),
-          setField(state`${props`field`}`, props`value`),
-        ],
-        false: [
-          set(state`${props`field`}.value`, props`value`),
-        ],
-      },
+      setField(state`${props`field`}`, props`value`),
+      // when(state`${props`settingsField`}.value`), {
+      //   true: [
+      //     set(state`app.settings.showErrors`, true),
+      //   ],
+      //   false: [
+      //     set(state`${props`field`}.value`, props`value`),
+      //   ],
+      // },
     ],
     onReset: resetForm(state`${props`formPath`}`),
     setFieldDefaultValue: [
