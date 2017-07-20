@@ -3,33 +3,21 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
-import { form } from '@cerebral/forms'
 import FlipMove from 'react-flip-move'
 
 import ViewContainer from '../ViewContainer'
 import Link from '../Link'
 import Input from '../Input'
 
-const filterGames = (games, term) => {
-  return games.filter((game) => {
-    const gameName = game.name.toLowerCase()
-    return gameName.search(term.toLowerCase()) > -1
-  })
-}
+const inputPath = 'games.filterInput'
 
 const Games = props =>
   <ViewContainer>
     <ViewHeader>
-      {Object.keys(props.form.getFields()).map((field, index) =>
-        <Input
-          type={props.form[field].type}
-          name={field}
-          key={index}
-          path={`games.form.${field}`}
-          label={false}
-          placeholder="Type to filter games"
-        />
-      )}
+      <Input
+        path={inputPath}
+        placeholder="Type to filter games"
+      />
     </ViewHeader>
     <GamesContainer>
       <FlipMove
@@ -41,23 +29,28 @@ const Games = props =>
         leaveAnimation="none"
         maintainContainerHeight={true}
       >
-        {filterGames(props.games, props.filterGamesTerm).map((game, index) =>
-          <Game
-            key={game.id}
-            routeTo="game"
-            routeParams={{ id: game.id.toString() }}
-          >
-            <Name>{game.name}</Name>
-          </Game>
-        )}
+        {props.games && props.games
+          .filter(game => {
+            const gameName = game.name.toLowerCase()
+            return gameName.search(props.filterValue.toLowerCase()) > -1
+          })
+          .map((game, index) =>
+            <Game
+              key={game.id}
+              routeTo="game"
+              routeParams={{ id: game.id.toString() }}
+            >
+              <Name>{game.name}</Name>
+            </Game>
+          )
+        }
       </FlipMove>
     </GamesContainer>
   </ViewContainer>
 
 Games.propTypes = {
   games: PropTypes.array,
-  form: PropTypes.object,
-  filterGamesTerm: PropTypes.string,
+  filterValue: PropTypes.string,
 }
 
 Games.defaultProps = {
@@ -66,10 +59,9 @@ Games.defaultProps = {
 
 export default connect(
   {
-    form: form(state`games.form`),
     games: state`games.data`,
-    filterGamesTerm: state`games.form.filterGamesTerm.value`,
-    filteredGames: state`games.filteredGames`,
+    filterValue: state`${inputPath}.value`,
+    filteredGames: state`${inputPath}`,
   },
   Games
 )
@@ -78,7 +70,6 @@ const ViewHeader = styled.div`
   display: flex;
   align-items: center;
   font-size: 24px;
-  padding: 16px 0;
   text-transform: uppercase;
   color: ${props => props.theme.colors.lightTan};
   transition: all .3s cubic-bezier(.4,0,.2,1);
@@ -88,6 +79,7 @@ const ViewHeader = styled.div`
 `
 
 const GamesContainer = styled.div`
+  margin-top: 24px;
   > div {
     display: grid;
     grid-gap: 24px;

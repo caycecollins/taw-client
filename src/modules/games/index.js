@@ -4,12 +4,8 @@ import changeView from '../../factories/changeView'
 
 export default {
   state: {
-    toggle: true,
-    form: {
-      filterGamesTerm: {
-        value: '',
-        isRequired: false,
-      },
+    filterInput: {
+      value: '',
     },
   },
   signals: {
