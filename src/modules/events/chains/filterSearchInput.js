@@ -1,8 +1,7 @@
 import { debounce } from 'cerebral/operators'
-import { props } from 'cerebral/tags'
+import { sortBy } from 'lodash'
 
 import authenticate from '../../../factories/authenticate'
-import apiGet from '../../../factories/apiGet'
 
 export default [
   debounce(200), {
@@ -11,9 +10,12 @@ export default [
         async ({ props, http, state }) => {
           const endpoint = '/search/units,users/' + props.value
           const getDataFromApi = await http.get(endpoint)
-          const users = getDataFromApi.result.users
+          const rawUsers = getDataFromApi.result.users
+          const users = rawUsers.map(user => ({ id: user.id, callsign: user.callsign, name: user.callsign }))
           const units = getDataFromApi.result.units
-          state.set('search.results', users.concat(units))
+          const concatResults = users.concat(units)
+          const searchResults = sortBy(concatResults, ['name'])
+          state.set('search.results', searchResults)
         },
       ]),
     ],
