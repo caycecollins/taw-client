@@ -23,6 +23,7 @@ const Button = props =>
     size={props.size}
     onClick={props.onClick}
     disabled={props.disabled}
+    className={props.className}
   >
     {props.icon &&
       <StyledIcon label={props.label}>
