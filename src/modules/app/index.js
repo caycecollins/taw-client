@@ -40,6 +40,8 @@ export default {
     sidebarImmune: false,
     sidebarTitle: null,
     sidebarTab: null,
+    sidebarReset: 'app.sidebarReset',
+    sidebarSubmit: 'app.sidebarSubmit',
     settings: {
       validateOnChange: {
         value: true,
@@ -98,5 +100,7 @@ export default {
     setFieldDefaultValue: [
       set(state`${props`field`}.defaultValue`, props`value`),
     ],
+    sidebarReset: [({ props }) => console.log('sidebar reset signal: ', props.signal)],
+    sidebarSubmit: [({ props }) => console.log('sidebar submit signal: ', props.signal)],
   },
 }
