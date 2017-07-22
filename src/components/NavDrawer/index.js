@@ -11,18 +11,18 @@ import Link from '../Link'
 import Icon from '../Icon'
 
 const userMenuItems = [
-  { label: 'My Profile', route: 'profile', icon: 'user' },
-  { label: 'Notifications', route: 'notifications', icon: 'bell' },
+  { label: 'My Profile', route: 'profile.routed', icon: 'user' },
+  { label: 'Notifications', route: 'notifications.routed', icon: 'bell' },
 ]
 
 const menuItems = [
-  { label: 'Dashboard', route: 'dashboard', icon: 'th' },
-  { label: 'Events', route: 'events', icon: 'calendar' },
-  { label: 'Game Divisions', route: 'games', icon: 'sitemap' },
+  { label: 'Dashboard', route: 'dashboard.routed', icon: 'th' },
+  { label: 'Events', route: 'events.routed', icon: 'calendar' },
+  { label: 'Game Divisions', route: 'games.routed', icon: 'sitemap' },
 ]
 
 const adminMenuItems = [
-  { label: 'Reports', route: 'reports', icon: 'line-chart' },
+  { label: 'Reports', route: 'reports.routed', icon: 'line-chart' },
 ]
 
 const getListItems = (props, items) => items.map((item, index) => {
@@ -82,12 +82,12 @@ const NavDrawer = props =>
       />
     </NavDrawerToggles>
     <User large={props.drawerActive && props.drawerLarge}>
-      <Link routeTo="profile">
+      <Link routeTo="profile.routed">
         <Avatar large={props.drawerLarge} />
       </Link>
       {props.user && props.drawerLarge &&
         <UserInfo>
-          <Link routeTo="profile">
+          <Link routeTo="profile.routed">
             <Callsign>{props.user.callsign}</Callsign>
           </Link>
           <Rank>

@@ -9,9 +9,9 @@ export default Router({
     '/notifications': 'notifications.routed',
     '/events': {
       '/': 'events.routed',
-      '/create': 'event.createRouted',
-      '/report': 'event.reportRouted',
-      '/:id': 'event.routed',
+      '/create': 'events.eventCreateRouted',
+      '/report': 'events.eventReportRouted',
+      '/:id': 'events.eventRouted',
     },
     '/games': {
       '/': 'games.routed',

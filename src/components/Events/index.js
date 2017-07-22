@@ -137,13 +137,13 @@ export default connect(
   {
     authenticated: state`authorization.authenticated`,
     deviceSize: state`app.deviceSize`,
-    events: state`events.data`,
+    events: state`events.eventsData`,
     calendarView: state`events.calendarView`,
+    event: state`events.eventData`,
     calendarViewChanged: signal`events.calendarViewChanged`,
-    event: state`event.data`,
-    eventSelected: signal`event.routed`,
-    createNewEvent: signal`event.createRouted`,
-    reportEvent: signal`event.reporting`,
+    eventSelected: signal`events.eventRouted`,
+    createNewEvent: signal`events.eventCreateRouted`,
+    reportEvent: signal`events.reportEventRouted`,
     userTimezone: state`user.timezone`,
   },
   Events

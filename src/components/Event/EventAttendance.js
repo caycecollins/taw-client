@@ -17,7 +17,7 @@ EventAttendance.propTypes = {
 
 export default connect(
   {
-    event: state`event.data`,
+    event: state`events.eventData`,
   },
   EventAttendance
 )

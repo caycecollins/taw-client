@@ -37,7 +37,7 @@ const Games = props =>
           .map((game, index) =>
             <Game
               key={game.id}
-              routeTo="game"
+              routeTo="game.routed"
               routeParams={{ id: game.id.toString() }}
             >
               <Name>{game.name}</Name>

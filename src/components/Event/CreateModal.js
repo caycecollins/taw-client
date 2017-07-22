@@ -14,7 +14,7 @@ import Input from '../Input'
 import TypeAhead from '../Input/TypeAhead'
 import ErrorMessage from '../Input/ErrorMessage'
 
-const formPath = 'event.createEventForm'
+const formPath = 'events.createEventForm'
 
 const roundDate = (date, duration, method, userTimezone) => {
   const rounded = moment(Math[method]((+date) / (+duration)) * (+duration))
@@ -185,12 +185,12 @@ export default connect(
     endDate: state`${formPath}.end.value`,
     divisions: state`units.divisions`,
     search: state`search.results`,
-    resetForm: signal`app.onReset`,
     userHourFormat: state`user.timeformat`,
     repeatEnabled: state`${formPath}.repeat.value`,
     underConstruction: state`${formPath}.underConstruction`,
-    filterHostingUnitInput: signal`event.filterHostingUnitInput`,
-    filterSearchInput: signal`event.filterSearchInput`,
+    resetForm: signal`app.onReset`,
+    filterHostingUnitInput: signal`events.filterHostingUnitInput`,
+    filterSearchInput: signal`events.filterSearchInput`,
     fieldChanged: signal`app.fieldChanged`,
   },
   CreateEvent

@@ -6,48 +6,49 @@ import { setStorage } from '@cerebral/storage/operators'
 import authenticate from '../../factories/authenticate'
 import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
+import changeSidebarView from '../../factories/changeSidebarView'
 
-function calculateCalendarView () {
-  return window.innerWidth > 768
-    ? JSON.parse(window.localStorage.getItem('events.calendarView')) || 'month'
-    : 'agenda'
-}
-
-const getEvents = [
-  apiGet('/events', 'events.data'), {
-    success: ({ state }) => state.set('events.calendarView', calculateCalendarView()),
-    error: [
-      changeView('fourohfour'),
-    ],
-  },
-]
+import eventRouted from './chains/eventRouted'
+import eventsRouted from './chains/eventsRouted'
+import eventCreateRouted from './chains/eventCreateRouted'
+import createEventFormSubmitted from './chains/createEventFormSubmitted'
+import filterHostingUnitInput from './chains/filterHostingUnitInput'
+import filterSearchInput from './chains/filterSearchInput'
+import calculateCalendarView from './helpers/calculateCalendarView'
+import createEventForm from './forms/createEventForm'
 
 export default {
   state: {
     calendarView: calculateCalendarView(),
     data: null,
+    createEventForm,
   },
   signals: {
-    routed: [
-      authenticate([
-        when(state`app.initialAnimation`), {
-          true: [
-            wait(400),
-            changeView('events'),
-            wait(800),
-            getEvents,
-          ],
-          false: [
-            changeView('events'),
-            wait(250),
-            getEvents,
-          ],
-        },
-      ]),
-    ],
+    routed: eventsRouted,
     calendarViewChanged: parallel([
       setStorage('events.calendarView', props`view`),
       set(state`events.calendarView`, props`view`),
     ]),
+    eventRouted,
+    eventCreateRouted,
+    createEventFormSubmitted,
+    filterHostingUnitInput,
+    filterSearchInput,
+    eventDeleted: [
+      () => { console.log('event.deleted') },
+    ],
+    reportEventRouted: [
+      apiGet('/events', 'events.data'), {
+        success: [
+          changeView('events'),
+          wait(2000),
+          changeSidebarView({ view: 'reportEvent', icon: 'calendar-check-o', title: 'Report an Event' }),
+        ],
+        error: set(state`event.data`, props`result`),
+      },
+    ],
+    reportEventFormSubmitted: [
+      changeSidebarView({ view: 'reportEvent', icon: 'calendar-check-o', title: 'Report an Event' }),
+    ],
   },
 }

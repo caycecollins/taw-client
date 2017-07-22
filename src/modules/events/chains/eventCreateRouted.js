@@ -13,7 +13,7 @@ export default [
         changeView('empty'),
         apiGet('/units/divisions', 'units.divisions'), { success: [], error: [] },
         changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }, [
-          apiGet('/events', 'events.data'), { success: [], error: [] },
+          apiGet('/events', 'events.eventsData'), { success: [], error: [] },
           toggle(state`app.sidebarImmune`),
           wait(250),
           changeView('events'),

@@ -18,7 +18,6 @@ import notifications from './modules/notifications'
 import games from './modules/games'
 import game from './modules/game'
 import events from './modules/events'
-import event from './modules/event'
 import reports from './modules/reports'
 import fourohfour from './modules/fourohfour'
 
@@ -48,7 +47,6 @@ const controller = Controller({
     notifications,
     dashboard,
     events,
-    event,
     games,
     game,
     reports,

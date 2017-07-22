@@ -30,7 +30,7 @@ Link.defaultProps = {
 
 export default connect(
   {
-    route: signal`${props`routeTo`}.routed`,
+    route: signal`${props`routeTo`}`,
   },
   Link
 )

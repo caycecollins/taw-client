@@ -17,7 +17,7 @@ const getEvent = ({ state, path, http, props }) => {
 const setOccurenceInfo = ({ props, state }) => {
   const event = props.result
   const timezone = state.get('user.timezone')
-  state.set('event.data', Object.assign({}, event, {
+  state.set('events.eventData', Object.assign({}, event, {
     start: moment.unix(props.s).tz(timezone).toDate(),
     end: moment.unix(props.e).tz(timezone).toDate(),
   }))
@@ -32,7 +32,7 @@ export default [
           success: [
             setOccurenceInfo,
             changeSidebarView({ view: 'viewEvent', tab: 'general', title: props`result.title` }, [
-              apiGet('/events', 'events.data'), { success: [], error: [] },
+              apiGet('/events', 'events.eventsData'), { success: [], error: [] },
               toggle(state`app.sidebarImmune`),
               wait(250),
               changeView('events'),
@@ -45,7 +45,7 @@ export default [
       false: [
         changeSidebarView({ icon: 'hourglass' },
           [
-            set(state`event.data`, null),
+            set(state`events.eventData`, null),
             wait(360),
             getEvent, {
               success: [

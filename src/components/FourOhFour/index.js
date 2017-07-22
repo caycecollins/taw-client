@@ -15,17 +15,17 @@ const FourOhFour = props =>
     <br />
     {props.previousView && props.previousView !== 'empty'
       ? <span>
-        <Link routeTo={props.previousView}>
+        <Link routeTo={`${props.previousView}.routed`}>
           <Button icon="angle-left" label="Go Back" />
         </Link>
         <br />
       </span>
       : <span>
-        <Link routeTo="dashboard">
+        <Link routeTo="dashboard.routed">
           <Button icon="home" label="Go to Dashboard" />
         </Link>
         <br />
-        <Link routeTo="games">
+        <Link routeTo="games.routed">
           <Button icon="sitemap" label="Go to Game Divisions" />
         </Link>
       </span>

@@ -19,7 +19,7 @@ const LoginButton = () =>
 const LogoutButton = props =>
   <Link
     onClick={() => props.logout()}
-    routeTo="login"
+    routeTo="login.routed"
   >
     <Button
       label="Logout"
@@ -43,7 +43,7 @@ const AppBar = props =>
           outline={false}
           onClick={() => props.drawerActiveToggled({ value: !props.drawerActive })} />
       }
-      <Link routeTo="dashboard">
+      <Link routeTo="dashboard.routed">
         <Logo />
       </Link>
     </LogoContainer>

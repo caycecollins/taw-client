@@ -16,7 +16,7 @@ const UpdateProfile = ({ props, state, http, forms }) => {
   //     forms.reset('event.scheduleEventForm')
   //   }).catch(rawError => {
   //     const error = JSON.stringify(rawError)
-  //     state.set('event.createError', JSON.parse(error))
+  //     state.set('events.createError', JSON.parse(error))
   //     state.set('event.creating', false)
   //   })
 }

@@ -9,7 +9,7 @@ import Button from '../Button'
 
 const Games = game =>
   <ViewContainer backgroundImage="/images/bf1-background.jpg">
-    <Link routeTo="games">
+    <Link routeTo="games.routed">
       <Button icon="angle-left" label="Back to all games" />
     </Link>
     <br />
