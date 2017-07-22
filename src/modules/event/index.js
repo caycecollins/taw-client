@@ -8,7 +8,8 @@ import changeSidebarView from '../../factories/changeSidebarView'
 import eventRouted from './chains/eventRouted'
 import eventCreateRouted from './chains/eventCreateRouted'
 import eventCreated from './chains/eventCreated'
-import filterInviteInput from './chains/filterInviteInput'
+import filterHostingUnitInput from './chains/filterHostingUnitInput'
+import filterSearchInput from './chains/filterSearchInput'
 
 export default {
   state: {
@@ -77,7 +78,8 @@ export default {
     routed: eventRouted,
     createRouted: eventCreateRouted,
     createEventFormSubmitted: eventCreated,
-    filterInviteInput,
+    filterHostingUnitInput,
+    filterSearchInput,
     deleted: [
       () => { console.log('event.deleted') },
     ],

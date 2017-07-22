@@ -5,7 +5,7 @@ import { rgba } from 'polished'
 import R from 'ramda'
 import reactStringReplace from 'react-string-replace'
 
-import { sharedInputStyles } from './index'
+import { Label, sharedInputStyles } from './index'
 
 export default class TypeAhead extends Component {
   state = {
@@ -65,7 +65,8 @@ export default class TypeAhead extends Component {
   itemSelected = (item) => {
     const itemIndex = this.props.items.indexOf(item)
     const dispatchInputChangedEvent = () => {
-      this.inputChanged({ target: { value: item.value } })
+      // this.inputChanged({ target: { value: item.value } })
+      this.props.onSelect(item)
       this.toggleDropdown(false)
     }
     this.setState({
@@ -170,6 +171,11 @@ export default class TypeAhead extends Component {
   render () {
     return (
       <InputGroup>
+        {this.props.label &&
+          <Label isPristine={true}>
+            {this.props.label}
+          </Label>
+        }
         <StyledInput
           autoComplete={this.props.autoComplete}
           disabled={this.props.disabled}
@@ -207,6 +213,7 @@ const InputGroup = styled.div`
 `
 
 const StyledInput = styled.input`
+  position: relative;
   ${sharedInputStyles}
 `
 
@@ -240,9 +247,10 @@ const Dropdown = styled.div`
   position: absolute;
   width: 100%;
   max-height: 368px;
-  top: 33px;
+  top: 56px;
   border-radius: 0 0 2px 2px;
   background-color: ${props => props.theme.colors.darkGray2};
   overflow-y: auto;
   overflow-x: hidden;
+  z-index: 9999;
 `

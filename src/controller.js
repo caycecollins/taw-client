@@ -33,6 +33,9 @@ const controller = Controller({
     : null,
   state: {
     config,
+    search: {
+      results: [],
+    },
     units: {},
   },
   modules: {

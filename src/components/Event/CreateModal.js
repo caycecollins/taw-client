@@ -54,8 +54,12 @@ const dateConfigOptions = (props, field) => {
   return options
 }
 
-const onChange = (props, e) => {
-  props.filterInviteInput({ value: e.target.value })
+const hostingUnitOnChange = (props, e) => {
+  props.filterHostingUnitInput({ value: e.target.value })
+}
+
+const searchOnChange = (props, e) => {
+  props.filterSearchInput({ value: e.target.value })
 }
 
 const getDuration = props => {
@@ -75,7 +79,7 @@ const CreateEvent = props => {
       <Form>
         <Grid>
           <Row>
-            <Col sm={12} md={8}>
+            <Col sm={6} sm8={4} xs4={4}>
               <Input
                 label="title"
                 path={`${formPath}.title`}
@@ -123,11 +127,20 @@ const CreateEvent = props => {
                 />
               )}
             </Col>
-            <Col>
+            <Col sm={6} sm8={4}>
               <TypeAhead
+                label="Division Search Test"
                 autoComplete="off"
                 items={props.divisions && props.divisions.map(it => ({ key: it.id, value: it.name }))}
-                onChange={e => onChange(props, e)}
+                onChange={e => hostingUnitOnChange(props, e)}
+                spellCheck="false"
+              />
+              <TypeAhead
+                label="Member or Unit Search Test"
+                autoComplete="off"
+                items={props.search && props.search.map(it => ({ key: it.id, value: it.name || it.callsign, type: it.callsign ? 'user' : 'unit' }))}
+                onChange={e => searchOnChange(props, e)}
+                onSelect={e => console.log(e)}
                 spellCheck="false"
               />
             </Col>
@@ -157,7 +170,8 @@ CreateEvent.propTypes = {
     PropTypes.bool,
   ]),
   underConstruction: PropTypes.bool,
-  filterInviteInput: PropTypes.func,
+  filterHostingUnitInput: PropTypes.func,
+  filterSearchInput: PropTypes.func,
   divisions: PropTypes.array,
   startDate: PropTypes.string,
   endDate: PropTypes.string,
@@ -170,11 +184,13 @@ export default connect(
     startDate: state`${formPath}.start.value`,
     endDate: state`${formPath}.end.value`,
     divisions: state`units.divisions`,
+    search: state`search.results`,
     resetForm: signal`app.onReset`,
     userHourFormat: state`user.timeformat`,
     repeatEnabled: state`${formPath}.repeat.value`,
     underConstruction: state`${formPath}.underConstruction`,
-    filterInviteInput: signal`event.filterInviteInput`,
+    filterHostingUnitInput: signal`event.filterHostingUnitInput`,
+    filterSearchInput: signal`event.filterSearchInput`,
     fieldChanged: signal`app.fieldChanged`,
   },
   CreateEvent

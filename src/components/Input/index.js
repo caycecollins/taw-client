@@ -90,9 +90,11 @@ const Input = props => {
         </InputComponent>
         {props.type === 'checkbox' && <CheckBoxLabel htmlFor={props.label} />}
       </InputComponentContainer>
-      <ErrorMessage size="xs">
-        {props.field.errorMessage}
-      </ErrorMessage>
+      {props.field.errorMessage &&
+        <ErrorMessage size="xs">
+          {props.field.errorMessage}
+        </ErrorMessage>
+      }
     </InputContainer>
   )
 }
@@ -200,7 +202,7 @@ const StyledSelect = styled.select`
   }
 `
 
-const Label = styled.div`
+export const Label = styled.div`
   font-size: 0.9rem;
   margin-bottom: 4px;
   text-transform: capitalize;
