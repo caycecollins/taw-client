@@ -26,17 +26,17 @@ const timezones = timezonesFromJson.map((timezone, index) => {
 
 timezones.unshift(<option key="empty" value="">Select your timezone</option>)
 
-const getUserTimezoneText = userTimezone => timezonesFromJson.filter(tz => tz.utc && tz.utc[0] === userTimezone)
+// const getUserTimezoneText = userTimezone => timezonesFromJson.filter(tz => tz.utc && tz.utc[0] === userTimezone)
 
 const EditProfile = props => {
   return (
     <EditProfileContainer>
       <b>EDIT PROFILE</b>
       <br />
-      <br />
+      {/* <br />
       Raw current user timezone: {props.userTimezone}
       <br />
-      Current user timezone: {getUserTimezoneText(props.userTimezone)[0].text}
+      Current user timezone: {getUserTimezoneText(props.userTimezone)[0].text} */}
       <br />
       <Form>
         <Input

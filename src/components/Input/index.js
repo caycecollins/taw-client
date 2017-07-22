@@ -26,6 +26,7 @@ const determineInputComponent = props => {
 const determineInputValue = props => {
   if (props.type === 'date') return props.field.value || props.dateOptions.defaultDate
   if (props.type === 'checkbox') return props.field.value
+  if (props.type === 'typeahead') return props.field.value
   const inputValue = props.field.value || props.value || props.field.defaultValue || ''
   return inputValue
 }
@@ -34,17 +35,18 @@ const onChange = (props, e) => {
   const inputValue = determineInputValue(props)
   const updateValue = () => {
     switch (props.type) {
-      case 'date': return moment(moment.tz(e[0], props.userTimezone).toDate()).format()
+      case 'date': return e.length > 0 ? moment(moment.tz(e[0], props.userTimezone).toDate()).format('YYYY-MM-DDTHH:mm:00ZZ') : ''
       case 'checkbox': return e.target.checked
       default: return e.target.value
     }
   }
   const updatedValue = updateValue()
-  updatedValue !== inputValue &&
+  if (updatedValue !== inputValue) {
     props.fieldChanged({
       field: props.path,
       value: updatedValue,
     })
+  }
 }
 
 const onBlur = (props, e) => {
@@ -71,7 +73,7 @@ const Input = props => {
         isCheckboxGroup={props.is === 'checkbox-group'}
       >
         <InputComponent
-          onChange={e => onChange(props, e)}
+          onChange={e => !props.onChange ? onChange(props, e) : props.onChange(e)}
           onBlur={e => props.type !== 'date' && onBlur(props, e)}
           value={determineInputValue(props)}
           checked={props.type === 'checkbox' && determineInputValue(props)}
@@ -81,6 +83,8 @@ const Input = props => {
           options={props.dateOptions}
           id={props.label}
           name={props.name}
+          autoComplete={props.autoComplete}
+          innerRef={props.innerRef}
         >
           {props.children}
         </InputComponent>
@@ -109,6 +113,9 @@ Input.propTypes = {
     PropTypes.number,
   ]),
   is: PropTypes.string,
+  innerRef: PropTypes.string,
+  autoComplete: PropTypes.bool,
+  onChange: PropTypes.func,
 }
 
 export default connect(
@@ -125,6 +132,7 @@ const InputContainer = styled.div`
     display: inline-block;
     margin-right: 16px;
   `}
+  overflow: hidden;
 `
 
 const InputComponentContainer = styled.div`
@@ -162,7 +170,7 @@ const CheckBoxLabel = styled.label`
   }
 `
 
-const sharedInputStyles = css`
+export const sharedInputStyles = css`
   padding: 6px 16px 4px 16px;
   background-color: transparent;
   color: ${props => props.isPristine ? props.theme.colors.gray : props.theme.colors.armyWhite};
@@ -172,7 +180,7 @@ const sharedInputStyles = css`
   font-size: 1rem;
   transition: all .3s cubic-bezier(.4,0,.2,1);
 `
-const StyledInput = styled.input`
+const StyledInput = styled(({ isPristine, innerRef, options, ...rest }) => <input {...rest} />)`
   ${sharedInputStyles}
 `
 

@@ -64,7 +64,8 @@
   }
   &.showTimeInput.hasTime .flatpickr-time {
     height: 40px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #95989A;
+    border-bottom: 1px solid #95989A;
   }
   &.noCalendar.hasTime .flatpickr-time {
     height: auto;
@@ -1007,4 +1008,18 @@ span.flatpickr-day {
 
 .hasWeeks .flatpickr-days {
   border-right: 0;
+}
+
+.flatpickr-confirm {
+  padding: 10px 0 8px 0;
+  color: #B4C086;
+  font-size: 1rem;
+  i {
+    margin-left: 8px;
+  }
+  &:hover {
+    background-color: rgba(180, 192, 134, 0.3);
+    color: #EBF4E9;
+    cursor: pointer;
+  }
 }
