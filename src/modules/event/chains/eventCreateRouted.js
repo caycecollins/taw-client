@@ -11,6 +11,7 @@ export default [
     when(state`app.initialAnimation`), {
       true: [
         changeView('empty'),
+        apiGet('/units/divisions', 'units.divisions'), { success: [], error: [] },
         changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }, [
           apiGet('/events', 'events.data'), { success: [], error: [] },
           toggle(state`app.sidebarImmune`),

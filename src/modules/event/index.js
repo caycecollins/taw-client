@@ -8,11 +8,12 @@ import changeSidebarView from '../../factories/changeSidebarView'
 import eventRouted from './chains/eventRouted'
 import eventCreateRouted from './chains/eventCreateRouted'
 import eventCreated from './chains/eventCreated'
+import filterInviteInput from './chains/filterInviteInput'
 
 export default {
   state: {
     createEventForm: {
-      name: {
+      title: {
         value: '',
         isRequired: true,
         isPristine: true,
@@ -62,6 +63,12 @@ export default {
         isPristine: true,
         validationRules: [],
       },
+      searchDivision: {
+        value: '',
+        isRequired: false,
+        isPristine: true,
+        validationRules: [],
+      },
       showErrors: true,
       pending: false,
     },
@@ -70,6 +77,7 @@ export default {
     routed: eventRouted,
     createRouted: eventCreateRouted,
     createEventFormSubmitted: eventCreated,
+    filterInviteInput,
     deleted: [
       () => { console.log('event.deleted') },
     ],
