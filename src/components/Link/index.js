@@ -8,6 +8,7 @@ const Link = props =>
   <StyledLink
     onClick={() => props.onClick ? props.onClick() : props.route(props.routeParams || {})}
     className={props.className}
+    title={props.title}
   >
     {props.label && <Label>{props.label}</Label>}
     {props.children}

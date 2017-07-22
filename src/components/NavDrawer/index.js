@@ -30,6 +30,7 @@ const getListItems = (props, items) => items.map((item, index) => {
     <Link
       routeTo={item.route}
       key={item.route}
+      title={item.label}
     >
       <ListItem
         disabled={props.currentView && item.route.search(props.currentView) > -1}
@@ -118,6 +119,7 @@ NavDrawer.propTypes = {
   routeTo: PropTypes.func,
   className: PropTypes.string,
   authenticated: PropTypes.bool,
+  user: PropTypes.object,
 }
 
 export default connect(
@@ -308,7 +310,7 @@ const ListItem = styled.li`
   justify-content: flex-start;
   height: 64px;
   color: ${props => props.theme.colors.armyGreen};
-  transition: all .3s ease-in-out;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
   text-transform: uppercase;
   ${props => props.iconOnly
     ? css`padding: 8px 30px;`

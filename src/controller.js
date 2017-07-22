@@ -33,6 +33,7 @@ const controller = Controller({
     : null,
   state: {
     config,
+    units: {},
   },
   modules: {
     router,
