@@ -1,15 +1,15 @@
 const UpdateProfile = ({ props, state, http, forms }) => {
   state.set(`${props.form}.pending`, true)
-  const fields = forms.toJSON(props.form)
-  return http.put(`/users/${state.get('user.id')}/info`, fields)
+  let fields = forms.toJSON(props.form)
+  return http.put(`/users/${state.get('user.id')}/infos`, fields)
     .then(response => {
       state.merge('user', response.result)
-      state.set(`${props.form}.pending`, false)
-      forms.reset(props.form)
+      setTimeout(() => state.set(`${props.form}.pending`, false), 500)
+      setTimeout(() => forms.reset(props.form), 500)
     }).catch(rawError => {
       const error = JSON.stringify(rawError)
-      state.set(`${props.form}.error`, JSON.parse(error))
-      state.set(`${props.form}.pending`, false)
+      setTimeout(() => state.set(`${props.form}.pending`, false), 500)
+      setTimeout(() => state.set(`${props.form}.error`, JSON.parse(error)), 500)
     })
 }
 

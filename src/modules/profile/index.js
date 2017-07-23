@@ -8,7 +8,7 @@ import profileUpdated from './chains/profileUpdated.js'
 
 export default {
   state: {
-    editForm: {
+    profileUpdated: {
       timezone: {
         type: 'select',
         value: '',
@@ -19,8 +19,8 @@ export default {
         ],
       },
       showErrors: true,
+      pending: false,
     },
-    pending: false,
   },
   signals: {
     routed: [
@@ -31,7 +31,7 @@ export default {
         changeSidebarView({ view: 'viewProfile', tab: 'general', title: state`user.callsign` }),
       ]),
     ],
-    editFormSubmitted: profileUpdated,
+    profileUpdated,
     deleted: [
       () => { console.log('profile.deleted') },
     ],
