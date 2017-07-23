@@ -93,10 +93,19 @@ export default {
     ]),
     new ExtractTextPlugin('style.css'),
     new Webpack.optimize.UglifyJsPlugin({
+      beautify: false,
+      comments: false,
       compress: {
         warnings: false,
+        drop_console: true,
+        screw_ie8: true,
+      },
+      mangle: {
+        except: ['webpackJsonp'],
+        screw_ie8: true,
       },
     }),
+    new Webpack.HashedModuleIdsPlugin(),
     // new Webpack.optimize.CommonsChunkPlugin({
     //   name: 'vendor',
     //   minChunks (module) {

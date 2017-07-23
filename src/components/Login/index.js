@@ -44,7 +44,7 @@ const LoginForm = props =>
         }
       </ErrorMessageContainer>
       <Helper>
-        Test Credentials:
+        <span>Test Credentials:</span>
         <br />
         <br />
         Callsign: &nbsp; <span>inergy</span>
@@ -92,7 +92,7 @@ const ErrorMessageContainer = styled.div`
 const Helper = styled.div`
   margin-top: 32px;
   padding: 24px;
-  background-color: ${props => rgba(props.theme.colors.lightRed, 0.3)};
+  background-color: ${props => rgba(props.theme.colors.lightRed, 0.6)};
   border-radius: 4px;
   color: ${props => props.theme.colors.grayGreen};
   span {
