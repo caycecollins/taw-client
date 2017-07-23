@@ -6,6 +6,7 @@ export default [
       setTimeout(() => {
         state.set('app.sidebarTab', null)
         state.set('app.sidebarView', null)
+        state.set('app.sidebarSubmit', 'app.sidebarSubmit')
         return router.goTo(`/${state.get('app.currentView')}`)
       }, 450)
     }
