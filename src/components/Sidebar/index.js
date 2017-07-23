@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
+import { form } from '@cerebral/forms'
 import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import { CSSTransitionGroup } from 'react-transition-group'
@@ -14,6 +15,8 @@ import ViewProfile from '../Profile/ProfileModal'
 import Button from '../Button'
 import Icon from '../Icon'
 
+import SidebarActions from './SidebarActions'
+
 const Empty = () => <div></div>
 
 const views = {
@@ -23,40 +26,60 @@ const views = {
     icon: 'calendar-o',
     defaultTab: 'general',
     tabs: {
-      general: ViewEvent,
-      attendance: EventAttendance,
+      general: {
+        component: ViewEvent,
+        submitSignal: null,
+      },
+      attendance: {
+        component: EventAttendance,
+        submitSignal: null,
+      },
     },
   },
   createEvent: {
     title: 'Schedule New Event',
     icon: 'calendar-plus-o',
     component: CreateEvent,
+    submitSignal: 'events.createEvent',
   },
   reportEvent: {
     title: 'Report an Event',
     icon: 'calendar-check-o',
     component: ReportEvent,
+    submitSignal: 'events.reportEvent',
   },
   viewProfile: {
     title: null,
     icon: 'user',
     defaultTab: 'general',
     tabs: {
-      general: ViewProfile,
+      general: {
+        component: ViewProfile,
+        submitSignal: 'profile.profileUpdated',
+      },
     },
   },
 }
 
 const determineSidebarComponent = props => {
-  if (props.sidebarTab) return views[props.sidebarView].tabs[props.sidebarTab]
+  if (props.sidebarTab) return views[props.sidebarView].tabs[props.sidebarTab].component
   return views[props.sidebarView].defaultTab || views[props.sidebarView].component
+}
+
+const setSidebarAction = props => {
+  if (props.sidebarTab) {
+    const submitAction = views[props.sidebarView].tabs[props.sidebarTab].submitSignal
+    return props.sidebarActionsUpdated({ value: submitAction || 'app.sidebarSubmit' })
+  }
+  const defaultTab = views[props.sidebarView].defaultTab
+  const submitAction = defaultTab ? views[props.sidebarView].tabs[defaultTab].submitSignal : views[props.sidebarView].submitSignal
+  return props.sidebarActionsUpdated({ value: submitAction || 'app.sidebarSubmit' })
 }
 
 const Sidebar = (props) => {
   const SidebarComponent = props.sidebarView ? determineSidebarComponent(props) : views.empty
-  let tab = ''
-  if (props.sidebarTab) tab = `.${props.sidebarTab}`
-  const signalString = `${props.currentView}.${props.sidebarView}${tab}`
+  props.sidebarView && props.sidebarView !== 'empty' && setSidebarAction(props)
+  console.log('re-renered sidebar')
   return (
     <div>
       <CSSTransitionGroup
@@ -74,82 +97,57 @@ const Sidebar = (props) => {
           />
         }
       </CSSTransitionGroup>
-      <SidebarContainer active={props.sidebarActive && !props.loggingOut}>
-        <CSSTransitionGroup
-          transitionName="sidebarView"
-          transitionAppearTimeout={300}
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
-          component="span"
-        >
-          {props.sidebarView && props.sidebarView !== 'empty' &&
-            <SidebarHeader key={props.sidebarView}>
-              <StyledIcon
-                name={views[props.sidebarView].icon || ''}
-                size={32}
-              />
-              <Title>{props.sidebarTitle || views[props.sidebarView].title}</Title>
-              <Button
-                size="xs"
-                onClick={() => props.sidebarActiveToggled({ value: false })}
-                icon="close"
-              />
-            </SidebarHeader>
-          }
-        </CSSTransitionGroup>
-        <SidebarTabs active={props.sidebarTab}>
-          {props.sidebarView && props.sidebarTab && Object.keys(views[props.sidebarView].tabs).map((tab, index) => {
-            return (
-              <Tab
-                key={index}
-                active={props.sidebarTab === tab}
-                onClick={() => props.sidebarTabChanged({ tab })}
-              >
-                {tab}
-              </Tab>
-            )
-          })}
-        </SidebarTabs>
-        <CSSTransitionGroup
-          transitionName="sidebarView"
-          transitionAppearTimeout={300}
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
-          component="span"
-        >
-          <SidebarComponentContainer key={props.sidebarTab || props.sidebarView}>
-            {props.sidebarView && <SidebarComponent/>}
-          </SidebarComponentContainer>
-        </CSSTransitionGroup>
-        <CSSTransitionGroup
-          transitionName="sidebarView"
-          transitionAppearTimeout={300}
-          transitionEnterTimeout={300}
-          transitionLeaveTimeout={300}
-          component="span"
-        >
-          <SidebarActions key={'footer' + props.sidebarTab || 'footer' + props.sidebarView}>
-            <Action
-              type="reset"
-              onClick={() => props.sidebarReset({ signal: signalString + 'Form' })}
-            >
-              reset
-            </Action>
-            <Action
-              type="cancel"
-              onClick={() => props.sidebarActiveToggled({ value: false })}
-            >
-              cancel
-            </Action>
-            <Action
-              type="submit"
-              onClick={() => props.sidebarSubmit({ signal: signalString })}
-            >
-              submit
-            </Action>
-          </SidebarActions>
-        </CSSTransitionGroup>
-      </SidebarContainer>
+      <SidebarWrapper active={props.sidebarActive && !props.loggingOut}>
+        <SidebarContainer>
+          <CSSTransitionGroup
+            transitionName="sidebarView"
+            transitionAppearTimeout={300}
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+            component="span"
+          >
+            {props.sidebarView && props.sidebarView !== 'empty' &&
+              <SidebarHeader key={props.sidebarView}>
+                <StyledIcon
+                  name={views[props.sidebarView].icon || ''}
+                  size={32}
+                />
+                <Title>{props.sidebarTitle || views[props.sidebarView].title}</Title>
+                <Button
+                  size="xs"
+                  onClick={() => props.sidebarActiveToggled({ value: false })}
+                  icon="close"
+                />
+              </SidebarHeader>
+            }
+          </CSSTransitionGroup>
+          <SidebarTabs active={props.sidebarTab}>
+            {props.sidebarView && props.sidebarTab && Object.keys(views[props.sidebarView].tabs).map((tab, index) => {
+              return (
+                <Tab
+                  key={index}
+                  active={props.sidebarTab === tab}
+                  onClick={() => props.sidebarTabChanged({ tab })}
+                >
+                  {tab}
+                </Tab>
+              )
+            })}
+          </SidebarTabs>
+          <CSSTransitionGroup
+            transitionName="sidebarView"
+            transitionAppearTimeout={300}
+            transitionEnterTimeout={300}
+            transitionLeaveTimeout={300}
+            component="span"
+          >
+            <SidebarComponentContainer key={props.sidebarTab || props.sidebarView}>
+              {props.sidebarView && <SidebarComponent/>}
+            </SidebarComponentContainer>
+          </CSSTransitionGroup>
+        </SidebarContainer>
+        <SidebarActions />
+      </SidebarWrapper>
     </div>
   )
 }
@@ -164,8 +162,7 @@ Sidebar.propTypes = {
   sidebarIcon: PropTypes.string,
   sidebarTab: PropTypes.string,
   loggingOut: PropTypes.bool,
-  sidebarSubmit: PropTypes.func,
-  sidebarReset: PropTypes.func,
+  sidebarSubmitAction: PropTypes.func,
 }
 
 export default connect(
@@ -179,9 +176,9 @@ export default connect(
     sidebarIcon: state`app.sidebarIcon`,
     sidebarTab: state`app.sidebarTab`,
     loggingOut: state`authorization.loggingOut`,
-    sidebarReset: signal`${state`app.sidebarReset`}`,
-    sidebarSubmit: signal`${state`app.sidebarSubmit`}`,
-  }, Sidebar
+    sidebarActionsUpdated: signal`app.sidebarActionsUpdated`,
+  },
+  Sidebar
 )
 
 const SidebarOverlay = styled.div`
@@ -200,7 +197,7 @@ const SidebarOverlay = styled.div`
   transition: all .4s cubic-bezier(.4,0,.2,1);
   `
 
-const SidebarContainer = styled.div`
+const SidebarWrapper = styled.div`
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -210,14 +207,23 @@ const SidebarContainer = styled.div`
   top: 48px;
   right: ${props => props.active ? '0%' : '-70%'};
   background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   transition: all .3s cubic-bezier(.4,0,.2,1);
   z-index: 9998;
   @media (max-width: 720px) {
     width: 100%;
     right: ${props => props.active ? '0%' : '-100%'};
   }
+`
+
+const SidebarContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 
 const SidebarHeader = styled.div`
@@ -316,37 +322,5 @@ const SidebarComponentContainer = styled.div`
   }
   @media (max-width: 720px) {
     padding: 16px;
-  }
-`
-
-const SidebarActions = styled.div`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  width: 100%;
-`
-
-const Action = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: ${props => props.type === 'submit' || props.type === 'cancel' ? '1 0 auto' : '0 1 auto'};
-  height: 56px;
-  color: ${props => props.type === 'submit' ? props.theme.colors.darkGray2 : props.theme.colors.gray};
-  background-color: ${props => {
-    if (props.type === 'reset') return rgba(props.theme.colors.darkGray3, 0.6)
-    if (props.type === 'cancel') return rgba(props.theme.colors.darkGray2, 0.5)
-    if (props.type === 'submit') return rgba(props.theme.colors.armyGreen, 0.6)
-  }};
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  padding: 4px 24px 0 24px;
-  &:hover {
-    color: ${props => props.theme.colors.armyWhite};
-    background-color: ${props => props.type === 'submit' ? rgba(props.theme.colors.armyGreen, 1) : rgba(props.theme.colors.darkGray2, 1)};
-    cursor: pointer;
   }
 `
