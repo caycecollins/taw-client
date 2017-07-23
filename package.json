@@ -4,10 +4,11 @@
   "description": "Front-end for TAW.net",
   "license": "UNLICENSED",
   "scripts": {
-    "build": "npm run clean && npm run build:prod:dll && npm run build:webpack",
+    "build": "npm run build:clean && npm run build:prod:dll && npm run build:webpack",
     "build:dev:dll": "webpack --config webpack.dev.dll.babel.js --progress",
     "build:prod:dll": "webpack --config webpack.prod.dll.babel.js --progress",
     "build:webpack": "webpack --config webpack.prod.babel.js --progress",
+    "build:clean": "rimraf build",
     "clean": "rimraf dist",
     "start": "webpack-dev-server --config webpack.dev.babel.js --hot --inline --progress",
     "start:full": "npm run clean && npm run build:dev:dll && webpack-dev-server --config webpack.dev.babel.js --hot --inline --progress",

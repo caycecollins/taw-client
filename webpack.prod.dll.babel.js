@@ -8,7 +8,7 @@ module.exports = {
     vendor: ['babel-polyfill', Path.join(__dirname, 'src', 'vendors.js')],
   },
   output: {
-    path: Path.join(__dirname, 'dist', 'dll'),
+    path: Path.join(__dirname, 'build', 'dll'),
     filename: 'dll.[name].js',
     library: '[name]',
     publicPath: '/',

@@ -16,7 +16,7 @@ export default {
     ],
   },
   output: {
-    path: Path.resolve(__dirname, 'dist'),
+    path: Path.resolve(__dirname, 'build'),
     filename: '[name].js',
     chunkFilename: '[name].js',
     publicPath: '/',
