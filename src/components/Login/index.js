@@ -13,7 +13,7 @@ import Button from '../Button'
 import Input from '../Input'
 import ErrorMessage from '../Input/ErrorMessage'
 
-const formPath = 'login.form'
+const formPath = 'login.authForm'
 
 const LoginForm = props =>
   <ViewContainer centered={true}>
@@ -23,15 +23,17 @@ const LoginForm = props =>
         <Input type="password" label="password" path={`${formPath}.password`} />
         <br />
         <Button
-          onClick={e => props.onReset({ formPath })}
+          onClick={e => props.onReset({ form: formPath })}
           label="Reset"
           type="button"
         />
         &nbsp;&nbsp;&nbsp;&nbsp;
         <SubmitButton
-          form={formPath}
-          signal="authorization.authenitcate"
-          stateCheck={`authorization.pending`}
+          formPath={formPath}
+          submitSignal="authorization.authenticate"
+          pendingState="authorization.pending"
+          label="Login"
+          pendingLabel="Logging In..."
         />
         <br />
         <br />
@@ -59,7 +61,7 @@ LoginForm.propTypes = {
 }
 export default connect(
   {
-    form: form(state`login.form`),
+    form: form(state`${formPath}`),
     onReset: signal`app.onReset`,
     login: signal`authorization.authenticate`,
     previousCallsign: state`authorization.callsign`,

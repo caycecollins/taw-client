@@ -7,7 +7,7 @@ import changeView from '../../factories/changeView'
 
 export default {
   state: {
-    form: {
+    authForm: {
       callsign: {
         value: '',
         isRequired: true,
@@ -35,6 +35,6 @@ export default {
         false: changeView('login'),
       },
     ],
-    formSubmitted: authenticate,
+    login: authenticate,
   },
 }

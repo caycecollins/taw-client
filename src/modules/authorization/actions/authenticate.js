@@ -1,17 +1,16 @@
-export default function ({ state, http, storage, router }) {
+export default function ({ props, state, http, storage, router }) {
   state.set('authorization.pending', true)
-  const callsign = state.get('login.form.callsign.value')
+  const callsign = state.get(`${props.form}.callsign.value`)
   state.set('authorization.callsign', callsign)
-  const password = state.get('login.form.password.value')
-  console.log(`attempting login with username: ${callsign}`)
+  const password = state.get(`${props.form}.password.value`)
   return http.post('/auth/login', {
     callsign,
     password,
   }).then(async rawResponse => {
     const stringifyResponse = JSON.stringify(rawResponse)
     const response = JSON.parse(stringifyResponse)
-    state.set('login.form.callsign.value', '')
-    state.set('login.form.password.value', '')
+    state.set(`${props.form}.callsign.value`, '')
+    state.set(`${props.form}.password.value`, '')
     state.set('authorization.error', null)
     state.set('authorization.token', response.result.token)
     state.set('authorization.authenticated', true)
@@ -29,7 +28,7 @@ export default function ({ state, http, storage, router }) {
     router.goTo('/')
     state.set('authorization.pending', false)
   }).catch(rawError => {
-    state.set('login.form.password.value', '')
+    state.set(`${props.form}.password.value`, '')
     const error = JSON.stringify(rawError)
     state.set('authorization.error', JSON.parse(error))
     state.set('authorization.pending', false)
