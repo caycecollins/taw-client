@@ -40,7 +40,6 @@ export default {
     sidebarImmune: false,
     sidebarTitle: null,
     sidebarTab: null,
-    sidebarReset: 'app.sidebarReset',
     sidebarSubmit: 'app.sidebarSubmit',
     settings: {
       validateOnChange: {
@@ -96,11 +95,17 @@ export default {
       //   ],
       // },
     ],
-    onReset: resetForm(state`${props`formPath`}`),
+    onReset: [
+      resetForm(state`${props`form`}`),
+      set(state`${props`form`}.error`, null),
+    ],
     setFieldDefaultValue: [
       set(state`${props`field`}.defaultValue`, props`value`),
     ],
-    sidebarReset: [({ props }) => console.log('sidebar reset signal: ', props.signal)],
+    sidebarActionsUpdated: [
+      wait(200),
+      set(state`app.sidebarSubmit`, props`value`),
+    ],
     sidebarSubmit: [({ props }) => console.log('sidebar submit signal: ', props.signal)],
   },
 }
