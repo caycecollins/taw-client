@@ -8,7 +8,7 @@ import Button from '../Button'
 import Link from '../Link'
 
 const LoginButton = () =>
-  <Link routeTo="login">
+  <Link routeTo="login.routed">
     <Button
       label="Login"
       icon="sign-in"
