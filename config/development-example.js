@@ -9,8 +9,16 @@ import { merge } from 'lodash'
 import common from './common'
 
 export default merge(common, {
+  api: {
+    port: 9000,
+  },
   cerebral: {
     debugger: true,
-    // remote: 'localhost:8585', // Uncomment this to use the cerebral remote debugger, otherwise you can use the chrome extension
+    remote: 'localhost:8585',
+  },
+  webpack: {
+    host: '0.0.0.0', // open to all network interfaces, use 'localhost' to restrict
+    port: 9000,
+    compress: true, // gzip compression
   },
 })

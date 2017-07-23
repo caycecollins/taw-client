@@ -9,7 +9,7 @@ export default {
   api: {
     protocol: 'http',
     host: 'taw.inergy.io',
-    port: 5000,
+    port: 8000,
     baseUrl: 'api',
   },
 }
