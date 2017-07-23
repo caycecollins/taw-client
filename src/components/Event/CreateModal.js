@@ -8,13 +8,10 @@ import { Grid, Row, Col } from 'react-material-responsive-grid'
 import confirmDatePlugin from 'flatpickr/dist/plugins/confirmDate/confirmDate'
 
 import Form from '../Form'
-import SubmitButton from '../Form/SubmitButton'
-import Button from '../Button'
 import Input from '../Input'
 import TypeAhead from '../Input/TypeAhead'
-import ErrorMessage from '../Input/ErrorMessage'
 
-const formPath = 'events.createEventForm'
+const formPath = 'events.createEvent'
 
 const roundDate = (date, duration, method, userTimezone) => {
   const rounded = moment(Math[method]((+date) / (+duration)) * (+duration))
@@ -142,10 +139,14 @@ const CreateEvent = props => {
                 onChange={e => searchOnChange(props, e)}
                 onSelect={e => console.log(e)}
                 spellCheck="false"
+                size="100%"
               />
+              <Participants>
+                {props.participants && props.participants.length > 0 && props.participants.map()}
+              </Participants>
             </Col>
           </Row>
-          <Row>
+          {/* <Row>
             <Button
               onClick={() => props.resetForm({ formPath })}
               label="Reset"
@@ -154,7 +155,7 @@ const CreateEvent = props => {
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <SubmitButton form={formPath} />
             {props.underConstruction && <ErrorMessage>Under construciton, check back soon.</ErrorMessage>}
-          </Row>
+          </Row> */}
         </Grid>
       </Form>
     </CreateEventContainer>
@@ -176,6 +177,8 @@ CreateEvent.propTypes = {
   startDate: PropTypes.string,
   endDate: PropTypes.string,
   fieldChanged: PropTypes.func,
+  search: PropTypes.array,
+  participants: PropTypes.array,
 }
 
 export default connect(
@@ -188,6 +191,7 @@ export default connect(
     userHourFormat: state`user.timeformat`,
     repeatEnabled: state`${formPath}.repeat.value`,
     underConstruction: state`${formPath}.underConstruction`,
+    participants: state`${formPath}.participants`,
     resetForm: signal`app.onReset`,
     filterHostingUnitInput: signal`events.filterHostingUnitInput`,
     filterSearchInput: signal`events.filterSearchInput`,
@@ -204,4 +208,8 @@ const CreateEventContainer = styled.div`
 const Duration = styled.div`
   padding: 16px 0;
   color: ${props => props.theme.colors.gray};
+`
+
+const Participants = styled.div`
+  width: 100%;
 `

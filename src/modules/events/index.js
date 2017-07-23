@@ -11,7 +11,7 @@ import changeSidebarView from '../../factories/changeSidebarView'
 import eventRouted from './chains/eventRouted'
 import eventsRouted from './chains/eventsRouted'
 import eventCreateRouted from './chains/eventCreateRouted'
-import createEventFormSubmitted from './chains/createEventFormSubmitted'
+import createEvent from './chains/createEvent'
 import filterHostingUnitInput from './chains/filterHostingUnitInput'
 import filterSearchInput from './chains/filterSearchInput'
 import calculateCalendarView from './helpers/calculateCalendarView'
@@ -21,7 +21,7 @@ export default {
   state: {
     calendarView: calculateCalendarView(),
     data: null,
-    createEventForm,
+    createEvent: createEventForm,
   },
   signals: {
     routed: eventsRouted,
@@ -31,7 +31,7 @@ export default {
     ]),
     eventRouted,
     eventCreateRouted,
-    createEventFormSubmitted,
+    createEvent,
     filterHostingUnitInput,
     filterSearchInput,
     eventDeleted: [
@@ -47,7 +47,7 @@ export default {
         error: set(state`event.data`, props`result`),
       },
     ],
-    reportEventFormSubmitted: [
+    reportEventSubmitted: [
       changeSidebarView({ view: 'reportEvent', icon: 'calendar-check-o', title: 'Report an Event' }),
     ],
   },

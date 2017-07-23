@@ -57,4 +57,5 @@ export default {
   },
   showErrors: true,
   pending: false,
+  participants: [],
 }

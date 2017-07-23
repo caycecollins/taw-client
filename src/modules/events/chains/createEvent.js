@@ -1,8 +1,8 @@
 // import { merge } from 'lodash'
 
-const UpdateProfile = ({ props, state, http, forms }) => {
+const CreateEvent = ({ props, state, http, forms }) => {
   // let fields = forms.toJSON(props.form)
-  // console.log(fields)
+  console.log(props)
   state.set(`${props.form}.pending`, true)
   setTimeout(() => {
     state.set(`${props.form}.pending`, false)
@@ -21,4 +21,4 @@ const UpdateProfile = ({ props, state, http, forms }) => {
   //   })
 }
 
-export default UpdateProfile
+export default CreateEvent
