@@ -16,7 +16,7 @@ export default merge(common, {
     debugger: true,
     remote: 'localhost:8585',
   },
-  webpack: {
+  webpack: { // webpack-dev-server
     host: '0.0.0.0', // open to all network interfaces, use 'localhost' to restrict
     port: 9000,
     compress: true, // gzip compression
