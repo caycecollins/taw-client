@@ -53,6 +53,7 @@ Button.propTypes = {
   label: PropTypes.string,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
+  className: PropTypes.string,
 }
 
 Button.defaultProps = {
@@ -76,7 +77,7 @@ const StyledButton = styled.button`
     if (props.size === 'lg') return '41px'
   }};
   padding: ${props => {
-    if (props.size === 'xs') return '4px 10px 4px 10px'
+    if (props.size === 'xs') return '4px 8px'
     if (!props.size || props.size === 'sm') return '6px 16px 5px 16px'
     if (props.size === 'md') return '8px 20px 7px 20px'
     if (props.size === 'lg') return '10px 22px 8px 22px'
