@@ -79,7 +79,6 @@ const setSidebarAction = props => {
 const Sidebar = (props) => {
   const SidebarComponent = props.sidebarView ? determineSidebarComponent(props) : views.empty
   props.sidebarView && props.sidebarView !== 'empty' && setSidebarAction(props)
-  console.log('re-renered sidebar')
   return (
     <div>
       <CSSTransitionGroup
