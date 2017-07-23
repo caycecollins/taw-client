@@ -11,7 +11,7 @@ import './dateTimePickerStyles.scss'
 
 import ErrorMessage from './ErrorMessage'
 
-// TODO: make sure the following is patched when rebuilding packages!!!!
+// TODO: make sure the following is patched after rebuilding packages!!!!
 // https://github.com/chmln/flatpickr/commit/6dd2adc56a71a1166c0529def27a052059f042e3#diff-51ad6ed16e74144ae6e17bbd53d35a5b
 
 const determineInputComponent = props => {
@@ -41,7 +41,12 @@ const onChange = (props, e) => {
     }
   }
   const updatedValue = updateValue()
-  if (updatedValue !== inputValue) {
+  if (props.defaultValue === updatedValue) {
+    props.fieldChanged({
+      field: props.path,
+      value: '',
+    })
+  } else if (updatedValue !== inputValue) {
     props.fieldChanged({
       field: props.path,
       value: updatedValue,
@@ -118,6 +123,7 @@ Input.propTypes = {
   innerRef: PropTypes.string,
   autoComplete: PropTypes.bool,
   onChange: PropTypes.func,
+  defaultValue: PropTypes.string,
 }
 
 export default connect(
