@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import R from 'ramda'
 import reactStringReplace from 'react-string-replace'
@@ -170,27 +170,31 @@ export default class TypeAhead extends Component {
 
   render () {
     return (
-      <InputGroup>
-        {this.props.label &&
-          <Label isPristine={true}>
-            {this.props.label}
-          </Label>
-        }
-        <StyledInput
-          autoComplete={this.props.autoComplete}
-          disabled={this.props.disabled}
-          innerRef={input => this.input = input}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          onChange={this.inputChanged}
-          onKeyDown={this.keyDown}
-          placeholder={this.props.placeholder}
-          spellCheck={this.props.spellCheck}
-          type={this.props.type}
-          value={this.state.inputValue}
-        />
-        {(this.props.items && this.props.items.length > 0 && this.state.dropdownOpen) && this.InputDropdown()}
-      </InputGroup>
+      <TypeAheadContainer>
+        <InputGroup size={this.props.size}>
+          {this.props.label &&
+            <Label isPristine={true}>
+              {this.props.label}
+            </Label>
+          }
+          <StyledInput
+            autoComplete={this.props.autoComplete}
+            disabled={this.props.disabled}
+            innerRef={input => this.input = input}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            onChange={this.inputChanged}
+            onKeyDown={this.keyDown}
+            placeholder={this.props.placeholder}
+            spellCheck={this.props.spellCheck}
+            type={this.props.type}
+            value={this.state.inputValue}
+            className={this.props.className}
+            size={this.props.size}
+          />
+          {(this.props.items && this.props.items.length > 0 && this.state.dropdownOpen) && this.InputDropdown()}
+        </InputGroup>
+      </TypeAheadContainer>
     )
   }
 }
@@ -206,14 +210,21 @@ const ListGroup = styled.ul`
   margin: 0;
 `
 
-const InputGroup = styled.div`
+const TypeAheadContainer = styled.div`
   position: relative;
   width: 100%;
   margin-top: 16px;
 `
 
+const InputGroup = styled.div`
+  position: relative;
+  display: inline-block;
+  width: ${props => props.size || ''};
+`
+
 const StyledInput = styled.input`
   position: relative;
+  width: 100%;
   ${sharedInputStyles}
 `
 
