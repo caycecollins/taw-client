@@ -34,7 +34,7 @@ export default [
             changeSidebarView({ view: 'viewEvent', tab: 'general', title: props`result.title` }, [
               apiGet('/events', 'events.eventsData'), { success: [], error: [] },
               toggle(state`app.sidebarImmune`),
-              wait(250),
+              wait(600),
               changeView('events'),
               toggle(state`app.sidebarImmune`),
             ]),
@@ -46,7 +46,7 @@ export default [
         changeSidebarView({ icon: 'hourglass' },
           [
             set(state`events.eventData`, null),
-            wait(360),
+            wait(500),
             getEvent, {
               success: [
                 setOccurenceInfo,

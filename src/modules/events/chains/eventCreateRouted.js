@@ -23,7 +23,7 @@ export default [
       false: [
         changeSidebarView({ icon: 'hourglass' },
           [
-            wait(300),
+            wait(400),
             changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }),
           ],
         ),
