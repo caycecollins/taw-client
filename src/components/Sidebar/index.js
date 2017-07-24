@@ -252,7 +252,7 @@ const StyledIcon = styled(Icon)`
 const Title = styled.div`
   width: 100%;
   font-size: 2rem;
-  margin-top: 6px;
+  margin-top: -6px;
   padding-left: 24px;
   @media (max-width: 720px) {
     font-size: 1.4rem;
