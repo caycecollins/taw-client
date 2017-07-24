@@ -92,6 +92,8 @@ const Input = props => {
           innerRef={props.innerRef}
           placement={props.placement}
           className={props.className}
+          width={props.width}
+          height={props.height}
         >
           {props.children}
         </InputComponent>
@@ -213,7 +215,8 @@ export const sharedInputStyles = css`
   font-family: industry, sans-serif;
   font-size: 1rem;
   transition: all .3s cubic-bezier(.4,0,.2,1);
-  min-width: 30px;
+  min-width: ${props => props.width || 30}px;
+  min-height: ${props => props.height || 32}px;
   ${props => css`
     &:focus {
       border-color: ${props.theme.colors.lightTan};

@@ -315,7 +315,7 @@ const SidebarComponentContainer = styled.div`
   position: absolute;
   width: 100%;
   height: auto;
-  padding: 40px;
+  padding: 24px 40px 64px 40px;
   @media (max-width: 960px) {
     padding: 24px;
   }

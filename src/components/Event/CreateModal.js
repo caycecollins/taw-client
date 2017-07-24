@@ -74,16 +74,20 @@ const CreateEvent = props => {
   return (
     <CreateEventContainer>
       <Form>
-        <Grid>
+        <Grid marginless>
           <Row>
             <Col sm={6} sm8={4} xs4={4}>
               <Input
                 label="title"
                 path={`${formPath}.title`}
+                width={300}
               />
               <Input
                 label="description"
+                type="textarea"
                 path={`${formPath}.description`}
+                width={300}
+                height={100}
               />
               <Input
                 label="mandatory"

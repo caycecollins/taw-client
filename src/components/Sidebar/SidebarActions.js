@@ -113,7 +113,7 @@ const ResetAction = styled.div`
   ${sharedActionStyles}
   flex: 0 1 auto;
   color: ${props => props.theme.colors.gray};
-  background-color: ${props => rgba(props.theme.colors.darkGray3, 0.6)};
+  background-color: ${props => rgba(props.theme.colors.darkGray3, 0.8)};
   &:hover {
     color: ${props => props.theme.colors.armyWhite};
     background-color: ${props => rgba(props.theme.colors.darkGray2, 1)};
@@ -126,7 +126,7 @@ const CancelAction = styled.div`
   ${sharedActionStyles}
   flex: 1 0 auto;
   color: ${props => props.theme.colors.gray};
-  background-color: ${props => rgba(props.theme.colors.darkGray2, 0.5)};
+  background-color: ${props => rgba(props.theme.colors.darkGray2, 0.7)};
   &:hover {
     background-color: ${props => rgba(props.theme.colors.darkGray2, 1)};
   }
@@ -137,7 +137,7 @@ const SubmitAction = styled.div`
   ${sharedActionStyles}
   flex: 1 0 auto;
   color: ${props => props.theme.colors.darkGray2};
-  background-color: ${props => props.disabled ? rgba(props.theme.colors.armyGreen, 0.3) : rgba(props.theme.colors.armyGreen, 0.6)};
+  background-color: ${props => props.disabled ? rgba(props.theme.colors.darkGray6, 0.6) : rgba(props.theme.colors.armyGreen, 0.8)};
   &:hover {
     background-color: ${props => !props.disabled && rgba(props.theme.colors.armyGreen, 1)};
     ${props => props.disabled && css`
