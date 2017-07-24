@@ -138,24 +138,6 @@ export default connect(
   NavDrawer
 )
 
-const navDrawerLargeAnimation = keyframes`
-  from {
-    left: -280px;
-  }
-  to {
-    left: 0px;
-  }
-`
-
-const navDrawerSmallAnimation = keyframes`
-  from {
-    left: -80px;
-  }
-  to {
-    left: 0px;
-  }
-`
-
 const drawerLeftMixin = css`
   ${props => {
     if (props.active) {
@@ -165,21 +147,6 @@ const drawerLeftMixin = css`
       return '-80px'
     }
   }}
-`
-
-const animationName = css`
-  ${props => props.large ? navDrawerLargeAnimation : navDrawerSmallAnimation}
-`
-
-const initialAnimationMixin = css`
-  ${props => css`
-    left: ${drawerLeftMixin};
-    animation-name: ${animationName};
-    animation-duration: .3s;
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-    animation-fill-mode: forwards;
-    animation-delay: .3s;
-  `}
 `
 
 const NavDrawerMobileOverlay = styled.div`
@@ -220,7 +187,6 @@ const NavDrawerContainer = styled.div`
     background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.97) }};
   }
 `
-// ${props => props.active && props.initialAnimation && initialAnimationMixin}
 
 const NavDrawerToggles = styled.div`
   position: absolute;
