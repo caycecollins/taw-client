@@ -19,6 +19,7 @@ const determineInputComponent = props => {
     case 'date': return StyledDate
     case 'select': return StyledSelect
     case 'checkbox': return StyledCheck
+    case 'textarea': return StyledTextArea
     default: return StyledInput
   }
 }
@@ -67,15 +68,14 @@ const onBlur = (props, e) => {
 const Input = props => {
   const InputComponent = props.type ? determineInputComponent(props) : StyledInput
   return (
-    <InputContainer isCheckboxGroup={props.is === 'checkbox-group'}>
-      {props.label &&
-        <Label isPristine={props.field.isPristine || !props.field.hasValue}>
-          {props.label} {props.field.isRequired && <Required>*</Required>}
-        </Label>
-      }
+    <InputContainer
+      isCheckboxGroup={props.is === 'checkbox-group'}
+      placement={props.placement}
+    >
       <InputComponentContainer
         checkbox={props.type === 'checkbox'}
         isCheckboxGroup={props.is === 'checkbox-group'}
+        placement={props.placement}
       >
         <InputComponent
           onChange={e => !props.onChange ? onChange(props, e) : props.onChange(e)}
@@ -90,10 +90,22 @@ const Input = props => {
           name={props.name}
           autoComplete={props.autoComplete}
           innerRef={props.innerRef}
+          placement={props.placement}
+          className={props.className}
         >
           {props.children}
         </InputComponent>
         {props.type === 'checkbox' && <CheckBoxLabel htmlFor={props.label} />}
+        {props.label &&
+          <Label
+            isPristine={props.field.isPristine || !props.field.hasValue}
+            placement={props.placement}
+            className={props.className}
+          >
+            {props.label} {props.field.isRequired && <Required>*</Required>}
+          </Label>
+        }
+
       </InputComponentContainer>
       {props.field.errorMessage &&
         <ErrorMessage size="xs">
@@ -121,9 +133,11 @@ Input.propTypes = {
   ]),
   is: PropTypes.string,
   innerRef: PropTypes.string,
-  autoComplete: PropTypes.bool,
+  autoComplete: PropTypes.string,
   onChange: PropTypes.func,
   defaultValue: PropTypes.string,
+  placement: PropTypes.string,
+  className: PropTypes.string,
 }
 
 export default connect(
@@ -133,15 +147,6 @@ export default connect(
   },
   Input
 )
-
-const InputContainer = styled.div`
-  margin-top: 16px;
-  ${props => props.isCheckboxGroup && css`
-    display: inline-block;
-    margin-right: 16px;
-  `}
-  overflow: hidden;
-`
 
 const InputComponentContainer = styled.div`
   ${props => props.checkbox && css`
@@ -155,11 +160,25 @@ const InputComponentContainer = styled.div`
       }
     }
   `}
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column-reverse;
+  ${props => props.isCheckboxGroup && css`
+
+  `}
+`
+
+const InputContainer = styled.div`
+  margin-top: 24px;
+  ${props => props.isCheckboxGroup && css`
+    display: inline-block;
+    margin-right: 16px;
+  `}
+  overflow: hidden;
 `
 
 const CheckBoxLabel = styled.label`
   cursor: pointer;
-  padding: 3px 7px 0px 6px;
   background: transparent;
   border: 1px solid ${props => props.theme.colors.gray};
   border-radius: 2px;
@@ -170,16 +189,23 @@ const CheckBoxLabel = styled.label`
     background: transparent;
     color: ${props => props.theme.colors.armyGreen};
     font-size: 1.4rem;
+    margin-bottom: 6px;
   }
   &:hover {
     &::after {
       opacity: .2;
     }
   }
+  min-width: 30px;
+  max-width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `
 
 export const sharedInputStyles = css`
-  padding: 6px 16px 4px 16px;
+  padding: 4px 16px 6px 16px;
   background-color: transparent;
   color: ${props => props.isPristine ? props.theme.colors.gray : props.theme.colors.armyWhite};
   border: 1px solid ${props => props.isPristine ? props.theme.colors.gray : rgba(props.theme.colors.armyWhite, 0.7)};
@@ -187,9 +213,28 @@ export const sharedInputStyles = css`
   font-family: industry, sans-serif;
   font-size: 1rem;
   transition: all .3s cubic-bezier(.4,0,.2,1);
+  min-width: 30px;
+  ${props => css`
+    &:focus {
+      border-color: ${props.theme.colors.lightTan};
+      + span {
+        color: ${props.theme.colors.lightTan};;
+      }
+    }
+  `}
 `
-const StyledInput = styled(({ isPristine, innerRef, options, ...rest }) => <input {...rest} />)`
+
+const StyledInput = styled(({ placement, isPristine, innerRef, options, ...rest }) => <input {...rest} />)`
   ${sharedInputStyles}
+`
+
+const StyledTextArea = styled.textarea`
+  ${sharedInputStyles}
+  ${props => props && css`
+    &:focus {
+      border-color: ${props.theme.colors.lightTan};
+    }
+  `}
 `
 
 const StyledCheck = styled.input`
@@ -197,7 +242,7 @@ const StyledCheck = styled.input`
   position: absolute;
 `
 
-const StyledDate = styled(({ isPristine, ...rest }) => <Flatpickr {...rest} />)`
+const StyledDate = styled(({ placement, isPristine, ...rest }) => <Flatpickr {...rest} />)`
   ${sharedInputStyles}
 `
 
@@ -208,15 +253,22 @@ const StyledSelect = styled.select`
   }
 `
 
-export const Label = styled.div`
+export const Label = styled.span`
   font-size: 0.9rem;
   margin-bottom: 4px;
   text-transform: capitalize;
   color: ${props => props.isPristine ? props.theme.colors.gray : 'inherit'};
   transition: all .3s cubic-bezier(.4,0,.2,1);
+  ${props => props.placement && css`
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+    text-transform: uppercase;
+  `}
 `
 
 const Required = styled.div`
   display: inline-block;
   color: ${props => props.theme.colors.lightRed};
+  margin-left: 4px;
 `
