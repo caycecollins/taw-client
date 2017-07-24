@@ -73,15 +73,6 @@ export default connect(
   AppBar
 )
 
-const AppBarAnimation = keyframes`
-  from {
-    top: -48px;
-  }
-  to {
-    top: 0;
-  }
-`
-
 const StyledAppBar = styled.div`
   position: fixed;
   display: flex;
@@ -96,12 +87,6 @@ const StyledAppBar = styled.div`
   color: white;
   z-index: 9999;
   transition: all .3s cubic-bezier(.4,0,.2,1);
-  ${props => props.authenticated && css`
-    animation-name: ${AppBarAnimation};
-    animation-duration: .3s;
-    animation-timing-function: cubic-bezier(.4,0,.2,1);
-    animation-fill-mode: backwards;
-  `}
 `
 
 const LogoContainer = styled.div`

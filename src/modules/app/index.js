@@ -79,7 +79,7 @@ export default {
     drawerActiveToggled,
     drawerLargeToggled,
     initialAnimationStarted: [
-      wait(2000),
+      wait(600),
       set(state`app.initialAnimation`, false),
     ],
     sidebarActiveToggled,

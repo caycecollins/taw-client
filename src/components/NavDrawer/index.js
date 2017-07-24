@@ -158,7 +158,7 @@ const navDrawerSmallAnimation = keyframes`
 
 const drawerLeftMixin = css`
   ${props => {
-    if (props.active && !props.initialAnimation) {
+    if (props.active) {
       return '0px'
     } else {
       if (props.large) return '-280px'
@@ -178,7 +178,7 @@ const initialAnimationMixin = css`
     animation-duration: .3s;
     animation-timing-function: cubic-bezier(.4,0,.2,1);
     animation-fill-mode: forwards;
-    animation-delay: .2s;
+    animation-delay: .3s;
   `}
 `
 
@@ -214,12 +214,13 @@ const NavDrawerContainer = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   transition: all .3s cubic-bezier(.4,0,.2,1);
-  left: ${props => drawerLeftMixin};
-  ${props => props.active && props.initialAnimation && initialAnimationMixin}
+  left: ${props => props.large ? '-280px' : '-80px'};
+  left: ${props => !props.initialAnimation && drawerLeftMixin};
   @media (max-width: 600px) {
     background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.97) }};
   }
 `
+// ${props => props.active && props.initialAnimation && initialAnimationMixin}
 
 const NavDrawerToggles = styled.div`
   position: absolute;

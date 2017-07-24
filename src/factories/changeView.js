@@ -20,7 +20,7 @@ export default (view, continuesequence = []) => {
       false: [],
     },
     when(state`app.initialAnimation`), {
-      true: wait(450),
+      true: wait(800),
       false: [],
     },
     set(state`app.previousView`, state`app.currentView`),

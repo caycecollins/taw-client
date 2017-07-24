@@ -87,12 +87,12 @@ export default connect(
 const PageContainerAnimation = keyframes`
   from {
     top: 0px;
-    height: 100vh;
+    height: 100%;
     width: calc(100% + 17px);
   }
   to {
     top: 48px;
-    height: calc(100vh - 48px);
+    height: calc(100% - 48px);
     width: 100%;
   }
 `
@@ -100,8 +100,7 @@ const PageContainerAnimation = keyframes`
 const PageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: calc(100vh - 48px);
-  ${props => !props.authenticated && 'height: 100vh;'}
+  height: ${props => props.authenticated ? 'calc(100vh - 48px)' : '100vh'};
   left: 0;
   top: ${props => props.authenticated ? '48px' : '0px'};
   overflow-y: ${props => props.authenticated && !props.sidebarActive ? 'scroll' : 'hidden'};
@@ -109,9 +108,9 @@ const PageContainer = styled.div`
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
   ${props => props.authenticated && props.initialAnimation && css`
     animation-name: ${PageContainerAnimation};
-    animation-duration: .6s;
+    animation-duration: .3s;
     animation-timing-function: cubic-bezier(.4,0,.2,1);
-    animation-fill-mode: backwards;
+    animation-fill-mode: forwards;
   `}
 `
 
@@ -125,5 +124,4 @@ const FullWidthHeight = styled.div`
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
   padding-right: ${props => props.sidebarActive ? '17px' : '0px'};
   transition: padding-right 0s ease;
-  z-index: 10;
 `

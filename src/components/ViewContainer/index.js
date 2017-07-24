@@ -81,7 +81,7 @@ const Container = styled.div`
     flex-direction: column;
   `}
   width: 100%;
-  height: auto;
+  height: ${props => props.authentiated ? '100vh' : 'calc(100vh - 48px)'};
   padding: 24px;
   padding-left: ${leftPaddingMixin};
   color: white;
