@@ -21,11 +21,11 @@ const Games = props =>
     </ViewHeader>
     <GamesContainer>
       <FlipMove
-        easing="ease-in-out"
+        easing="ease-in"
         duration={200}
-        staggerDelayBy={30}
+        staggerDelayBy={20}
         appearAnimation="elevator"
-        enterAnimation="none"
+        enterAnimation="elevator"
         leaveAnimation="none"
         maintainContainerHeight={true}
       >
@@ -81,9 +81,10 @@ const ViewHeader = styled.div`
 const GamesContainer = styled.div`
   margin-top: 24px;
   > div {
-    display: grid;
-    grid-gap: 24px;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
     transition: all .3s cubic-bezier(.4,0,.2,1);
   }
 `
@@ -95,6 +96,8 @@ const Game = styled(Link)`
   width: 150px;
   height: 150px;
   padding: 16px;
+  margin-right: 24px;
+  margin-bottom: 24px;
   background-color: rgba(0,0,0,.3);
   transition: all .3s cubic-bezier(.4,0,.2,1);
   border-radius: 2px;
