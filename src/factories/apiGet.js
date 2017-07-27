@@ -4,7 +4,7 @@ export default function apiGetFactory (endpoint, pathCheck) {
     if (!endpoint || !pathCheck) return path.error({ error: 'endpoint and path required' })
     const getDataFromApi = await http.get(endpoint)
     state.set(pathCheck, getDataFromApi.result)
-    storage.set(pathCheck, getDataFromApi.result)
+    // storage.set(pathCheck, getDataFromApi.result)
     return path.success({ result: getDataFromApi.result })
   }
   return apiGet

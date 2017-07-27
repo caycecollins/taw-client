@@ -9,7 +9,7 @@ import { lighten, rgba } from 'polished'
 const SidebarActions = props =>
   <SidebarActionsContainer active={props.sidebarSubmit && props.sidebarSubmit !== 'app.sidebarSubmit'}>
     <ResultFlash active={props.error}>
-      {props.error ? `Error! Please report this to DEVOPS -- ${props.error.status} | ${props.error.name}` : ''}
+      {props.error ? `Error! Please report to DEVOPS:  ${props.error.status} | ${props.error.name} | ${props.error.body.error.message}` : ''}
     </ResultFlash>
     <ResetAction
       type="reset"
