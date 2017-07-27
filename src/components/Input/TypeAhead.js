@@ -4,6 +4,7 @@ import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import R from 'ramda'
 import reactStringReplace from 'react-string-replace'
+import { debounce } from 'lodash'
 
 import { Label, sharedInputStyles } from './index'
 
@@ -18,6 +19,7 @@ export default class TypeAhead extends Component {
     autoComplete: null,
     items: null,
     type: 'text',
+    lastScrollPosition: 0,
   }
 
   static propTypes = {
@@ -33,6 +35,7 @@ export default class TypeAhead extends Component {
     reset: PropTypes.bool, // TODO: change to 'value' (set to empty string for 'reset')
     spellCheck: PropTypes.string,
     type: PropTypes.string.isRequired,
+    onSelect: PropTypes.func,
   }
 
   toggleDropdown = (truth) => {
@@ -40,42 +43,44 @@ export default class TypeAhead extends Component {
   }
 
   componentWillMount () {
-    this.setState({ inputValue: this.props.defaultValue || '' })
+    this.setState({
+      inputValue: this.props.defaultValue || '',
+    })
+  }
+
+  componentDidUpdate () {
+    if (this.dropdown) this.dropdown.scrollTop = this.state.lastScrollPosition
   }
 
   inputChanged = (e) => {
-    // if (e.target.value.length > 0) {
-    this.setState({
-      inputValue: e.target.value,
-      highlightedIndex: -1,
-    })
-    if (!this.state.dropdownOpen) {
-      this.toggleDropdown(true)
+    if (e.target.value.length > 0) {
+      this.setState({
+        inputValue: e.target.value,
+        highlightedIndex: -1,
+      })
+
+      if (!this.state.dropdownOpen) {
+        this.toggleDropdown(true)
+      }
+    } else {
+      this.toggleDropdown(false)
+      this.setState({
+        inputValue: '',
+        highlightedIndex: -1,
+      })
     }
-    // } else {
-    //   this.toggleDropdown(false)
-    //   this.setState({
-    //     inputValue: '',
-    //     highlightedIndex: -1,
-    //   })
-    // }
     this.props.onChange && this.props.onChange(e)
   }
 
-  itemSelected = (item) => {
-    const itemIndex = this.props.items.indexOf(item)
-    const dispatchInputChangedEvent = () => {
-      // this.inputChanged({ target: { value: item.value } })
-      this.props.onSelect(item)
-      this.toggleDropdown(false)
-    }
-    this.setState({
-      highlightedIndex: itemIndex,
-      inputValue: item.value,
-    }, dispatchInputChangedEvent)
+  itemSelected = item => {
+    this.props.onSelect && this.props.onSelect(item)
+    setTimeout(() => {
+      this.toggleDropdown(true)
+      this.input.focus()
+    }, 0)
   }
 
-  keyDown = (e) => {
+  keyDown = e => {
     const ARROW_UP = 38
     const ARROW_DOWN = 40
     const ENTER_KEY = 13
@@ -123,8 +128,15 @@ export default class TypeAhead extends Component {
     }
   }
 
-  onMouseDown = () => {
-    // console.log('mouse-down')
+  debouncedScroll = debounce((e) => {
+    this.setState({
+      lastScrollPosition: e.target.scrollTop,
+    })
+  }, 200)
+
+  trackScroll = e => {
+    e.persist()
+    this.debouncedScroll(e)
   }
 
   InputDropdown = () => {
@@ -135,12 +147,15 @@ export default class TypeAhead extends Component {
       const renderValue = reactStringReplace(itemValueWithEntities, inputValueWithEntities, (match, i) => (
         <MatchingText key={i}>{match}</MatchingText>
       ))
-      return ({ key: item.key, value: item.value, renderValue: renderValue })
+      return ({ key: item.key, value: item.value, renderValue: renderValue, exists: item.exists })
     })
     return (
       <Dropdown
         isOpen={this.state.dropdownOpen}
         toggle={() => this.toggleDropdown(true)}
+        innerRef={element => { this.dropdown = element }}
+        onScroll={this.trackScroll}
+        scrollTop={this.state.lastScrollPosition}
       >
         <ListGroup>
           {items.map((item, index) => {
@@ -149,8 +164,9 @@ export default class TypeAhead extends Component {
                 highlighted={index === this.state.highlightedIndex}
                 key={item.key}
                 onMouseDown={() => this.itemSelected(this.props.items[index])}
+                exists={item.exists}
               >
-                {item.renderValue}
+                {item.renderValue} {item.exists && ' [invited]'}
               </ListGroupItem>
             )
           }
@@ -213,12 +229,13 @@ const ListGroup = styled.ul`
 const TypeAheadContainer = styled.div`
   position: relative;
   width: 100%;
-  margin-top: 16px;
+  margin-top: 24px;
 `
 
 const InputGroup = styled.div`
   position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   width: ${props => props.size || ''};
 `
 
@@ -228,15 +245,15 @@ const StyledInput = styled.input`
   ${sharedInputStyles}
 `
 
-const ListGroupItem = styled(({ highlighted, ...args }) => <li {...args} />)`
+const ListGroupItem = styled(({ exists, highlighted, ...args }) => <li {...args} />)`
   list-style-type: none;
   padding: 12px 0 12px 12px;
   font-size: 0.9rem;
   color: ${props => props.highlighted ? props.theme.colors.darkGray2 : props.theme.colors.armyGreen};
+  background: ${props => props.highlighted && props.theme.colors.lightTan};
   border: 0;
   margin-bottom: 0;
   white-space: nowrap;
-  background: ${props => props.highlighted && props.theme.colors.lightTan};
   &:first-child {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -252,6 +269,21 @@ const ListGroupItem = styled(({ highlighted, ...args }) => <li {...args} />)`
   > span {
     ${props => props.highlighted && `color: ${props.theme.colors.darkGray2};`}
   }
+  ${props => props.exists && css`
+    color: ${props.theme.colors.gray};
+    background: ${props.theme.colors.darkGray2};
+    &:hover {
+      color: ${props.theme.colors.gray};
+      background: ${props.theme.colors.darkGray2};
+      cursor: default;
+      > span {
+        color: ${props.theme.colors.gray};
+      }
+    }
+    > span {
+      color: ${props.theme.colors.gray};
+    }
+  `}
 `
 
 const Dropdown = styled.div`
@@ -264,4 +296,5 @@ const Dropdown = styled.div`
   overflow-y: auto;
   overflow-x: hidden;
   z-index: 9999;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `

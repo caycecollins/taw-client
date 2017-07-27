@@ -127,7 +127,10 @@ Input.propTypes = {
   label: PropTypes.string,
   placeholder: PropTypes.string,
   children: PropTypes.node,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]),
   dateOptions: PropTypes.object,
   keyIndex: PropTypes.oneOfType([
     PropTypes.string,
@@ -140,6 +143,8 @@ Input.propTypes = {
   defaultValue: PropTypes.string,
   placement: PropTypes.string,
   className: PropTypes.string,
+  width: PropTypes.number,
+  height: PropTypes.number,
 }
 
 export default connect(
