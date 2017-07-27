@@ -12,8 +12,9 @@ import eventRouted from './chains/eventRouted'
 import eventsRouted from './chains/eventsRouted'
 import eventCreateRouted from './chains/eventCreateRouted'
 import createEvent from './chains/createEvent'
-import filterHostingUnitInput from './chains/filterHostingUnitInput'
 import filterSearchInput from './chains/filterSearchInput'
+import createEventAddParticipant from './chains/createEventAddParticipant'
+import createEventRemoveParticipant from './chains/createEventRemoveParticipant'
 import calculateCalendarView from './helpers/calculateCalendarView'
 import createEventForm from './forms/createEventForm'
 
@@ -32,8 +33,9 @@ export default {
     eventRouted,
     eventCreateRouted,
     createEvent,
-    filterHostingUnitInput,
     filterSearchInput,
+    createEventAddParticipant,
+    createEventRemoveParticipant,
     eventDeleted: [
       () => { console.log('event.deleted') },
     ],

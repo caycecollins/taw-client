@@ -49,11 +49,13 @@ export default {
     isPristine: true,
     validationRules: [],
   },
-  searchDivision: {
+  unit: {
     value: '',
-    isRequired: false,
+    isRequired: true,
     isPristine: true,
-    validationRules: [],
+    validationRules: [
+      'isValue',
+    ],
   },
   showErrors: true,
   pending: false,

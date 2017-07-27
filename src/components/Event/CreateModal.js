@@ -9,6 +9,7 @@ import confirmDatePlugin from 'flatpickr/dist/plugins/confirmDate/confirmDate'
 
 import Form from '../Form'
 import Input from '../Input'
+import Button from '../Button'
 import TypeAhead from '../Input/TypeAhead'
 
 const formPath = 'events.createEvent'
@@ -51,22 +52,33 @@ const dateConfigOptions = (props, field) => {
   return options
 }
 
-const hostingUnitOnChange = (props, e) => {
-  props.filterHostingUnitInput({ value: e.target.value })
-}
-
 const searchOnChange = (props, e) => {
-  props.filterSearchInput({ value: e.target.value })
+  props.filterSearchInput({ value: e.target ? e.target.value : e })
 }
 
 const getDuration = props => {
-  var difference = moment(props.endDate).diff(moment(props.startDate))
-  var duration = moment.duration(difference)
+  let difference = moment(props.endDate).diff(moment(props.startDate))
+  let duration = moment.duration(difference)
   let durationDisplay = ''
   if (duration.days() > 0) durationDisplay += duration.days() + 'd '
   if (duration.hours() > 0) durationDisplay += duration.hours() + 'h '
   if (duration.minutes() > 0) durationDisplay += duration.minutes() + 'm'
   if (durationDisplay) return 'Duration: ' + durationDisplay
+}
+
+const getUserUnits = props => {
+  const units = props.divisions.map((unit, index) => {
+    return (
+      <option
+        key={index}
+        value={unit.id}
+      >
+        {unit.name}
+      </option>
+    )
+  })
+  units.unshift(<option key="empty" value="">Select Unit</option>)
+  return units
 }
 
 const CreateEvent = props => {
@@ -75,7 +87,7 @@ const CreateEvent = props => {
     <CreateEventContainer>
       <Form>
         <Grid marginless>
-          <Row>
+          <StyledRow>
             <Col sm={6} sm8={4} xs4={4}>
               <Input
                 label="title"
@@ -129,27 +141,36 @@ const CreateEvent = props => {
               )}
             </Col>
             <Col sm={6} sm8={4}>
+              <Input
+                type="select"
+                label="Hosting Unit"
+                path={`${formPath}.unit`}
+              >
+                {props.divisions && getUserUnits(props)}
+              </Input>
               <TypeAhead
-                label="Division Search Test"
+                label="Invite Member or Unit"
                 autoComplete="off"
-                items={props.divisions && props.divisions.map(it => ({ key: it.id, value: it.name }))}
-                onChange={e => hostingUnitOnChange(props, e)}
-                spellCheck="false"
-              />
-              <TypeAhead
-                label="Member or Unit Search Test"
-                autoComplete="off"
-                items={props.search && props.search.map(it => ({ key: it.id, value: it.name || it.callsign, type: it.callsign ? 'user' : 'unit' }))}
+                items={props.search && props.search.map(it => ({ key: it.id, value: it.name || it.callsign, type: it.callsign ? 'user' : 'unit', exists: it.exists }))}
                 onChange={e => searchOnChange(props, e)}
-                onSelect={e => console.log(e)}
+                onSelect={e => props.addParticipant({ participant: e })}
                 spellCheck="false"
                 size="100%"
               />
               <Participants>
-                {props.participants && props.participants.length > 0 && props.participants.map()}
+                {props.participants && props.participants.length > 0 && props.participants.map((participant, index) =>
+                  <Participant key={index}>
+                    <div>{participant.display}</div>
+                    <RemoveParticipantButton
+                      onClick={e => props.removeParticipant(participant)}
+                      icon="remove"
+                      outline={false}
+                    />
+                  </Participant>
+                )}
               </Participants>
             </Col>
-          </Row>
+          </StyledRow>
           {/* <Row>
             <Button
               onClick={() => props.resetForm({ formPath })}
@@ -168,6 +189,7 @@ const CreateEvent = props => {
 
 CreateEvent.propTypes = {
   userTimezone: PropTypes.string,
+  userUnitID: PropTypes.number,
   userHourFormat: PropTypes.string,
   resetForm: PropTypes.func,
   repeatEnabled: PropTypes.oneOfType([
@@ -175,7 +197,6 @@ CreateEvent.propTypes = {
     PropTypes.bool,
   ]),
   underConstruction: PropTypes.bool,
-  filterHostingUnitInput: PropTypes.func,
   filterSearchInput: PropTypes.func,
   divisions: PropTypes.array,
   startDate: PropTypes.string,
@@ -183,11 +204,13 @@ CreateEvent.propTypes = {
   fieldChanged: PropTypes.func,
   search: PropTypes.array,
   participants: PropTypes.array,
+  addParticipant: PropTypes.func,
 }
 
 export default connect(
   {
     userTimezone: state`user.timezone`,
+    userUnitID: state`user.highestPosition.unit.id`,
     startDate: state`${formPath}.start.value`,
     endDate: state`${formPath}.end.value`,
     divisions: state`units.divisions`,
@@ -197,9 +220,10 @@ export default connect(
     underConstruction: state`${formPath}.underConstruction`,
     participants: state`${formPath}.participants`,
     resetForm: signal`app.onReset`,
-    filterHostingUnitInput: signal`events.filterHostingUnitInput`,
     filterSearchInput: signal`events.filterSearchInput`,
     fieldChanged: signal`app.fieldChanged`,
+    addParticipant: signal`events.createEventAddParticipant`,
+    removeParticipant: signal`events.createEventRemoveParticipant`,
   },
   CreateEvent
 )
@@ -209,6 +233,10 @@ const CreateEventContainer = styled.div`
   color: ${props => props.theme.colors.armyWhite};
 `
 
+const StyledRow = styled(Row)`
+  overflow: hidden;
+`
+
 const Duration = styled.div`
   padding: 16px 0;
   color: ${props => props.theme.colors.gray};
@@ -216,4 +244,18 @@ const Duration = styled.div`
 
 const Participants = styled.div`
   width: 100%;
+`
+
+const Participant = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 32px;
+  padding: 8px 16px;
+`
+
+const RemoveParticipantButton = styled(Button)`
+  color: ${props => props.theme.colors.lightRed};
 `

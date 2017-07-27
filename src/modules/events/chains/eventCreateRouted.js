@@ -11,7 +11,7 @@ export default [
     when(state`app.initialAnimation`), {
       true: [
         changeView('empty'),
-        apiGet('/units/divisions', 'units.divisions'), { success: [], error: [] },
+        apiGet('/units', 'units.divisions'), { success: [], error: [] },
         changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }, [
           apiGet('/events', 'events.eventsData'), { success: [], error: [] },
           toggle(state`app.sidebarImmune`),
@@ -24,6 +24,7 @@ export default [
         changeSidebarView({ icon: 'hourglass' },
           [
             wait(400),
+            apiGet('/units', 'units.divisions'), { success: [], error: [] },
             changeSidebarView({ view: 'createEvent', icon: 'calendar-plus-o', title: 'Create New Event' }),
           ],
         ),
