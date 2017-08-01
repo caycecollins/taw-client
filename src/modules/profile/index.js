@@ -1,9 +1,7 @@
-import { state } from 'cerebral/tags'
-
 import authenticate from '../../factories/authenticate'
-import changeView from '../../factories/changeView'
-import changeSidebarView from '../../factories/changeSidebarView'
 
+import profileRouted from './signals/profileRouted'
+import editProfileClicked from './signals/editProfileClicked'
 import editProfileSubmitted from './signals/editProfileSubmitted'
 
 export default {
@@ -23,17 +21,8 @@ export default {
     },
   },
   signals: {
-    routed: [
-      authenticate(changeView('profile')),
-    ],
-    editProfileClicked: [
-      authenticate([
-        changeSidebarView({ view: 'viewProfile', tab: 'general', title: state`user.callsign` }),
-      ]),
-    ],
+    routed: authenticate(profileRouted),
+    editProfileClicked,
     editProfileSubmitted,
-    deleted: [
-      () => { console.log('profile.deleted') },
-    ],
   },
 }
