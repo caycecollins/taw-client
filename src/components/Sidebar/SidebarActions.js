@@ -13,7 +13,7 @@ const SidebarActions = props =>
     </ResultFlash>
     <ResetAction
       type="reset"
-      onClick={() => props.sidebarReset({ form: props.sidebarSubmit })}
+      onClick={() => props.sidebarResetClicked({ form: props.sidebarReset })}
       pending={props.pending}
     >
       {props.pending ? '' : 'reset'}
@@ -29,7 +29,7 @@ const SidebarActions = props =>
       disabled={!props.form.isValid}
       title={!props.form.isValid && 'Required inputs must be completed!'}
       type="submit"
-      onClick={() => props.form.isValid && props.sidebarSubmitAction({ form: props.sidebarSubmit })}
+      onClick={() => props.form.isValid && props.sidebarSubmitClicked({ form: props.sidebarSubmit })}
       pending={props.pending}
     >
       <Label>
@@ -39,9 +39,10 @@ const SidebarActions = props =>
   </SidebarActionsContainer>
 
 SidebarActions.propTypes = {
+  sidebarReset: PropTypes.string,
   sidebarSubmit: PropTypes.string,
-  sidebarReset: PropTypes.func,
-  sidebarSubmitAction: PropTypes.func,
+  sidebarResetClicked: PropTypes.func,
+  sidebarSubmitClicked: PropTypes.func,
   sidebarActiveToggled: PropTypes.func,
   form: PropTypes.object,
   pending: PropTypes.bool,
@@ -53,13 +54,14 @@ SidebarActions.propTypes = {
 
 export default connect(
   {
-    sidebarReset: signal`app.onReset`,
-    sidebarSubmit: state`app.sidebarSubmit`,
-    sidebarSubmitAction: signal`${state`app.sidebarSubmit`}`,
-    sidebarActiveToggled: signal`app.sidebarActiveToggled`,
     form: form(state`${state`app.sidebarSubmit`}`),
     pending: state`${state`app.sidebarSubmit`}.pending`,
     error: state`${state`app.sidebarSubmit`}.error`,
+    sidebarReset: state`app.sidebarReset`,
+    sidebarSubmit: state`app.sidebarSubmit`,
+    sidebarResetClicked: signal`app.formResetClicked`,
+    sidebarSubmitClicked: signal`${state`app.sidebarSubmit`}`,
+    sidebarActiveToggled: signal`app.sidebarActiveToggled`,
   },
   SidebarActions
 )

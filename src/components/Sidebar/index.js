@@ -2,16 +2,15 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
-import { form } from '@cerebral/forms'
 import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import { CSSTransitionGroup } from 'react-transition-group'
 
-import ViewEvent from '../Event'
-import EventAttendance from '../Event/EventAttendance'
-import CreateEvent from '../Event/CreateModal'
-import ReportEvent from '../Event/ReportModal'
-import ViewProfile from '../Profile/ProfileModal'
+import ViewEventSidebar from '../Events/ViewEventSidebar'
+import EventAttendanceSidebar from '../Events/EventAttendanceSidebar'
+import ScheduleEventSidebar from '../Events/ScheduleEventSidebar'
+import ReportEventSidebar from '../Events/ReportEventSidebar'
+import EditProfileSidebar from '../Profile/EditProfileSidebar'
 import Button from '../Button'
 import Icon from '../Icon'
 
@@ -27,26 +26,30 @@ const views = {
     defaultTab: 'general',
     tabs: {
       general: {
-        component: ViewEvent,
+        component: ViewEventSidebar,
+        resetFormPath: null,
         submitSignal: null,
       },
       attendance: {
-        component: EventAttendance,
+        component: EventAttendanceSidebar,
+        resetFormPath: null,
         submitSignal: null,
       },
     },
   },
-  createEvent: {
+  scheduleEvent: {
     title: 'Schedule New Event',
     icon: 'calendar-plus-o',
-    component: CreateEvent,
-    submitSignal: 'events.createEvent',
+    component: ScheduleEventSidebar,
+    resetFormPath: 'events.scheduleEventForm',
+    submitSignal: 'events.scheduleEventSubmitted',
   },
   reportEvent: {
-    title: 'Report an Event',
+    title: 'Report Event',
     icon: 'calendar-check-o',
-    component: ReportEvent,
-    submitSignal: 'events.reportEvent',
+    component: ReportEventSidebar,
+    resetFormPath: 'events.reportEventForm',
+    submitSignal: 'events.reportEventSubmitted',
   },
   viewProfile: {
     title: null,
@@ -54,8 +57,9 @@ const views = {
     defaultTab: 'general',
     tabs: {
       general: {
-        component: ViewProfile,
-        submitSignal: 'profile.profileUpdated',
+        component: EditProfileSidebar,
+        resetFormPath: 'profile.editProfileForm',
+        submitSignal: 'profile.editProfileSubmitted',
       },
     },
   },
@@ -68,12 +72,14 @@ const determineSidebarComponent = props => {
 
 const setSidebarAction = props => {
   if (props.sidebarTab) {
-    const submitAction = views[props.sidebarView].tabs[props.sidebarTab].submitSignal
-    return props.sidebarActionsUpdated({ value: submitAction || 'app.sidebarSubmit' })
+    const sidebarReset = views[props.sidebarView].tabs[props.sidebarTab].resetFormPath
+    const sidebarSubmit = views[props.sidebarView].tabs[props.sidebarTab].submitSignal
+    return props.sidebarActionsUpdated({ sidebarReset: sidebarReset || 'app.sidebarReset', sidebarSubmit: sidebarSubmit || 'app.sidebarSubmit' })
   }
   const defaultTab = views[props.sidebarView].defaultTab
-  const submitAction = defaultTab ? views[props.sidebarView].tabs[defaultTab].submitSignal : views[props.sidebarView].submitSignal
-  return props.sidebarActionsUpdated({ value: submitAction || 'app.sidebarSubmit' })
+  const sidebarReset = defaultTab ? views[props.sidebarView].tabs[defaultTab].resetFormPath : views[props.sidebarView].resetFormPath
+  const sidebarSubmit = defaultTab ? views[props.sidebarView].tabs[defaultTab].submitSignal : views[props.sidebarView].submitSignal
+  return props.sidebarActionsUpdated({ sidebarReset: sidebarReset || 'app.sidebarReset', sidebarSubmit: sidebarSubmit || 'app.sidebarSubmit' })
 }
 
 const Sidebar = (props) => {
