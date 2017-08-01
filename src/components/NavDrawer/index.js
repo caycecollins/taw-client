@@ -210,6 +210,7 @@ const User = styled.div`
 `
 
 const Avatar = styled.img`
+  display: flex;
   flex: 1 0 auto;
   width: ${props => props.large ? '80' : '56'}px;
   ${props => !props.large && 'max-width: 80px;'}
