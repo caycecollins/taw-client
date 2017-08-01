@@ -27,12 +27,12 @@ const views = {
     tabs: {
       general: {
         component: ViewEventSidebar,
-        resetFormPath: null,
+        formPath: null,
         submitSignal: null,
       },
       attendance: {
         component: EventAttendanceSidebar,
-        resetFormPath: null,
+        formPath: null,
         submitSignal: null,
       },
     },
@@ -41,14 +41,14 @@ const views = {
     title: 'Schedule New Event',
     icon: 'calendar-plus-o',
     component: ScheduleEventSidebar,
-    resetFormPath: 'events.scheduleEventForm',
+    formPath: 'events.scheduleEventForm',
     submitSignal: 'events.scheduleEventSubmitted',
   },
   reportEvent: {
     title: 'Report Event',
     icon: 'calendar-check-o',
     component: ReportEventSidebar,
-    resetFormPath: 'events.reportEventForm',
+    formPath: 'events.reportEventForm',
     submitSignal: 'events.reportEventSubmitted',
   },
   viewProfile: {
@@ -58,7 +58,7 @@ const views = {
     tabs: {
       general: {
         component: EditProfileSidebar,
-        resetFormPath: 'profile.editProfileForm',
+        formPath: 'profile.editProfileForm',
         submitSignal: 'profile.editProfileSubmitted',
       },
     },
@@ -72,14 +72,14 @@ const determineSidebarComponent = props => {
 
 const setSidebarAction = props => {
   if (props.sidebarTab) {
-    const sidebarReset = views[props.sidebarView].tabs[props.sidebarTab].resetFormPath
-    const sidebarSubmit = views[props.sidebarView].tabs[props.sidebarTab].submitSignal
-    return props.sidebarActionsUpdated({ sidebarReset: sidebarReset || 'app.sidebarReset', sidebarSubmit: sidebarSubmit || 'app.sidebarSubmit' })
+    const sidebarFormPath = views[props.sidebarView].tabs[props.sidebarTab].formPath
+    const sidebarSubmitSignal = views[props.sidebarView].tabs[props.sidebarTab].submitSignal
+    return props.sidebarActionsUpdated({ sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath', sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmitSignal' })
   }
   const defaultTab = views[props.sidebarView].defaultTab
-  const sidebarReset = defaultTab ? views[props.sidebarView].tabs[defaultTab].resetFormPath : views[props.sidebarView].resetFormPath
-  const sidebarSubmit = defaultTab ? views[props.sidebarView].tabs[defaultTab].submitSignal : views[props.sidebarView].submitSignal
-  return props.sidebarActionsUpdated({ sidebarReset: sidebarReset || 'app.sidebarReset', sidebarSubmit: sidebarSubmit || 'app.sidebarSubmit' })
+  const sidebarFormPath = defaultTab ? views[props.sidebarView].tabs[defaultTab].formPath : views[props.sidebarView].formPath
+  const sidebarSubmitSignal = defaultTab ? views[props.sidebarView].tabs[defaultTab].submitSignal : views[props.sidebarView].submitSignal
+  return props.sidebarActionsUpdated({ sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath', sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmitSignal' })
 }
 
 const Sidebar = (props) => {

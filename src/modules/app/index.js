@@ -42,7 +42,8 @@ export default {
     sidebarImmune: false,
     sidebarTitle: null,
     sidebarTab: null,
-    sidebarSubmit: 'app.sidebarSubmit',
+    sidebarFormPath: null,
+    sidebarSubmitSignal: 'app.sidebarSubmit',
   },
   signals: {
     initialAnimationStarted,

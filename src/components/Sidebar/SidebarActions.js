@@ -7,13 +7,13 @@ import styled, { css } from 'styled-components'
 import { lighten, rgba } from 'polished'
 
 const SidebarActions = props =>
-  <SidebarActionsContainer active={props.sidebarSubmit && props.sidebarSubmit !== 'app.sidebarSubmit'}>
+  <SidebarActionsContainer active={props.sidebarSubmitSignal && props.sidebarSubmitSignal !== 'app.sidebarSubmit'}>
     <ResultFlash active={props.error}>
-      {props.error ? `Error! Please report to DEVOPS:  ${props.error.status} | ${props.error.name} | ${props.error.body.error.message}` : ''}
+      {props.error ? `Error! Please report to DEVOPS:  ${props.error.status} | ${props.error.name} ${props.error.body.error ? '|' + props.error.body.error.message : ''}` : ''}
     </ResultFlash>
     <ResetAction
       type="reset"
-      onClick={() => props.sidebarResetClicked({ form: props.sidebarReset })}
+      onClick={() => props.sidebarResetClicked({ form: props.sidebarFormPath })}
       pending={props.pending}
     >
       {props.pending ? '' : 'reset'}
@@ -29,7 +29,7 @@ const SidebarActions = props =>
       disabled={!props.form.isValid}
       title={!props.form.isValid && 'Required inputs must be completed!'}
       type="submit"
-      onClick={() => props.form.isValid && props.sidebarSubmitClicked({ form: props.sidebarSubmit })}
+      onClick={() => props.form.isValid && props.sidebarSubmitClicked({ form: props.sidebarFormPath })}
       pending={props.pending}
     >
       <Label>
@@ -39,8 +39,8 @@ const SidebarActions = props =>
   </SidebarActionsContainer>
 
 SidebarActions.propTypes = {
-  sidebarReset: PropTypes.string,
-  sidebarSubmit: PropTypes.string,
+  sidebarFormPath: PropTypes.string,
+  sidebarSubmitSignal: PropTypes.string,
   sidebarResetClicked: PropTypes.func,
   sidebarSubmitClicked: PropTypes.func,
   sidebarActiveToggled: PropTypes.func,
@@ -54,13 +54,13 @@ SidebarActions.propTypes = {
 
 export default connect(
   {
-    form: form(state`${state`app.sidebarSubmit`}`),
-    pending: state`${state`app.sidebarSubmit`}.pending`,
-    error: state`${state`app.sidebarSubmit`}.error`,
-    sidebarReset: state`app.sidebarReset`,
-    sidebarSubmit: state`app.sidebarSubmit`,
+    form: form(state`${state`app.sidebarFormPath`}`),
+    pending: state`${state`app.sidebarSubmitSignal`}.pending`,
+    error: state`${state`app.sidebarFormPath`}.error`,
+    sidebarFormPath: state`app.sidebarFormPath`,
+    sidebarSubmitSignal: state`app.sidebarSubmitSignal`,
     sidebarResetClicked: signal`app.formResetClicked`,
-    sidebarSubmitClicked: signal`${state`app.sidebarSubmit`}`,
+    sidebarSubmitClicked: signal`${state`app.sidebarSubmitSignal`}`,
     sidebarActiveToggled: signal`app.sidebarActiveToggled`,
   },
   SidebarActions
