@@ -13,13 +13,13 @@ export default class TypeAhead extends Component {
     dropdownOpen: false,
     highlightedIndex: -1,
     inputValue: '',
+    lastScrollPosition: 0,
   }
 
   static defaultProps = {
     autoComplete: null,
     items: null,
     type: 'text',
-    lastScrollPosition: 0,
   }
 
   static propTypes = {
@@ -36,6 +36,9 @@ export default class TypeAhead extends Component {
     spellCheck: PropTypes.string,
     type: PropTypes.string.isRequired,
     onSelect: PropTypes.func,
+    className: PropTypes.string,
+    size: PropTypes.string,
+    label: PropTypes.string,
   }
 
   toggleDropdown = (truth) => {
