@@ -153,7 +153,7 @@ const ScheduleEventSidebar = props => {
                 autoComplete="off"
                 items={props.search && props.search.map(it => ({ key: it.id, value: it.name || it.callsign, type: it.callsign ? 'user' : 'unit', exists: it.exists }))}
                 onChange={e => searchOnChange(props, e)}
-                onSelect={e => props.addParticipantClicked({ participant: e })}
+                onSelect={e => props.addParticipantClicked({ path: formPath, participant: e })}
                 spellCheck="false"
                 size="100%"
               />
@@ -162,7 +162,7 @@ const ScheduleEventSidebar = props => {
                   <Participant key={index}>
                     <div>{participant.display}</div>
                     <RemoveParticipantButton
-                      onClick={e => props.removeParticipantClicked(participant)}
+                      onClick={e => props.removeParticipantClicked({ path: formPath, participant })}
                       icon="remove"
                       outline={false}
                     />
