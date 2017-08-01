@@ -257,6 +257,7 @@ const StyledDate = styled(({ placement, isPristine, ...rest }) => <Flatpickr {..
 const StyledSelect = styled.select`
   ${sharedInputStyles}
   > option {
+    color: ${props => props.theme.colors.armyWhite};
     background-color: ${props => props.theme.colors.darkGray5};
   }
 `
