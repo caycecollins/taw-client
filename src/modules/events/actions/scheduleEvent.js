@@ -36,14 +36,14 @@ export default function scheduleEvent ({ controller, props, state, http, forms }
   // console.log(formToSend)
   return http.post(`/events`, formToSend)
     .then(response => {
-      console.log(response)
+      // console.log(response)
       const sidebarActiveToggled = controller.getSignal('app.sidebarActiveToggled')
       sidebarActiveToggled({ value: false })
       state.set(`${props.form}.pending`, false)
       forms.reset(props.form)
     }).catch(rawError => {
       const error = JSON.stringify(rawError)
-      console.log(JSON.parse(error))
+      // console.log(JSON.parse(error))
       setTimeout(() => state.set(`${props.form}.pending`, false), 500)
       setTimeout(() => state.set(`${props.form}.error`, JSON.parse(error)), 500)
     })

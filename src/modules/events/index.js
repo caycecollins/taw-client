@@ -2,6 +2,7 @@ import authenticate from '../../factories/authenticate'
 
 import calculateCalendarView from './helpers/calculateCalendarView'
 import scheduleEventForm from './forms/scheduleEventForm'
+import reportEventForm from './forms/reportEventForm'
 import eventsRouted from './signals/eventsRouted'
 import calendarViewChanged from './signals/calendarViewChanged'
 import viewEventRouted from './signals/viewEventRouted'
@@ -18,6 +19,7 @@ export default {
     calendarView: calculateCalendarView(),
     data: null,
     scheduleEventForm,
+    reportEventForm,
   },
   signals: {
     routed: authenticate(eventsRouted),
