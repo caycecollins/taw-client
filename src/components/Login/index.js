@@ -15,7 +15,7 @@ import ErrorMessage from '../Input/ErrorMessage'
 
 const formPath = 'login.authForm'
 
-const LoginForm = props =>
+const Login = props =>
   <ViewContainer centered={true}>
     <LoginContainer>
       <Form>
@@ -23,7 +23,7 @@ const LoginForm = props =>
         <Input type="password" label="password" path={`${formPath}.password`} />
         <br />
         <Button
-          onClick={e => props.onReset({ form: formPath })}
+          onClick={e => props.formResetClicked({ form: formPath })}
           label="Reset"
           type="button"
         />
@@ -54,21 +54,21 @@ const LoginForm = props =>
     </LoginContainer>
   </ViewContainer>
 
-LoginForm.propTypes = {
-  onReset: PropTypes.func,
+Login.propTypes = {
+  formResetClicked: PropTypes.func,
   authorizationPending: PropTypes.bool,
   authorizationError: PropTypes.object,
 }
 export default connect(
   {
     form: form(state`${formPath}`),
-    onReset: signal`app.onReset`,
+    formResetClicked: signal`app.formResetClicked`,
     login: signal`authorization.authenticate`,
     previousCallsign: state`authorization.callsign`,
     authorizationPending: state`authorization.pending`,
     authorizationError: state`authorization.error`,
   },
-  LoginForm
+  Login
 )
 
 const LoginContainer = styled.div`

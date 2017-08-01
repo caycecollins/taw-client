@@ -1,9 +1,6 @@
-import { when } from 'cerebral/operators'
-import { state } from 'cerebral/tags'
-import { goTo } from '@cerebral/router/operators'
+import authenticate from '../authorization/signals/authenticate'
 
-import authenticate from '../authorization/chains/authenticate'
-import changeView from '../../factories/changeView'
+import loginRouted from './signals/loginRouted'
 
 export default {
   state: {
@@ -29,12 +26,7 @@ export default {
     },
   },
   signals: {
-    routed: [
-      when(state`authorization.authenticated`), {
-        true: goTo('/'),
-        false: changeView('login'),
-      },
-    ],
+    routed: loginRouted,
     login: authenticate,
   },
 }

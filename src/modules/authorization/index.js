@@ -1,5 +1,5 @@
-import authenticate from './chains/authenticate'
-import logout from './chains/logout'
+import authenticate from './signals/authenticate'
+import logout from './signals/logout'
 
 const localStorageToken = window.localStorage.getItem('authorization.token')
 const jwtToken = localStorageToken
