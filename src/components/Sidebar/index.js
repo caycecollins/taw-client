@@ -74,12 +74,12 @@ const setSidebarAction = props => {
   if (props.sidebarTab) {
     const sidebarFormPath = views[props.sidebarView].tabs[props.sidebarTab].formPath
     const sidebarSubmitSignal = views[props.sidebarView].tabs[props.sidebarTab].submitSignal
-    return props.sidebarActionsUpdated({ sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath', sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmitSignal' })
+    return props.sidebarActionsUpdated({ sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath', sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmit' })
   }
   const defaultTab = views[props.sidebarView].defaultTab
   const sidebarFormPath = defaultTab ? views[props.sidebarView].tabs[defaultTab].formPath : views[props.sidebarView].formPath
   const sidebarSubmitSignal = defaultTab ? views[props.sidebarView].tabs[defaultTab].submitSignal : views[props.sidebarView].submitSignal
-  return props.sidebarActionsUpdated({ sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath', sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmitSignal' })
+  return props.sidebarActionsUpdated({ sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath', sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmit' })
 }
 
 const Sidebar = (props) => {

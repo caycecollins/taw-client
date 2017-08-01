@@ -8,8 +8,8 @@ import { lighten, rgba } from 'polished'
 
 const SidebarActions = props =>
   <SidebarActionsContainer active={props.sidebarSubmitSignal && props.sidebarSubmitSignal !== 'app.sidebarSubmit'}>
-    <ResultFlash active={props.error}>
-      {props.error ? `Error! Please report to DEVOPS:  ${props.error.status} | ${props.error.name} ${props.error.body.error ? '|' + props.error.body.error.message : ''}` : ''}
+    <ResultFlash active={props.error && props.sidebarView}>
+      {props.error && props.sidebarView ? `Error! Please report to DEVOPS:  ${props.error.status} | ${props.error.name} ${props.error.body.error ? '|' + props.error.body.error.message : ''}` : ''}
     </ResultFlash>
     <ResetAction
       type="reset"
@@ -57,6 +57,7 @@ export default connect(
     form: form(state`${state`app.sidebarFormPath`}`),
     pending: state`${state`app.sidebarSubmitSignal`}.pending`,
     error: state`${state`app.sidebarFormPath`}.error`,
+    sidebarView: state`app.sidebarView`,
     sidebarFormPath: state`app.sidebarFormPath`,
     sidebarSubmitSignal: state`app.sidebarSubmitSignal`,
     sidebarResetClicked: signal`app.formResetClicked`,
