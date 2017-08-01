@@ -8,7 +8,7 @@ import Form from '../Form'
 import Input from '../Input'
 import timezonesFromJson from '../Events/timezones.json'
 
-const formPath = 'profile.profileUpdated'
+const formPath = 'profile.editProfileForm'
 
 const timezones = timezonesFromJson.map((timezone, index) => {
   if (!timezone.utc) return false
@@ -26,9 +26,9 @@ timezones.unshift(<option key="empty" value="">Select your timezone</option>)
 
 // const getUserTimezoneText = userTimezone => timezonesFromJson.filter(tz => tz.utc && tz.utc[0] === userTimezone)
 
-const EditProfile = props => {
+const EditProfileSidebar = props => {
   return (
-    <EditProfileContainer>
+    <Container>
       <Form>
         <Input
           type="select"
@@ -40,27 +40,25 @@ const EditProfile = props => {
           {timezones}
         </Input>
       </Form>
-    </EditProfileContainer>
+    </Container>
   )
 }
 
-EditProfile.propTypes = {
+EditProfileSidebar.propTypes = {
   userTimezone: PropTypes.string,
-  resetForm: PropTypes.func,
 }
 
-EditProfile.defaultProps = {
+EditProfileSidebar.defaultProps = {
 }
 
 export default connect(
   {
     userTimezone: state`user.timezone`,
-    resetForm: signal`app.onReset`,
   },
-  EditProfile
+  EditProfileSidebar
 )
 
-const EditProfileContainer = styled.div`
+const Container = styled.div`
   font-sizeE: 0.9rem;
   color: ${props => props.theme.colors.armyWhite};
 `

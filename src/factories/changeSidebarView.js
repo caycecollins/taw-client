@@ -1,7 +1,7 @@
 import { set } from 'cerebral/operators'
 import { state } from 'cerebral/tags'
 
-export default (obj, continuesequence = []) => {
+export default function changeSidebarViewFactory (obj, continuesequence = []) {
   return [
     set(state`app.sidebarPreviousView`, state`app.sidebarView`),
     set(state`app.sidebarView`, obj.view || 'empty'),

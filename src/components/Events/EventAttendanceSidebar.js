@@ -3,14 +3,13 @@ import PropTypes from 'prop-types'
 import styled from 'styled-components'
 import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
-import moment from 'moment-timezone'
 
-const EventAttendance = props =>
+const EventAttendanceSidebar = props =>
   <Container>
     Attendance
   </Container>
 
-EventAttendance.propTypes = {
+EventAttendanceSidebar.propTypes = {
   event: PropTypes.object,
   userTimezone: PropTypes.string,
 }
@@ -19,7 +18,7 @@ export default connect(
   {
     event: state`events.eventData`,
   },
-  EventAttendance
+  EventAttendanceSidebar
 )
 
 const Container = styled.div`

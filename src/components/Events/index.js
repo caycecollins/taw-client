@@ -83,7 +83,7 @@ const Events = props =>
         />
         &nbsp;&nbsp;&nbsp;&nbsp;
         <Button
-          onClick={() => props.createNewEvent()}
+          onClick={() => props.scheduleEvent()}
           icon="calendar-plus-o"
           label="Create New Event"
         />
@@ -124,7 +124,7 @@ Events.propTypes = {
   calendarViewChanged: PropTypes.func,
   event: PropTypes.object,
   eventSelected: PropTypes.func,
-  createNewEvent: PropTypes.func,
+  scheduleEvent: PropTypes.func,
   reportEvent: PropTypes.func,
   userTimezone: PropTypes.string,
 }
@@ -141,8 +141,8 @@ export default connect(
     calendarView: state`events.calendarView`,
     event: state`events.eventData`,
     calendarViewChanged: signal`events.calendarViewChanged`,
-    eventSelected: signal`events.eventRouted`,
-    createNewEvent: signal`events.eventCreateRouted`,
+    eventSelected: signal`events.viewEventRouted`,
+    scheduleEvent: signal`events.scheduleEventRouted`,
     reportEvent: signal`events.reportEventRouted`,
     userTimezone: state`user.timezone`,
   },

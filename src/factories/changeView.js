@@ -1,7 +1,7 @@
 import { wait, when, set } from 'cerebral/operators'
 import { state } from 'cerebral/tags'
 
-export default (view, continuesequence = []) => {
+export default function changeViewFactory (view, continuesequence = []) {
   return [
     when(state`app.sidebarActive`), {
       true: [

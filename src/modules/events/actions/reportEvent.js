@@ -1,5 +1,4 @@
 import moment from 'moment'
-// import { merge } from 'lodash'
 
 const getRecurringInfo = weekly => {
   const daysOfWeek = []
@@ -13,7 +12,7 @@ const getRecurringInfo = weekly => {
   return daysOfWeek
 }
 
-const CreateEvent = ({ props, state, http, forms }) => {
+export default function reportEvent ({ controller, props, state, http, forms }) {
   state.set(`${props.form}.pending`, true)
   state.unset(`${props.form}.error`)
   const form = forms.get(props.form)
@@ -39,18 +38,17 @@ const CreateEvent = ({ props, state, http, forms }) => {
   //   state.set(`${props.form}.pending`, false)
   //   state.set(`${props.form}.error`, { status: 500, name: 'not working yet' })
   // }, 1000)
-  return http.post(`/events`, formToSend)
-    .then(response => {
-      console.log(response)
-      // state.merge('user', response.result)
-      setTimeout(() => state.set(`${props.form}.pending`, false), 500)
-      setTimeout(() => forms.reset(props.form), 500)
-    }).catch(rawError => {
-      const error = JSON.stringify(rawError)
-      console.log(JSON.parse(error))
-      setTimeout(() => state.set(`${props.form}.pending`, false), 500)
-      setTimeout(() => state.set(`${props.form}.error`, JSON.parse(error)), 500)
-    })
+  // return http.post(`/events`, formToSend)
+  //   .then(response => {
+  //     console.log(response)
+  //     const sidebarActiveToggled = controller.getSignal('app.sidebarActiveToggled')
+  //     sidebarActiveToggled({ value: false })
+  //     state.set(`${props.form}.pending`, false)
+  //     forms.reset(props.form)
+  //   }).catch(rawError => {
+  //     const error = JSON.stringify(rawError)
+  //     console.log(JSON.parse(error))
+  //     setTimeout(() => state.set(`${props.form}.pending`, false), 500)
+  //     setTimeout(() => state.set(`${props.form}.error`, JSON.parse(error)), 500)
+  //   })
 }
-
-export default CreateEvent

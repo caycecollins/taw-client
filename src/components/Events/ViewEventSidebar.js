@@ -17,8 +17,8 @@ const eventInfo = props => [
   ['created by', props.event.creatorCallsign],
 ]
 
-const EventModal = props =>
-  <EventContainer>
+const ViewEventSidebar = props =>
+  <Container>
     <Section>
       Details
       <br />
@@ -37,14 +37,14 @@ const EventModal = props =>
         </tbody>
       </table>
     </Section>
-  </EventContainer>
+  </Container>
 
-EventModal.propTypes = {
+ViewEventSidebar.propTypes = {
   event: PropTypes.object,
   userTimezone: PropTypes.string,
 }
 
-EventModal.defaultProps = {
+ViewEventSidebar.defaultProps = {
 }
 
 export default connect(
@@ -52,10 +52,10 @@ export default connect(
     event: state`events.eventData`,
     userTimezone: state`user.timezone`,
   },
-  EventModal
+  ViewEventSidebar
 )
 
-const EventContainer = styled.div`
+const Container = styled.div`
   display: flex;
   flex-direction: column;
   font-sizeE: 0.9rem;

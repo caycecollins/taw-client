@@ -4,11 +4,11 @@ import authenticate from '../../factories/authenticate'
 import changeView from '../../factories/changeView'
 import changeSidebarView from '../../factories/changeSidebarView'
 
-import profileUpdated from './chains/profileUpdated.js'
+import editProfileSubmitted from './signals/editProfileSubmitted'
 
 export default {
   state: {
-    profileUpdated: {
+    editProfileForm: {
       timezone: {
         type: 'select',
         value: '',
@@ -26,12 +26,12 @@ export default {
     routed: [
       authenticate(changeView('profile')),
     ],
-    opened: [
+    editProfileClicked: [
       authenticate([
         changeSidebarView({ view: 'viewProfile', tab: 'general', title: state`user.callsign` }),
       ]),
     ],
-    profileUpdated,
+    editProfileSubmitted,
     deleted: [
       () => { console.log('profile.deleted') },
     ],

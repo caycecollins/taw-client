@@ -1,11 +1,13 @@
-import { wait, set } from 'cerebral/operators'
-import { state, props } from 'cerebral/tags'
-import { setField, resetForm } from '@cerebral/forms/operators'
-
-import drawerActiveToggled from './chains/drawerActiveToggled'
-import drawerLargeToggled from './chains/drawerLargeToggled'
-import sidebarActiveToggled from './chains/sidebarActiveToggled'
-import sidebarTabChanged from './chains/sidebarTabChanged'
+import initialAnimationStarted from './signals/initialAnimationStarted'
+import deviceSizeUpdated from './signals/deviceSizeUpdated'
+import drawerActiveToggled from './signals/drawerActiveToggled'
+import drawerLargeToggled from './signals/drawerLargeToggled'
+import sidebarActiveToggled from './signals/sidebarActiveToggled'
+import sidebarTabChanged from './signals/sidebarTabChanged'
+import sidebarActionsUpdated from './signals/sidebarActionsUpdated'
+import fieldChanged from './signals/fieldChanged'
+import formResetClicked from './signals/formResetClicked'
+import setFieldDefaultValue from './signals/setFieldDefaultValue'
 
 function determineDrawerActive () {
   const drawerActiveFromStorage = window.localStorage.getItem('app.drawerActive')
@@ -41,71 +43,18 @@ export default {
     sidebarTitle: null,
     sidebarTab: null,
     sidebarSubmit: 'app.sidebarSubmit',
-    settings: {
-      validateOnChange: {
-        value: true,
-        description: 'Show error messages on change',
-        unToggleFieldsWhenChecked: [
-          'app.settings.validateInputOnBlur',
-          'app.settings.validateFormOnSubmit',
-        ],
-      },
-      disableSubmitWhenFormIsInValid: {
-        value: true,
-        description: 'Disable submit when form is invalid',
-        neverHidePanel: true,
-      },
-      validateInputOnBlur: {
-        value: true,
-        description: 'Show error message on blur',
-        unToggleFieldsWhenChecked: [
-          'app.settings.validateOnChange',
-          'app.settings.validateFormOnSubmit',
-        ],
-      },
-      validateFormOnSubmit: {
-        value: true,
-        description: 'Show error message on submit',
-        unToggleFieldsWhenChecked: [
-          'app.settings.validateOnChange',
-          'app.settings.validateInputOnBlur',
-        ],
-      },
-      showErrors: true,
-    },
   },
   signals: {
-    deviceSizeUpdated: set(state`app.deviceSize`, props`size`),
+    initialAnimationStarted,
+    deviceSizeUpdated,
     drawerActiveToggled,
     drawerLargeToggled,
-    initialAnimationStarted: [
-      wait(600),
-      set(state`app.initialAnimation`, false),
-    ],
     sidebarActiveToggled,
     sidebarTabChanged,
-    fieldChanged: [
-      setField(state`${props`field`}`, props`value`),
-      // when(state`${props`settingsField`}.value`), {
-      //   true: [
-      //     set(state`app.settings.showErrors`, true),
-      //   ],
-      //   false: [
-      //     set(state`${props`field`}.value`, props`value`),
-      //   ],
-      // },
-    ],
-    onReset: [
-      resetForm(state`${props`form`}`),
-      set(state`${props`form`}.error`, null),
-    ],
-    setFieldDefaultValue: [
-      set(state`${props`field`}.defaultValue`, props`value`),
-    ],
-    sidebarActionsUpdated: [
-      wait(200),
-      set(state`app.sidebarSubmit`, props`value`),
-    ],
-    sidebarSubmit: [({ props }) => console.log('sidebar submit signal: ', props.signal)],
+    sidebarActionsUpdated,
+    fieldChanged,
+    formResetClicked,
+    setFieldDefaultValue,
+    sidebarSubmit: [], // used to clear submit signals from SidebarActions
   },
 }

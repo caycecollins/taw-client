@@ -1,4 +1,4 @@
-const UpdateProfile = ({ props, state, http, forms }) => {
+export default function editProfile ({ props, state, http, forms }) {
   state.set(`${props.form}.pending`, true)
   let fields = forms.toJSON(props.form)
   return http.put(`/users/${state.get('user.id')}/infos`, fields)
@@ -12,5 +12,3 @@ const UpdateProfile = ({ props, state, http, forms }) => {
       setTimeout(() => state.set(`${props.form}.error`, JSON.parse(error)), 500)
     })
 }
-
-export default UpdateProfile

@@ -12,7 +12,7 @@ import Input from '../Input'
 import Button from '../Button'
 import TypeAhead from '../Input/TypeAhead'
 
-const formPath = 'events.createEvent'
+const formPath = 'events.scheduleEventForm'
 
 const roundDate = (date, duration, method, userTimezone) => {
   const rounded = moment(Math[method]((+date) / (+duration)) * (+duration))
@@ -53,7 +53,7 @@ const dateConfigOptions = (props, field) => {
 }
 
 const searchOnChange = (props, e) => {
-  props.filterSearchInput({ value: e.target ? e.target.value : e })
+  props.searchParticipantsChanged({ value: e.target ? e.target.value : e })
 }
 
 const getDuration = props => {
@@ -81,10 +81,10 @@ const getUserUnits = props => {
   return units
 }
 
-const CreateEvent = props => {
+const ScheduleEventSidebar = props => {
   const duration = (props.startDate && props.endDate) && getDuration(props)
   return (
-    <CreateEventContainer>
+    <Container>
       <Form>
         <Grid marginless>
           <StyledRow>
@@ -153,7 +153,7 @@ const CreateEvent = props => {
                 autoComplete="off"
                 items={props.search && props.search.map(it => ({ key: it.id, value: it.name || it.callsign, type: it.callsign ? 'user' : 'unit', exists: it.exists }))}
                 onChange={e => searchOnChange(props, e)}
-                onSelect={e => props.addParticipant({ participant: e })}
+                onSelect={e => props.addParticipantClicked({ participant: e })}
                 spellCheck="false"
                 size="100%"
               />
@@ -162,7 +162,7 @@ const CreateEvent = props => {
                   <Participant key={index}>
                     <div>{participant.display}</div>
                     <RemoveParticipantButton
-                      onClick={e => props.removeParticipant(participant)}
+                      onClick={e => props.removeParticipantClicked(participant)}
                       icon="remove"
                       outline={false}
                     />
@@ -171,40 +171,30 @@ const CreateEvent = props => {
               </Participants>
             </Col>
           </StyledRow>
-          {/* <Row>
-            <Button
-              onClick={() => props.resetForm({ formPath })}
-              label="Reset"
-              type="button"
-            />
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <SubmitButton form={formPath} />
-            {props.underConstruction && <ErrorMessage>Under construciton, check back soon.</ErrorMessage>}
-          </Row> */}
         </Grid>
       </Form>
-    </CreateEventContainer>
+    </Container>
   )
 }
 
-CreateEvent.propTypes = {
+ScheduleEventSidebar.propTypes = {
   userTimezone: PropTypes.string,
   userUnitID: PropTypes.number,
   userHourFormat: PropTypes.string,
-  resetForm: PropTypes.func,
   repeatEnabled: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.bool,
   ]),
   underConstruction: PropTypes.bool,
-  filterSearchInput: PropTypes.func,
+  searchParticipantsChanged: PropTypes.func,
   divisions: PropTypes.array,
   startDate: PropTypes.string,
   endDate: PropTypes.string,
   fieldChanged: PropTypes.func,
   search: PropTypes.array,
   participants: PropTypes.array,
-  addParticipant: PropTypes.func,
+  addParticipantClicked: PropTypes.func,
+  removeParticipantClicked: PropTypes.func,
 }
 
 export default connect(
@@ -219,16 +209,15 @@ export default connect(
     repeatEnabled: state`${formPath}.repeat.value`,
     underConstruction: state`${formPath}.underConstruction`,
     participants: state`${formPath}.participants`,
-    resetForm: signal`app.onReset`,
-    filterSearchInput: signal`events.filterSearchInput`,
+    searchParticipantsChanged: signal`events.searchParticipantsChanged`,
     fieldChanged: signal`app.fieldChanged`,
-    addParticipant: signal`events.createEventAddParticipant`,
-    removeParticipant: signal`events.createEventRemoveParticipant`,
+    addParticipantClicked: signal`events.addParticipantClicked`,
+    removeParticipantClicked: signal`events.removeParticipantClicked`,
   },
-  CreateEvent
+  ScheduleEventSidebar
 )
 
-const CreateEventContainer = styled.div`
+const Container = styled.div`
   font-sizeE: 0.9rem;
   color: ${props => props.theme.colors.armyWhite};
 `
@@ -243,6 +232,7 @@ const Duration = styled.div`
 `
 
 const Participants = styled.div`
+  margin-top: 24px;
   width: 100%;
 `
 
@@ -254,8 +244,16 @@ const Participant = styled.div`
   width: 100%;
   min-height: 32px;
   padding: 8px 16px;
+  color: ${props => props.theme.colors.tan};
+  &:hover {
+    background-color: ${props => props.theme.colors.darkGray2};
+  }
 `
 
 const RemoveParticipantButton = styled(Button)`
-  color: ${props => props.theme.colors.lightRed};
+  color: ${props => props.theme.colors.darkGray6};
+  &:hover {
+    color: ${props => props.theme.colors.lightRed};
+    background-color: transparent;
+  }
 `

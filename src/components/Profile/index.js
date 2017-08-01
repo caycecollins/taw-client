@@ -13,19 +13,19 @@ const Profile = props =>
     <br />
     <br />
     <Button
-      onClick={() => props.editProfile()}
+      onClick={() => props.editProfileClicked()}
       icon="edit"
       label="Edit Profile"
     />
   </ViewContainer>
 
 Profile.propTypes = {
-  editProfile: PropTypes.func,
+  editProfileClicked: PropTypes.func,
 }
 
 export default connect(
   {
-    editProfile: signal`profile.opened`,
+    editProfileClicked: signal`profile.editProfileClicked`,
   },
   Profile
 )

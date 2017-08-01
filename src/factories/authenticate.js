@@ -7,7 +7,7 @@ const getCurrentUserData = async ({ http, state }) => {
   state.set('user', getUserDataFromApi.result)
 }
 
-export default (continueSequence = []) => {
+export default function authenticateFactory (continueSequence = []) {
   return [
     when(state`authorization.authenticated`), {
       true: [
