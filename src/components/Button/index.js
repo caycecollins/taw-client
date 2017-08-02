@@ -24,6 +24,7 @@ const Button = props =>
     onClick={props.onClick}
     disabled={props.disabled}
     className={props.className}
+    danger={props.danger}
   >
     {props.icon &&
       <StyledIcon label={props.label}>
@@ -54,6 +55,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
   className: PropTypes.string,
+  danger: PropTypes.bool,
 }
 
 Button.defaultProps = {
@@ -67,7 +69,11 @@ const StyledButton = styled.button`
   align-items: center;
   border-radius: 2px;
   background-color: transparent;
-  color: ${props => !props.disabled ? props.theme.colors.armyGreen : props.theme.colors.gray};
+  color: ${props => {
+    if (props.disabled) return props.theme.colors.gray
+    if (props.danger) return props.theme.colors.lightRed
+    return props.theme.colors.armyGreen
+  }};
   text-transform: uppercase;
   transition: all .3s cubic-bezier(.4,0,.2,1);
   height: ${props => {
@@ -82,13 +88,12 @@ const StyledButton = styled.button`
     if (props.size === 'md') return '8px 20px 7px 20px'
     if (props.size === 'lg') return '10px 22px 8px 22px'
   }};
-  ${props => props.outline
-    ? css`
-      border: 1px solid ${!props.disabled ? props.theme.colors.armyGreen : props.theme.colors.gray};
-    `
-    : css`
-      border: 1px solid transparent;
-  `}
+  border: 1px solid ${props => {
+    if (!props.outline) return 'transparent'
+    if (props.disabled) return props.theme.colors.gray
+    if (props.danger) return props.theme.colors.lightRed
+    return props.theme.colors.armyGreen
+  }};
   font-size: ${props => {
     if (props.size === 'xs') return '.65rem'
     if (!props.size || props.size === 'sm') return '.72rem'
