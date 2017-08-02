@@ -250,7 +250,9 @@ export const sharedInputStyles = css`
   font-size: 1rem;
   transition: all .3s cubic-bezier(.4,0,.2,1);
   min-width: ${props => props.width || 30}px;
+  width: ${props => `${props.width}px` || 'auto'};
   min-height: ${props => props.height || 32}px;
+  height: ${props => `${props.height}px` || 'auto'};
   ${props => css`
     &:focus {
       border-color: ${props.theme.colors.lightTan};
