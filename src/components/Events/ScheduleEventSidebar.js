@@ -128,14 +128,14 @@ const ScheduleEventSidebar = props => {
                 type="checkbox"
                 path={`${formPath}.repeat`}
               />
-              {props.repeatEnabled && ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'].map((weekday, index) =>
+              {props.repeatEnabled && ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((weekday, index) =>
                 <Input
-                  key={`repeat-${weekday}`}
+                  key={`repeatWeekly${weekday}`}
                   label={weekday}
                   name="repeatWeekday"
                   type="checkbox"
                   is="checkbox-group"
-                  path={`${formPath}.repeatWeekly.${weekday}`}
+                  path={`${formPath}.repeatWeekly${weekday}`}
                   value={weekday}
                 />
               )}

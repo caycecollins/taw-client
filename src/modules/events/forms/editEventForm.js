@@ -43,46 +43,40 @@ export default {
     isPristine: true,
     validationRules: [],
   },
-  repeatWeekly: {
+  repeatWeeklySun: {
     value: '',
     isRequired: false,
     isPristine: true,
-    validationRules: [],
-    sun: {
-      value: '',
-      isRequired: false,
-      isPristine: true,
-    },
-    mon: {
-      value: '',
-      isRequired: false,
-      isPristine: true,
-    },
-    tue: {
-      value: '',
-      isRequired: false,
-      isPristine: true,
-    },
-    wed: {
-      value: '',
-      isRequired: false,
-      isPristine: true,
-    },
-    thu: {
-      value: '',
-      isRequired: false,
-      isPristine: true,
-    },
-    fri: {
-      value: '',
-      isRequired: false,
-      isPristine: true,
-    },
-    sat: {
-      value: '',
-      isRequired: false,
-      isPristine: true,
-    },
+  },
+  repeatWeeklyMon: {
+    value: '',
+    isRequired: false,
+    isPristine: true,
+  },
+  repeatWeeklyTue: {
+    value: '',
+    isRequired: false,
+    isPristine: true,
+  },
+  repeatWeeklyWed: {
+    value: '',
+    isRequired: false,
+    isPristine: true,
+  },
+  repeatWeeklyThu: {
+    value: '',
+    isRequired: false,
+    isPristine: true,
+  },
+  repeatWeeklyFri: {
+    value: '',
+    isRequired: false,
+    isPristine: true,
+  },
+  repeatWeeklySat: {
+    value: '',
+    isRequired: false,
+    isPristine: true,
   },
   unit: {
     value: '',

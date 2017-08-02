@@ -83,18 +83,27 @@ const getUserUnits = props => {
 
 const EventEditTab = props => {
   const duration = (props.startDate && props.endDate) && getDuration(props)
-  const editMode = props.sidebarView === 'viewEvent' && props.sidebarTab === 'edit'
   return (
     <Container>
       <Form>
         <Grid marginless>
+          <StyledRow>
+            <Col xs4={4}>
+              <Button
+                onClick={() => console.log('handle-delete-event')}
+                icon="trash"
+                label="Delete Event"
+                danger
+              />
+            </Col>
+          </StyledRow>
           <StyledRow>
             <Col sm={6} sm8={4} xs4={4}>
               <Input
                 label="title"
                 path={`${formPath}.title`}
                 width={300}
-                defaultValue={editMode && props.event.title}
+                defaultValue={props.event.title}
               />
               <Input
                 label="description"
@@ -102,27 +111,27 @@ const EventEditTab = props => {
                 path={`${formPath}.description`}
                 width={300}
                 height={100}
-                defaultValue={editMode && props.event.description}
+                defaultValue={props.event.description}
               />
               <Input
                 label="mandatory"
                 type="checkbox"
                 path={`${formPath}.mandatory`}
-                defaultValue={editMode && props.event.mandatory}
+                defaultValue={props.event.mandatory}
               />
               <Input
                 label="start date"
                 type="date"
                 path={`${formPath}.start`}
                 dateOptions={dateConfigOptions(props, 'start')}
-                defaultValue={editMode && props.event.start}
+                defaultValue={props.event.start}
               />
               <Input
                 label="end date"
                 type="date"
                 path={`${formPath}.end`}
                 dateOptions={dateConfigOptions(props, 'end')}
-                defaultValue={editMode && props.event.end}
+                defaultValue={props.event.end}
               />
               {duration &&
                 <Duration>
@@ -133,22 +142,19 @@ const EventEditTab = props => {
                 label="repeat"
                 type="checkbox"
                 path={`${formPath}.repeat`}
-                defaultValue={editMode && props.event.recurring && props.event.recurring.length > 0}
+                defaultValue={props.event.recurring && props.event.recurring.length > 0}
               />
-              {['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'].map((weekday, index) => {
-                return (
-                  <Input
-                    key={`repeat-${weekday}`}
-                    label={weekday}
-                    name="repeatWeekday"
-                    type="checkbox"
-                    is="checkbox-group"
-                    path={`${formPath}.repeatWeekly.${weekday}`}
-                    value={weekday}
-                    defaultValue={(props.event.recurring && props.event.recurring.find(weekday => weekday === index))}
-                  />
-                )
-              })}
+              {props.repeatEnabled && ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((weekday, index) =>
+                <Input
+                  key={`repeatWeekly${weekday}`}
+                  label={weekday}
+                  name="repeatWeekday"
+                  type="checkbox"
+                  is="checkbox-group"
+                  path={`${formPath}.repeatWeekly${weekday}`}
+                  defaultValue={props.event.recurring.indexOf(index) > -1}
+                />
+              )}
             </Col>
             <Col sm={6} sm8={4}>
               <Input
@@ -198,7 +204,6 @@ EventEditTab.propTypes = {
     PropTypes.string,
     PropTypes.bool,
   ]),
-  underConstruction: PropTypes.bool,
   searchParticipantsChanged: PropTypes.func,
   divisions: PropTypes.array,
   startDate: PropTypes.string,
@@ -223,7 +228,6 @@ export default connect(
     search: state`search.results`,
     userHourFormat: state`user.timeformat`,
     repeatEnabled: state`${formPath}.repeat.value`,
-    underConstruction: state`${formPath}.underConstruction`,
     participants: state`${formPath}.participants`,
     searchParticipantsChanged: signal`events.searchParticipantsChanged`,
     fieldChanged: signal`app.fieldChanged`,
