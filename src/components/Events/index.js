@@ -31,10 +31,19 @@ const occurencesFromRecursiveEvent = props => {
   const allEvents = []
   props.events.forEach(event => {
     if (event.recurring.length > 0) {
+      console.log(event.recurring)
+      const adjustedRecurringArray = event.recurring
+        .map(weekday => {
+          const wkd = weekday === 0 ? weekday + 6 : weekday - 1
+          return wkd
+        })
+        .sort()
+      console.log(adjustedRecurringArray)
       const occurrences = new RRule({
         freq: RRule.WEEKLY,
+        wkst: RRule.SU,
         interval: 1,
-        byweekday: event.recurring,
+        byweekday: adjustedRecurringArray,
         dtstart: moment(event.start).tz(props.userTimezone).toDate(),
         until: moment(event.end).tz(props.userTimezone).toDate(),
       })
@@ -101,7 +110,7 @@ const Events = props =>
           startAccessor="start"
           endAccessor="end"
           popup={true}
-          selectable={true}
+          // selectable={true}
           onSelectEvent={event => selectEvent(event, props)}
           onView={(view) => props.calendarViewChanged({ view })}
           view={props.calendarView}
