@@ -42,7 +42,7 @@ class Input extends Component {
     this.setState({
       inputComponent: this.props.type ? this.determineInputComponent() : StyledInput,
     })
-    if (this.props.defaultValue) {
+    if (this.props.defaultValue !== undefined) {
       const defaultValue = this.props.type === 'date' ? moment.tz(this.props.defaultValue, this.props.userTimezone).format() : this.props.defaultValue
       this.props.setFieldDefaultValue({ field: this.props.path, value: defaultValue })
     }
@@ -59,7 +59,7 @@ class Input extends Component {
   onChange = e => {
     const inputValue = this.determineInputValue()
     const updatedValue = this.updateValue(e)
-    if (this.props.defaultValue === updatedValue) {
+    if (this.props.type !== 'checkbox' && this.props.defaultValue === updatedValue) {
       this.props.fieldChanged({
         field: this.props.path,
         value: '',
