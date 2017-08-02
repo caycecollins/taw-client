@@ -84,7 +84,6 @@ class Input extends Component {
   }
 
   render () {
-    console.log('re-rendering input with props:', this.props)
     const InputComponent = this.state.inputComponent
     return (
       <InputContainer
