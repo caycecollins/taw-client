@@ -1,5 +1,5 @@
-import createEvent from '../actions/scheduleEvent'
+import scheduleEvent from '../actions/scheduleEvent'
 
 export default [
-  createEvent,
+  scheduleEvent,
 ]
