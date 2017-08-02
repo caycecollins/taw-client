@@ -92,7 +92,7 @@ const Events = props =>
         <Button
           onClick={() => props.scheduleEvent()}
           icon="calendar-plus-o"
-          label="Create New Event"
+          label="Schedule Event"
         />
       </CustomActions>
       <CSSTransitionGroup

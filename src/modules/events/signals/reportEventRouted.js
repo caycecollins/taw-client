@@ -21,7 +21,7 @@ export default [
     false: [
       changeSidebarView({ icon: 'hourglass' },
         [
-          wait(400),
+          wait(250),
           apiGet('/units', 'units.divisions'), { success: [], error: [] },
           changeSidebarView({ view: 'reportEvent', icon: 'calendar-check-o', title: 'Report Event' }),
         ],
