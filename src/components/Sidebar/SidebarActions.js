@@ -9,7 +9,7 @@ import { lighten, rgba } from 'polished'
 const SidebarActions = props =>
   <SidebarActionsContainer active={props.sidebarSubmitSignal && props.sidebarSubmitSignal !== 'app.sidebarSubmit'}>
     <ResultFlash active={props.error && props.sidebarView}>
-      {props.error && props.sidebarView ? `Error! Please report to DEVOPS:  ${props.error.status} | ${props.error.name} ${props.error.body.error ? '|' + props.error.body.error.message : ''}` : ''}
+      {props.error && props.sidebarView ? `Error! Please report to DEVOPS:  ${props.error.status} | ${props.error.name} ${props.error.body.error ? '| ' + props.error.body.error.message : ''}` : ''}
     </ResultFlash>
     <ResetAction
       type="reset"
@@ -40,6 +40,7 @@ const SidebarActions = props =>
 
 SidebarActions.propTypes = {
   sidebarFormPath: PropTypes.string,
+  sidebarView: PropTypes.string,
   sidebarSubmitSignal: PropTypes.string,
   sidebarResetClicked: PropTypes.func,
   sidebarSubmitClicked: PropTypes.func,
