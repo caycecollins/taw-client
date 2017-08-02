@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, props, signal } from 'cerebral/tags'
@@ -7,6 +7,7 @@ import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import Flatpickr from 'react-flatpickr'
 import moment from 'moment-timezone'
+import { debounce } from 'lodash'
 import './dateTimePickerStyles.scss'
 
 import ErrorMessage from './ErrorMessage'
@@ -14,108 +15,127 @@ import ErrorMessage from './ErrorMessage'
 // TODO: make sure the following is patched after rebuilding packages!!!!
 // https://github.com/chmln/flatpickr/commit/6dd2adc56a71a1166c0529def27a052059f042e3#diff-51ad6ed16e74144ae6e17bbd53d35a5b
 
-const determineInputComponent = props => {
-  switch (props.type) {
-    case 'date': return StyledDate
-    case 'select': return StyledSelect
-    case 'checkbox': return StyledCheck
-    case 'textarea': return StyledTextArea
-    default: return StyledInput
+class Input extends Component {
+  state = {
+    inputComponent: StyledInput,
   }
-}
 
-const determineInputValue = props => {
-  if (props.type === 'date') return props.field.value || props.dateOptions.defaultDate
-  if (props.type === 'checkbox') return props.field.value
-  if (props.type === 'typeahead') return props.field.value
-  const inputValue = props.field.value || props.value || props.field.defaultValue || ''
-  return inputValue
-}
+  determineInputComponent = () => {
+    switch (this.props.type) {
+      case 'date': return StyledDate
+      case 'select': return StyledSelect
+      case 'checkbox': return StyledCheck
+      case 'textarea': return StyledTextArea
+      default: return StyledInput
+    }
+  }
 
-const onChange = (props, e) => {
-  const inputValue = determineInputValue(props)
-  const updateValue = () => {
-    switch (props.type) {
-      case 'date': return e.length > 0 ? moment(moment.tz(e[0], props.userTimezone).toDate()).format('YYYY-MM-DDTHH:mm:00ZZ') : ''
+  determineInputValue = () => {
+    if (this.props.type === 'date') return this.props.field.value || this.props.dateOptions.defaultDate
+    if (this.props.type === 'checkbox') return this.props.field.value
+    if (this.props.type === 'typeahead') return this.props.field.value
+    const inputValue = this.props.field.value || this.props.value || this.props.field.defaultValue || ''
+    return inputValue
+  }
+
+  componentWillMount = () => {
+    this.setState({
+      inputComponent: this.props.type ? this.determineInputComponent() : StyledInput,
+    })
+    if (this.props.defaultValue) {
+      const defaultValue = this.props.type === 'date' ? moment.tz(this.props.defaultValue, this.props.userTimezone).format() : this.props.defaultValue
+      this.props.setFieldDefaultValue({ field: this.props.path, value: defaultValue })
+    }
+  }
+
+  updateValue = e => {
+    switch (this.props.type) {
+      case 'date': return e.length > 0 ? moment(moment.tz(e[0], this.props.userTimezone).toDate()).format('YYYY-MM-DDTHH:mm:00ZZ') : ''
       case 'checkbox': return e.target.checked
       default: return e.target.value
     }
   }
-  const updatedValue = updateValue()
-  if (props.defaultValue === updatedValue) {
-    props.fieldChanged({
-      field: props.path,
-      value: '',
-    })
-  } else if (updatedValue !== inputValue) {
-    props.fieldChanged({
-      field: props.path,
-      value: updatedValue,
-    })
+
+  onChange = e => {
+    const inputValue = this.determineInputValue()
+    const updatedValue = this.updateValue(e)
+    if (this.props.defaultValue === updatedValue) {
+      this.props.fieldChanged({
+        field: this.props.path,
+        value: '',
+      })
+    } else if (updatedValue !== inputValue) {
+      this.props.fieldChanged({
+        field: this.props.path,
+        value: updatedValue,
+      })
+    }
   }
-}
 
-const onBlur = (props, e) => {
-  const inputValue = determineInputValue(props)
-  const targetValue = props.type === 'date' ? moment.tz(e[0], props.userTimezone).format() : e.target.value
-  targetValue !== inputValue &&
-    props.fieldChanged({
-      field: props.path,
-      value: targetValue,
-    })
-}
+  onBlur = e => {
+    const inputValue = this.determineInputValue()
+    const targetValue = this.props.type === 'date' ? moment.tz(e[0], this.props.userTimezone).format() : e.target.value
+    if (targetValue !== inputValue) {
+      props.fieldChanged({
+        field: this.props.path,
+        value: targetValue,
+      })
+    }
+  }
 
-const Input = props => {
-  const InputComponent = props.type ? determineInputComponent(props) : StyledInput
-  return (
-    <InputContainer
-      isCheckboxGroup={props.is === 'checkbox-group'}
-      placement={props.placement}
-    >
-      <InputComponentContainer
-        checkbox={props.type === 'checkbox'}
-        isCheckboxGroup={props.is === 'checkbox-group'}
-        placement={props.placement}
+  render () {
+    console.log('re-rendering input with props:', this.props)
+    const InputComponent = this.state.inputComponent
+    return (
+      <InputContainer
+        isCheckboxGroup={this.props.is === 'checkbox-group'}
+        placement={this.props.placement}
       >
-        <InputComponent
-          onChange={e => !props.onChange ? onChange(props, e) : props.onChange(e)}
-          onBlur={e => props.type !== 'date' && onBlur(props, e)}
-          value={determineInputValue(props)}
-          checked={props.type === 'checkbox' && determineInputValue(props)}
-          placeholder={props.placeholder}
-          type={props.type || 'text'}
-          isPristine={props.field.isPristine || !props.field.hasValue}
-          options={props.dateOptions}
-          id={props.label}
-          name={props.name}
-          autoComplete={props.autoComplete}
-          innerRef={props.innerRef}
-          placement={props.placement}
-          className={props.className}
-          width={props.width}
-          height={props.height}
+        <InputComponentContainer
+          checkbox={this.props.type === 'checkbox'}
+          isCheckboxGroup={this.props.is === 'checkbox-group'}
+          placement={this.props.placement}
         >
-          {props.children}
-        </InputComponent>
-        {props.type === 'checkbox' && <CheckBoxLabel htmlFor={props.label} />}
-        {props.label &&
-          <Label
-            isPristine={props.field.isPristine || !props.field.hasValue}
-            placement={props.placement}
-            className={props.className}
+          <InputComponent
+            onChange={e => !this.props.onChange ? this.onChange(e) : this.props.onChange(e)}
+            onBlur={e => this.props.type !== 'date' && this.onBlur(e)}
+            value={this.determineInputValue()}
+            checked={this.props.type === 'checkbox' && this.determineInputValue()}
+            placeholder={this.props.placeholder}
+            type={this.props.type || 'text'}
+            isPristine={this.props.field.isPristine || !this.props.field.hasValue}
+            options={this.props.dateOptions}
+            id={this.props.label}
+            name={this.props.name}
+            autoComplete={this.props.autoComplete}
+            innerRef={this.props.innerRef}
+            placement={this.props.placement}
+            className={this.props.className}
+            width={this.props.width}
+            height={this.props.height}
           >
-            {props.label} {props.field.isRequired && <Required>*</Required>}
-          </Label>
-        }
+            {this.props.children}
+          </InputComponent>
+          {this.props.type === 'checkbox' && <CheckBoxLabel htmlFor={this.props.label} />}
+          {this.props.label &&
+            <Label
+              isPristine={this.props.field.isPristine || !this.props.field.hasValue}
+              placement={this.props.placement}
+              className={this.props.className}
+            >
+              {this.props.label} {this.props.field.isRequired && <Required>*</Required>}
+            </Label>
+          }
 
-      </InputComponentContainer>
-      {props.field.errorMessage &&
-        <ErrorMessage size="xs">
-          {props.field.errorMessage}
-        </ErrorMessage>
-      }
-    </InputContainer>
-  )
+        </InputComponentContainer>
+        {this.props.field.errorMessage &&
+          <ErrorMessage size="xs">
+            {this.props.field.errorMessage}
+          </ErrorMessage>
+        }
+      </InputContainer>
+    )
+  }
 }
 
 Input.propTypes = {
@@ -140,17 +160,27 @@ Input.propTypes = {
   innerRef: PropTypes.string,
   autoComplete: PropTypes.string,
   onChange: PropTypes.func,
-  defaultValue: PropTypes.string,
+  defaultValue: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.bool,
+    PropTypes.number,
+    PropTypes.object,
+  ]),
   placement: PropTypes.string,
   className: PropTypes.string,
   width: PropTypes.number,
   height: PropTypes.number,
+  checked: PropTypes.bool,
+  setFieldDefaultValue: PropTypes.func,
+  userTimezone: PropTypes.string,
 }
 
 export default connect(
   {
     field: field(state`${props`path`}`),
+    userTimezone: state`user.timezone`,
     fieldChanged: signal`app.fieldChanged`,
+    setFieldDefaultValue: signal`app.setFieldDefaultValue`,
   },
   Input
 )
