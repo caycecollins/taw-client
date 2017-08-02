@@ -1,5 +1,6 @@
 import { when, set, wait } from 'cerebral/operators'
-import { state, props } from 'cerebral/tags'
+import { state, props, string } from 'cerebral/tags'
+import { goTo } from '@cerebral/router/operators'
 
 import resetSidebarState from '../../../factories/resetSidebarState'
 
@@ -10,7 +11,7 @@ export default [
     false: [
       wait(450),
       resetSidebarState(),
-      ({ state, router }) => router.goTo(`/${state.get('app.currentView')}`),
+      goTo(string`/${state`app.currentView`}`),
     ],
   },
 ]
