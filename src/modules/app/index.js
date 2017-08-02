@@ -1,3 +1,5 @@
+import resetForm from '../../factories/resetForm'
+
 import initialAnimationStarted from './signals/initialAnimationStarted'
 import deviceSizeUpdated from './signals/deviceSizeUpdated'
 import drawerActiveToggled from './signals/drawerActiveToggled'
@@ -6,7 +8,6 @@ import sidebarActiveToggled from './signals/sidebarActiveToggled'
 import sidebarTabChanged from './signals/sidebarTabChanged'
 import sidebarActionsUpdated from './signals/sidebarActionsUpdated'
 import fieldChanged from './signals/fieldChanged'
-import formResetClicked from './signals/formResetClicked'
 import setFieldDefaultValue from './signals/setFieldDefaultValue'
 
 function determineDrawerActive () {
@@ -43,6 +44,7 @@ export default {
     sidebarTitle: null,
     sidebarTab: null,
     sidebarFormPath: null,
+    sidebarResetSignal: 'app.formResetClicked',
     sidebarSubmitSignal: 'app.sidebarSubmit',
   },
   signals: {
@@ -54,7 +56,7 @@ export default {
     sidebarTabChanged,
     sidebarActionsUpdated,
     fieldChanged,
-    formResetClicked,
+    formResetClicked: resetForm(),
     setFieldDefaultValue,
     sidebarSubmit: [], // used to clear submit signals from SidebarActions
   },

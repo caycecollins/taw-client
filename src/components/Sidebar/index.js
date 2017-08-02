@@ -6,8 +6,9 @@ import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import { CSSTransitionGroup } from 'react-transition-group'
 
-import ViewEventSidebar from '../Events/ViewEventSidebar'
-import EventAttendanceSidebar from '../Events/EventAttendanceSidebar'
+import EventGeneralTab from '../Events/EventGeneralTab'
+import EventEditTab from '../Events/EventEditTab'
+import EventAttendanceTab from '../Events/EventAttendanceTab'
 import ScheduleEventSidebar from '../Events/ScheduleEventSidebar'
 import ReportEventSidebar from '../Events/ReportEventSidebar'
 import EditProfileSidebar from '../Profile/EditProfileSidebar'
@@ -26,14 +27,20 @@ const views = {
     defaultTab: 'general',
     tabs: {
       general: {
-        component: ViewEventSidebar,
+        component: EventGeneralTab,
         formPath: null,
         submitSignal: null,
       },
       attendance: {
-        component: EventAttendanceSidebar,
+        component: EventAttendanceTab,
         formPath: null,
         submitSignal: null,
+      },
+      edit: {
+        component: EventEditTab,
+        formPath: 'events.editEventForm',
+        resetSignal: 'events.editEventReset',
+        submitSignal: 'events.editEventSubmitted',
       },
     },
   },
@@ -42,6 +49,7 @@ const views = {
     icon: 'calendar-plus-o',
     component: ScheduleEventSidebar,
     formPath: 'events.scheduleEventForm',
+    resetSignal: 'events.scheduleEventReset',
     submitSignal: 'events.scheduleEventSubmitted',
   },
   reportEvent: {
@@ -70,21 +78,30 @@ const determineSidebarComponent = props => {
   return views[props.sidebarView].defaultTab || views[props.sidebarView].component
 }
 
-const setSidebarAction = props => {
+const setSidebarActions = props => {
   if (props.sidebarTab) {
-    const sidebarFormPath = views[props.sidebarView].tabs[props.sidebarTab].formPath
-    const sidebarSubmitSignal = views[props.sidebarView].tabs[props.sidebarTab].submitSignal
-    return props.sidebarActionsUpdated({ sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath', sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmit' })
+    const tab = views[props.sidebarView].tabs[props.sidebarTab]
+    return props.sidebarActionsUpdated({
+      sidebarFormPath: tab.formPath || 'app.sidebarFormPath',
+      sidebarResetSignal: tab.resetSignal || 'app.formResetClicked',
+      sidebarSubmitSignal: tab.submitSignal || 'app.sidebarSubmit',
+    })
   }
   const defaultTab = views[props.sidebarView].defaultTab
+  // if the view has a default tab, use that tab's actions, otherwise the actions are defined at the top level of the view object
   const sidebarFormPath = defaultTab ? views[props.sidebarView].tabs[defaultTab].formPath : views[props.sidebarView].formPath
+  const sidebarResetSignal = defaultTab ? views[props.sidebarView].tabs[defaultTab].resetSignal : views[props.sidebarView].resetSignal
   const sidebarSubmitSignal = defaultTab ? views[props.sidebarView].tabs[defaultTab].submitSignal : views[props.sidebarView].submitSignal
-  return props.sidebarActionsUpdated({ sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath', sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmit' })
+  return props.sidebarActionsUpdated({
+    sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath',
+    sidebarResetSignal: sidebarResetSignal || 'app.formResetClicked',
+    sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmit',
+  })
 }
 
 const Sidebar = (props) => {
   const SidebarComponent = props.sidebarView ? determineSidebarComponent(props) : views.empty
-  props.sidebarView && props.sidebarView !== 'empty' && setSidebarAction(props)
+  props.sidebarView && props.sidebarView !== 'empty' && setSidebarActions(props)
   return (
     <div>
       <CSSTransitionGroup

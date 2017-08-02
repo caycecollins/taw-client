@@ -61,7 +61,7 @@ export default connect(
     sidebarView: state`app.sidebarView`,
     sidebarFormPath: state`app.sidebarFormPath`,
     sidebarSubmitSignal: state`app.sidebarSubmitSignal`,
-    sidebarResetClicked: signal`app.formResetClicked`,
+    sidebarResetClicked: signal`${state`app.sidebarResetSignal`}`,
     sidebarSubmitClicked: signal`${state`app.sidebarSubmitSignal`}`,
     sidebarActiveToggled: signal`app.sidebarActiveToggled`,
   },
