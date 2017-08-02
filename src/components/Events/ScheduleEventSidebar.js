@@ -53,7 +53,7 @@ const dateConfigOptions = (props, field) => {
 }
 
 const searchOnChange = (props, e) => {
-  props.searchParticipantsChanged({ value: e.target ? e.target.value : e })
+  props.searchParticipantsChanged({ form: formPath, value: e.target ? e.target.value : e })
 }
 
 const getDuration = props => {
