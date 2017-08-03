@@ -14,6 +14,7 @@ const ViewContainer = props =>
     className={props.className}
     centered={props.centered}
     loggingOut={props.loggingOut}
+    padding={props.padding}
   >
     {props.children}
   </Container>
@@ -29,6 +30,7 @@ ViewContainer.propTypes = {
   authorizationPending: PropTypes.bool,
   centered: PropTypes.bool,
   loggingOut: PropTypes.bool,
+  padding: PropTypes.number,
 }
 
 export default connect(
@@ -82,7 +84,7 @@ const Container = styled.div`
   `}
   width: 100%;
   height: ${props => props.authentiated ? '100vh' : 'calc(100vh - 48px)'};
-  padding: 24px;
+  padding: ${props => props.padding || 24}px;
   padding-left: ${leftPaddingMixin};
   color: white;
   opacity: 1;
