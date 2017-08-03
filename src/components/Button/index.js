@@ -26,9 +26,13 @@ const Button = props =>
     className={props.className}
     danger={props.danger}
     secondary={props.secondary}
+    removeLeftPadding={props.removeLeftPadding}
   >
     {props.icon &&
-      <StyledIcon label={props.label}>
+      <StyledIcon
+        label={props.label}
+        iconMarginless={props.iconMarginless}
+      >
         <Icon
           name={props.icon}
           size={calculateIconSize(props)}
@@ -58,6 +62,8 @@ Button.propTypes = {
   className: PropTypes.string,
   danger: PropTypes.bool,
   secondary: PropTypes.bool,
+  removeLeftPadding: PropTypes.bool,
+  iconMarginless: PropTypes.bool,
 }
 
 Button.defaultProps = {
@@ -91,6 +97,7 @@ const StyledButton = styled.button`
     if (props.size === 'md') return '8px 20px 7px 20px'
     if (props.size === 'lg') return '10px 22px 8px 22px'
   }};
+  ${props => props.removeLeftPadding && 'padding-left: 0px;'}
   border: 1px solid ${props => {
     if (!props.outline) return 'transparent'
     if (props.disabled) return props.theme.colors.gray
@@ -114,7 +121,7 @@ const StyledButton = styled.button`
 `
 
 const StyledIcon = styled.div`
-  margin-bottom: 2px;
+  margin-bottom: ${props => props.iconMarginless ? 0 : 2}px;
   ${props => props.label && css`
     padding-right: 8px;
   `}
