@@ -8,7 +8,7 @@ export default function scheduleEvent ({ controller, props, state, http, forms }
   const form = forms.get(props.form)
   const difference = moment(form.end.value).diff(moment(form.start.value))
   const duration = moment.duration(difference).minutes()
-  const recurring = form.repeat.value ? getRecurringInfo(form.repeatWeekly) : []
+  const recurring = form.repeat.value ? getRecurringInfo(form) : []
   const participants = state.get(`${props.form}.participants`)
   const formToSend = {
     title: form.title.value,

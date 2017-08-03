@@ -6,12 +6,13 @@ export default function editEvent ({ controller, props, state, http, forms }) {
   state.set(`${props.form}.pending`, true)
   state.unset(`${props.form}.error`)
   const form = forms.get(props.form)
+  const eventID = state.get('events.eventData.id')
   const difference = moment(form.end.value).diff(moment(form.start.value))
   const duration = moment.duration(difference).minutes()
-  const recurring = form.repeat.value ? getRecurringInfo(form.repeatWeekly) : []
+  const recurring = form.repeat.value ? getRecurringInfo(form) : []
   const participants = state.get(`${props.form}.participants`)
   const formToSend = {
-    id: props.eventID,
+    id: eventID,
     title: form.title.value,
     description: form.description.value,
     mandatory: form.mandatory.value || false,
@@ -25,7 +26,7 @@ export default function editEvent ({ controller, props, state, http, forms }) {
     unit: { id: parseInt(form.unit.value) },
   }
   console.log(formToSend)
-  return http.put(`/events/${props.eventID}`, formToSend)
+  return http.put(`/events/${eventID}`, formToSend)
     .then(response => {
       console.log(response)
       // const sidebarActiveToggled = controller.getSignal('app.sidebarActiveToggled')
