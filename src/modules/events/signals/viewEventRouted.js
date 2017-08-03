@@ -5,6 +5,7 @@ import moment from 'moment-timezone'
 import apiGet from '../../../factories/apiGet'
 import changeView from '../../../factories/changeView'
 import changeSidebarView from '../../../factories/changeSidebarView'
+import setParticipants from '../actions/setParticipants'
 
 const getEvent = ({ state, path, http, props }) => {
   if (!state.get('authorization.authenticated')) return path.error()
@@ -14,9 +15,8 @@ const getEvent = ({ state, path, http, props }) => {
 }
 
 const setOccurenceInfo = ({ props, state }) => {
-  const event = props.result
   const timezone = state.get('user.timezone')
-  state.set('events.eventData', Object.assign({}, event, {
+  state.set('events.eventData', Object.assign({}, props.result, {
     start: moment.unix(props.s).tz(timezone).toDate(),
     end: moment.unix(props.e).tz(timezone).toDate(),
   }))
@@ -29,6 +29,9 @@ export default [
       getEvent, {
         success: [
           setOccurenceInfo,
+          setParticipants,
+          set(state`events.editEventForm.participants`, props`participants`),
+          apiGet('/units', 'units.divisions', { mergeResult: false }), { success: [], error: [] },
           changeSidebarView({ view: 'viewEvent', tab: 'general', title: props`result.title` }, [
             apiGet('/events', 'events.eventsData'), { success: [], error: [] },
             toggle(state`app.sidebarImmune`),
@@ -48,6 +51,9 @@ export default [
           getEvent, {
             success: [
               setOccurenceInfo,
+              setParticipants,
+              set(state`events.editEventForm.participants`, props`participants`),
+              apiGet('/units', 'units.divisions', { mergeResult: false }), { success: [], error: [] },
               changeSidebarView({ view: 'viewEvent', tab: 'general', title: props`result.title` }),
             ],
             error: [],
