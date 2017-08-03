@@ -12,6 +12,9 @@ import { RRule } from 'rrule'
 import ViewContainer from '../ViewContainer'
 import Button from '../Button'
 
+import selectEvent from './helpers/selectEvent'
+import MonthEvent from './Calendar/MonthEvent'
+
 BigCalendar.momentLocalizer(moment)
 
 const isExcluded = (date, excludedDates) => {
@@ -70,13 +73,10 @@ const occurencesFromRecursiveEvent = props => {
   return allEvents
 }
 
-const selectEvent = (event, props) => {
-  if (!event.recurring) return props.eventSelected({ id: event.id.toString() })
-  return props.eventSelected({
-    id: event.id.toString(),
-    s: moment.tz(event.start, props.userTimezone).unix(),
-    e: moment.tz(event.end, props.userTimezone).unix(),
-  })
+const components = {
+  month: {
+    eventWrapper: MonthEvent,
+  },
 }
 
 const Events = props =>
@@ -108,12 +108,13 @@ const Events = props =>
           startAccessor="start"
           endAccessor="end"
           popup={true}
-          // selectable={true}
           onSelectEvent={event => selectEvent(event, props)}
           onView={(view) => props.calendarViewChanged({ view })}
           view={props.calendarView}
           defaultView={props.calendarView}
           toolbar={!props.deviceSize !== 'mobile'}
+          components={components}
+          // selectable={true}
         />
       </CSSTransitionGroup>
       <br />
@@ -279,6 +280,24 @@ const EventsContainer = styled.div`
   }
   .rbc-selected-cell {
     background-color: ${props => rgba(props.theme.colors.lightRed, 0.2)};
+  }
+
+  .rbc-show-more {
+    margin-left: 8px;
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: ${props => rgba(props.theme.colors.armyGreen, 0.8)};
+    background-color: transparent;
+  }
+
+  .rbc-overlay {
+    background-color: ${props => rgba(props.theme.colors.darkGray, 0.95)};
+    border: none;
+    border-radius: 4px;
+  }
+
+  .rbc-overlay-header {
+    padding: 8px 16px;
   }
 
   ${EventsContainerResponsive}
