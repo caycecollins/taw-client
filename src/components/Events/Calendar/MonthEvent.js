@@ -15,7 +15,9 @@ const isMandatory = (events, eventID) => {
 const MonthEvent = props => {
   const startDate = moment(props.event.start).tz(props.userTimezone)
   const meridiem = startDate.format('a').charAt(0)
-  const startTime = !props.calendarViewArmyTime.value ? startDate.format('h') + meridiem : startDate.format('HHmm')
+  const minutes = startDate.format('m')
+  const min = parseInt(minutes) > 0 ? startDate.format(':mm') : ''
+  const startTime = !props.calendarViewArmyTime.value ? `${startDate.format('h')}${min}${meridiem}` : startDate.format('HH:mm')
   return (
     <Container
       onClick={e => selectEvent(props.event, props)}
