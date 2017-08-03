@@ -28,9 +28,9 @@ export default function scheduleEvent ({ controller, props, state, http, forms }
     .then(response => {
       // console.log(response)
       const sidebarActiveToggled = controller.getSignal('app.sidebarActiveToggled')
-      sidebarActiveToggled({ value: false })
-      state.set(`${props.form}.pending`, false)
-      forms.reset(props.form)
+      setTimeout(() => sidebarActiveToggled({ value: false }), 400)
+      setTimeout(() => state.set(`${props.form}.pending`, false), 800)
+      setTimeout(() => forms.reset(props.form), 800)
     }).catch(rawError => {
       const error = JSON.stringify(rawError)
       // console.log(JSON.parse(error))
