@@ -25,6 +25,7 @@ const Button = props =>
     disabled={props.disabled}
     className={props.className}
     danger={props.danger}
+    secondary={props.secondary}
   >
     {props.icon &&
       <StyledIcon label={props.label}>
@@ -56,6 +57,7 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   className: PropTypes.string,
   danger: PropTypes.bool,
+  secondary: PropTypes.bool,
 }
 
 Button.defaultProps = {
@@ -72,6 +74,7 @@ const StyledButton = styled.button`
   color: ${props => {
     if (props.disabled) return props.theme.colors.gray
     if (props.danger) return props.theme.colors.lightRed
+    if (props.secondary) return props.theme.colors.gray
     return props.theme.colors.armyGreen
   }};
   text-transform: uppercase;
@@ -92,6 +95,7 @@ const StyledButton = styled.button`
     if (!props.outline) return 'transparent'
     if (props.disabled) return props.theme.colors.gray
     if (props.danger) return props.theme.colors.lightRed
+    if (props.secondary) return props.theme.colors.gray
     return props.theme.colors.armyGreen
   }};
   font-size: ${props => {
