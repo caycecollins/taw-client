@@ -167,8 +167,8 @@ const Sidebar = (props) => {
               {props.sidebarView && <SidebarComponent/>}
             </SidebarComponentContainer>
           </CSSTransitionGroup>
+          <SidebarActions />
         </SidebarContainer>
-        <SidebarActions />
       </SidebarWrapper>
     </div>
   )
@@ -244,7 +244,7 @@ const SidebarContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  overflow: auto;
+  overflow: hidden;
   transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 
@@ -261,6 +261,10 @@ const SidebarHeader = styled.div`
   padding: 0 40px;
   @media (max-width: 720px) {
     padding: 0 24px;
+  }
+  @media (max-width: 600px) {
+    padding: 0 16px;
+    height: 48px;
   }
 `
 const StyledIcon = styled(Icon)`
@@ -296,6 +300,12 @@ const SidebarTabs = styled.div`
   padding: 0 24px;
   background-color: ${props => rgba(props.theme.colors.darkGray, 0.9)};
   transition: all .3s cubic-bezier(.4,0,.2,1);
+  @media (max-width: 600px) {
+    margin-top: 48px;
+    padding: 0 16px;
+    overflow-x: auto;
+    height: ${props => props.active ? '48px' : '0px'};
+  }
 `
 
 const Tab = styled.div`
@@ -332,17 +342,30 @@ const Tab = styled.div`
     background-color: ${props => props.active ? props.theme.colors.armyWhite : props.theme.colors.tan};
     transition: all .3s cubic-bezier(.4,0,.2,1);
   }
+  @media (max-width: 600px) {
+    padding: 4px 16px;
+    flex: 1 0 auto;
+  }
 `
 
 const SidebarComponentContainer = styled.div`
   position: absolute;
   width: 100%;
-  height: auto;
-  padding: 24px 40px 64px 40px;
+  height: calc(100% - 192px);
+  padding: 24px 40px;
+  overflow: auto;
   @media (max-width: 960px) {
     padding: 24px;
   }
   @media (max-width: 720px) {
     padding: 16px;
+  }
+  @media (max-width: 600px) {
+    height: calc(100% - 144px);
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+      padding: 0;
+    }
   }
 `

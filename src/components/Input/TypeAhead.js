@@ -239,7 +239,7 @@ const InputGroup = styled.div`
   position: relative;
   display: flex;
   flex-direction: column;
-  width: ${props => props.size || ''};
+  width: ${props => props.size || 'auto'};
 `
 
 const StyledInput = styled.input`
@@ -300,4 +300,8 @@ const Dropdown = styled.div`
   overflow-x: hidden;
   z-index: 9999;
   transition: all .3s cubic-bezier(.4,0,.2,1);
+  @media (max-width: 600px) {
+    position: relative;
+    top: 0;
+  }
 `

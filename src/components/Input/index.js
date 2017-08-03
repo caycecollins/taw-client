@@ -211,6 +211,9 @@ const InputContainer = styled.div`
     margin-right: 16px;
   `}
   overflow: hidden;
+  @media (max-width: 600px) {
+    max-width: 95%;
+  }
 `
 
 const CheckBoxLabel = styled.label`
@@ -261,6 +264,11 @@ export const sharedInputStyles = css`
       }
     }
   `}
+  @media (max-width: 600px) {
+    width: 100%;
+    min-width: 100%;
+    max-width: 100%;
+  }
 `
 
 const StyledInput = styled(({ placement, isPristine, innerRef, options, ...rest }) => <input {...rest} />)`

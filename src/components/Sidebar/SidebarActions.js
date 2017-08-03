@@ -79,10 +79,10 @@ const SidebarActionsContainer = styled.div`
   bottom: ${props => props.active ? '0px' : '-56px'};
   transition: all .3s cubic-bezier(.4,0,.2,1);
   @media (max-width: 600px) {
-    position: relative;
-    left: initial;
-    right: initial;
-    bottom: initial;
+    font-size: 0.9rem;
+    padding: 4px 16px;
+    height: ${props => props.active ? '48px' : '0px'};
+    bottom: ${props => props.active ? '0px' : '-48px'};
   }
 `
 
@@ -100,7 +100,7 @@ const sharedActionStyles = css`
     cursor: pointer;
   }
   @media (max-width: 600px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
     padding: 4px 16px;
   }
 `
@@ -117,7 +117,7 @@ const ResetAction = styled.div`
   ${sharedActionStyles}
   flex: 0 1 auto;
   color: ${props => props.theme.colors.gray};
-  background-color: ${props => rgba(props.theme.colors.darkGray3, 0.8)};
+  background-color: ${props => rgba(props.theme.colors.darkGray3, 0.9)};
   &:hover {
     color: ${props => props.theme.colors.armyWhite};
     background-color: ${props => rgba(props.theme.colors.darkGray2, 1)};
@@ -130,7 +130,7 @@ const CancelAction = styled.div`
   ${sharedActionStyles}
   flex: 1 0 auto;
   color: ${props => props.theme.colors.gray};
-  background-color: ${props => rgba(props.theme.colors.darkGray2, 0.7)};
+  background-color: ${props => rgba(props.theme.colors.darkGray2, 0.9)};
   &:hover {
     background-color: ${props => rgba(props.theme.colors.darkGray2, 1)};
   }
@@ -141,7 +141,7 @@ const SubmitAction = styled.div`
   ${sharedActionStyles}
   flex: 1 0 auto;
   color: ${props => props.theme.colors.darkGray2};
-  background-color: ${props => props.disabled ? rgba(props.theme.colors.darkGray6, 0.6) : rgba(props.theme.colors.armyGreen, 0.8)};
+  background-color: ${props => props.disabled ? rgba(props.theme.colors.darkGray6, 0.8) : rgba(props.theme.colors.armyGreen, 0.9)};
   &:hover {
     background-color: ${props => !props.disabled && rgba(props.theme.colors.armyGreen, 1)};
     ${props => props.disabled && css`
@@ -163,7 +163,7 @@ const Label = styled.div`
   min-width: 200px;
   text-align: center;
   @media (max-width: 600px) {
-    font-size: 1rem;
+    font-size: 0.9rem;
     min-width: 100px;
   }
 `
@@ -181,6 +181,6 @@ const ResultFlash = styled.div`
   bottom: 56px;
   padding: 8px 16px;
   color: ${props => lighten(0.15, props.theme.colors.lightRed)};
-  background-color: ${props => props.active ? rgba(props.theme.colors.red, 0.4) : 'transparent'};
+  background-color: ${props => props.active ? rgba(props.theme.colors.red, 0.8) : 'transparent'};
   transition: all .2s cubic-bezier(.4,0,.2,1);
 `
