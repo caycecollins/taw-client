@@ -6,37 +6,47 @@ import { form } from '@cerebral/forms'
 import styled, { css } from 'styled-components'
 import { lighten, rgba } from 'polished'
 
-const SidebarActions = props =>
-  <SidebarActionsContainer active={props.sidebarSubmitSignal && props.sidebarSubmitSignal !== 'app.sidebarSubmit'}>
-    <ResultFlash active={props.error && props.sidebarView}>
-      {props.error && props.sidebarView ? `Error! Please report to DEVOPS:  ${props.error.status} | ${props.error.name} ${props.error.body.error ? '| ' + props.error.body.error.message : ''}` : ''}
-    </ResultFlash>
-    <ResetAction
-      type="reset"
-      onClick={() => props.sidebarResetClicked({ form: props.sidebarFormPath })}
-      pending={props.pending}
-    >
-      {props.pending ? '' : 'reset'}
-    </ResetAction>
-    <CancelAction
-      type="cancel"
-      onClick={() => props.sidebarActiveToggled({ value: false })}
-      pending={props.pending}
-    >
-      {props.pending ? '' : 'cancel'}
-    </CancelAction>
-    <SubmitAction
-      disabled={!props.form.isValid}
-      title={!props.form.isValid && 'Required inputs must be completed!'}
-      type="submit"
-      onClick={() => props.form.isValid && props.sidebarSubmitClicked({ form: props.sidebarFormPath })}
-      pending={props.pending}
-    >
-      <Label>
-        {props.pending ? 'In Progress...' : 'submit'}
-      </Label>
-    </SubmitAction>
-  </SidebarActionsContainer>
+const errorMessage = error => {
+  if (error.body.error) {
+    return 'Error! ' + error.body.error.message
+  }
+  return `Error! Please report to DEVOPS:  ${error.status} | ${error.name}`
+}
+
+const SidebarActions = props => {
+  return (
+    <SidebarActionsContainer active={props.sidebarSubmitSignal && props.sidebarSubmitSignal !== 'app.sidebarSubmit'}>
+      <ResultFlash active={props.error && props.sidebarView}>
+        {props.error && props.sidebarView && errorMessage(props.error)}
+      </ResultFlash>
+      <ResetAction
+        type="reset"
+        onClick={() => props.sidebarResetClicked({ form: props.sidebarFormPath })}
+        pending={props.pending}
+      >
+        {props.pending ? '' : 'reset'}
+      </ResetAction>
+      <CancelAction
+        type="cancel"
+        onClick={() => props.sidebarActiveToggled({ value: false })}
+        pending={props.pending}
+      >
+        {props.pending ? '' : 'cancel'}
+      </CancelAction>
+      <SubmitAction
+        disabled={!props.form.isValid}
+        title={!props.form.isValid && 'Required inputs must be completed!'}
+        type="submit"
+        onClick={() => props.form.isValid && props.sidebarSubmitClicked({ form: props.sidebarFormPath })}
+        pending={props.pending}
+      >
+        <Label>
+          {props.pending ? 'In Progress...' : 'submit'}
+        </Label>
+      </SubmitAction>
+    </SidebarActionsContainer>
+  )
+}
 
 SidebarActions.propTypes = {
   sidebarFormPath: PropTypes.string,
@@ -56,7 +66,7 @@ SidebarActions.propTypes = {
 export default connect(
   {
     form: form(state`${state`app.sidebarFormPath`}`),
-    pending: state`${state`app.sidebarSubmitSignal`}.pending`,
+    pending: state`${state`app.sidebarFormPath`}.pending`,
     error: state`${state`app.sidebarFormPath`}.error`,
     sidebarView: state`app.sidebarView`,
     sidebarFormPath: state`app.sidebarFormPath`,
@@ -180,7 +190,7 @@ const ResultFlash = styled.div`
   text-align: right;
   bottom: 56px;
   padding: 8px 16px;
-  color: ${props => lighten(0.15, props.theme.colors.lightRed)};
-  background-color: ${props => props.active ? rgba(props.theme.colors.red, 0.8) : 'transparent'};
+  color: ${props => lighten(0.2, props.theme.colors.lightRed)};
+  background-color: ${props => props.active ? rgba(props.theme.colors.red, 0.9) : 'transparent'};
   transition: all .2s cubic-bezier(.4,0,.2,1);
 `
