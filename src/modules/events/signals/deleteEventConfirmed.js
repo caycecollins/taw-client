@@ -12,6 +12,7 @@ export default [
     success: [
       wait(500),
       modalActiveToggled,
+      wait(500),
       set(state`app.modalActionPending`, false),
       resetSidebarState(),
       goTo(string`/${state`app.currentView`}`),

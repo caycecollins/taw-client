@@ -12,8 +12,8 @@ const eventInfo = props => [
   ['duration', props.event.duration / 60 + 'hr(s)'],
   ['type', props.event.type],
   ['description', props.event.description],
-  ['mandatory', props.event.mandatory && 'Yes'],
-  ['repeats', props.event.recurring.length > 0 && 'Yes (will calculate daysOfWeek later)'],
+  ['mandatory', props.event.mandatory ? 'Yes' : 'No'],
+  ['repeats', props.event.recurring.length > 0 ? 'Yes' : 'No'],
   ['created by', props.event.creatorCallsign],
 ]
 

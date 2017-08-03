@@ -3,17 +3,23 @@ import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
+// import { findIndex, sortBy } from 'lodash'
 
 import selectEvent from '../helpers/selectEvent'
 
+const isMandatory = (events, eventID) => {
+  const event = events.filter(event => event.id === eventID)
+  return event[0].mandatory
+}
+
 const MonthEvent = props => {
-  if (!props.eventFromState) return null
+  // console.log(props)
   return (
     <EventItemContainer
       onClick={e => selectEvent(props.event, props)}
     >
       <EventTypeIndicator
-        mandatory={props.eventFromState.mandatory}
+        mandatory={isMandatory(props.events, props.event.id)}
       />
       <EventLabel>{props.event.title}</EventLabel>
     </EventItemContainer>
@@ -22,7 +28,7 @@ const MonthEvent = props => {
 
 export default connect(
   {
-    eventFromState: state`events.eventData`,
+    events: state`events.eventsData`,
     userTimezone: state`user.timezone`,
     eventSelected: signal`events.viewEventRouted`,
   },
@@ -31,7 +37,7 @@ export default connect(
 
 MonthEvent.propTypes = {
   eventSelected: PropTypes.func,
-  eventFromState: PropTypes.object,
+  events: PropTypes.array,
   event: PropTypes.object,
   children: PropTypes.node,
 }
