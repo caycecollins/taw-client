@@ -3,4 +3,5 @@ import { state, props } from 'cerebral/tags'
 
 export default [
   set(state`${props`form`}.participants`, []),
+  set(state`search.results`, []),
 ]

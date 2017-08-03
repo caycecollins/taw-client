@@ -3,10 +3,10 @@ import { findIndex, sortBy } from 'lodash'
 export default async ({ props, http, state }) => {
   if (props.value && !props.value.match(/^\s*/)[0].length) {
     const endpoint = '/search/units,users/' + props.value
-    const getDataFromApi = await http.get(endpoint)
-    const rawUsers = getDataFromApi.result.users
+    const dataFromApi = await http.get(endpoint)
+    const rawUsers = dataFromApi.result.users
     const users = rawUsers.map(user => ({ id: user.id, callsign: user.callsign, name: user.callsign }))
-    const units = getDataFromApi.result.units
+    const units = dataFromApi.result.units
     const concatResults = users.concat(units)
     const sortedSearchResults = sortBy(concatResults, ['name'])
     const searchResults = sortedSearchResults.map(result => {
