@@ -305,5 +305,4 @@ const StyledIcon = styled.div`
 `
 
 const Label = styled.div`
-  margin-bottom: -3px;
 `
