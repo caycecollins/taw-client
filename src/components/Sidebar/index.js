@@ -163,7 +163,10 @@ const Sidebar = (props) => {
             transitionLeaveTimeout={300}
             component="span"
           >
-            <SidebarComponentContainer key={props.sidebarTab || props.sidebarView}>
+            <SidebarComponentContainer
+              key={props.sidebarTab || props.sidebarView}
+              sidebarTab={props.sidebarTab}
+            >
               {props.sidebarView && <SidebarComponent/>}
             </SidebarComponentContainer>
           </CSSTransitionGroup>
@@ -351,7 +354,7 @@ const Tab = styled.div`
 const SidebarComponentContainer = styled.div`
   position: absolute;
   width: 100%;
-  height: calc(100% - 192px);
+  height: calc(100% - ${props => props.sidebarTab ? 192 : 136}px);
   padding: 24px 40px;
   overflow: auto;
   @media (max-width: 960px) {
