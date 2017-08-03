@@ -53,7 +53,7 @@ const dateConfigOptions = (props, field) => {
 }
 
 const searchOnChange = (props, e) => {
-  props.searchParticipantsChanged({ value: e.target ? e.target.value : e })
+  props.searchParticipantsChanged({ form: formPath, value: e.target ? e.target.value : e })
 }
 
 const getDuration = props => {
@@ -161,6 +161,7 @@ const EventEditTab = props => {
                 type="select"
                 label="Hosting Unit"
                 path={`${formPath}.unit`}
+                defaultValue={props.event.hoster.id}
               >
                 {props.divisions && getUserUnits(props)}
               </Input>
@@ -238,7 +239,7 @@ export default connect(
 )
 
 const Container = styled.div`
-  font-sizeE: 0.9rem;
+  font-size: 0.9rem;
   color: ${props => props.theme.colors.armyWhite};
 `
 

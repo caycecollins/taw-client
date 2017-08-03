@@ -218,7 +218,7 @@ export default connect(
 )
 
 const Container = styled.div`
-  font-sizeE: 0.9rem;
+  font-size: 0.9rem;
   color: ${props => props.theme.colors.armyWhite};
 `
 
