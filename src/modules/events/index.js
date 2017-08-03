@@ -18,6 +18,8 @@ import reportEventRouted from './signals/reportEventRouted'
 import reportEventSubmitted from './signals/reportEventSubmitted'
 import editEventReset from './signals/editEventReset'
 import editEventSubmitted from './signals/editEventSubmitted'
+import deleteEventClicked from './signals/deleteEventClicked'
+import deleteEventConfirmed from './signals/deleteEventConfirmed'
 
 export default {
   state: {
@@ -36,6 +38,8 @@ export default {
     scheduleEventSubmitted,
     editEventReset: resetForm(editEventReset),
     editEventSubmitted,
+    deleteEventClicked,
+    deleteEventConfirmed,
     searchParticipantsChanged,
     addParticipantClicked,
     removeParticipantClicked,

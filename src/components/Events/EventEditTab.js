@@ -88,16 +88,6 @@ const EventEditTab = props => {
       <Form>
         <Grid marginless>
           <StyledRow>
-            <Col xs4={4}>
-              <Button
-                onClick={() => console.log('handle-delete-event')}
-                icon="trash"
-                label="Delete Event"
-                danger
-              />
-            </Col>
-          </StyledRow>
-          <StyledRow>
             <Col sm={6} sm8={4} xs4={4}>
               <Input
                 label="title"
@@ -188,6 +178,19 @@ const EventEditTab = props => {
               </Participants>
             </Col>
           </StyledRow>
+          <br />
+          <br />
+          <br />
+          <StyledRow>
+            <Col xs4={4}>
+              <Button
+                onClick={() => props.deleteEventClicked({ event: props.event })}
+                icon="trash"
+                label="Delete Event"
+                danger
+              />
+            </Col>
+          </StyledRow>
         </Grid>
       </Form>
     </Container>
@@ -214,6 +217,7 @@ EventEditTab.propTypes = {
   participants: PropTypes.array,
   addParticipantClicked: PropTypes.func,
   removeParticipantClicked: PropTypes.func,
+  deleteEventClicked: PropTypes.func,
 }
 
 export default connect(
@@ -234,6 +238,7 @@ export default connect(
     fieldChanged: signal`app.fieldChanged`,
     addParticipantClicked: signal`events.addParticipantClicked`,
     removeParticipantClicked: signal`events.removeParticipantClicked`,
+    deleteEventClicked: signal`events.deleteEventClicked`,
   },
   EventEditTab
 )
