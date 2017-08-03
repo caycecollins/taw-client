@@ -24,6 +24,9 @@ import deleteEventConfirmed from './signals/deleteEventConfirmed'
 export default {
   state: {
     calendarView: calculateCalendarView(),
+    calendarViewArmyTime: {
+      defaultValue: null,
+    },
     data: null,
     scheduleEventForm,
     reportEventForm,

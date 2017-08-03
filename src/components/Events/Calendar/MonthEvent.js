@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
-// import { findIndex, sortBy } from 'lodash'
+import moment from 'moment-timezone'
 
 import selectEvent from '../helpers/selectEvent'
 
@@ -13,16 +13,19 @@ const isMandatory = (events, eventID) => {
 }
 
 const MonthEvent = props => {
-  // console.log(props)
+  const startDate = moment(props.event.start).tz(props.userTimezone)
+  const meridiem = startDate.format('a').charAt(0)
+  const startTime = !props.calendarViewArmyTime.value ? startDate.format('h') + meridiem : startDate.format('HHmm')
   return (
-    <EventItemContainer
+    <Container
       onClick={e => selectEvent(props.event, props)}
     >
-      <EventTypeIndicator
+      <TypeIndicator
         mandatory={isMandatory(props.events, props.event.id)}
       />
-      <EventLabel>{props.event.title}</EventLabel>
-    </EventItemContainer>
+      <StartTime>{startTime}</StartTime>
+      <Title>{props.event.title}</Title>
+    </Container>
   )
 }
 
@@ -30,42 +33,54 @@ export default connect(
   {
     events: state`events.eventsData`,
     userTimezone: state`user.timezone`,
+    userHourFormat: state`user.hourformat`,
+    calendarViewArmyTime: state`events.calendarViewArmyTime`,
     eventSelected: signal`events.viewEventRouted`,
   },
   MonthEvent
 )
 
 MonthEvent.propTypes = {
-  eventSelected: PropTypes.func,
   events: PropTypes.array,
+  userTimezone: PropTypes.string,
+  userHourFormat: PropTypes.number,
+  calendarViewArmyTime: PropTypes.object,
+  eventSelected: PropTypes.func,
   event: PropTypes.object,
   children: PropTypes.node,
 }
 
-const EventItemContainer = styled.div`
+const Container = styled.div`
   display: flex;
   align-items: center;
   font-size: 0.8rem;
   overflow: hidden;
   margin-right: 4px;
   padding: 3px 0;
+  white-space: nowrap;
   &:hover {
     cursor: pointer;
     background-color: rgba(0,0,0,0.5);
   }
 `
 
-const EventTypeIndicator = styled.div`
-  width: 11px;
-  min-width: 11px;
-  height: 11px;
-  min-height: 11px;
+const TypeIndicator = styled.div`
+  width: 1px;
+  min-width: 10px;
+  height: 10px;
+  min-height: 10px;
   background-color: ${props => props.mandatory ? props.theme.colors.lightRed : props.theme.colors.gray};
   border-radius: 50%;
   margin: 0 8px;
 `
 
-const EventLabel = styled.div`
+const StartTime = styled.div`
   margin-top: -2px;
+  margin-right: 4px;
+  font-size: 0.7rem;
+`
+
+const Title = styled.div`
+  margin-top: -3px;
   white-space: nowrap;
 `

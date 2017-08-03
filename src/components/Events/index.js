@@ -10,6 +10,7 @@ import { CSSTransitionGroup } from 'react-transition-group'
 import { RRule } from 'rrule'
 
 import ViewContainer from '../ViewContainer'
+import Input from '../Input'
 import Button from '../Button'
 
 import selectEvent from './helpers/selectEvent'
@@ -79,50 +80,66 @@ const components = {
   },
 }
 
-const Events = props =>
-  <ViewContainer>
-    <EventsContainer>
-      <CustomActions>
-        <Button
-          onClick={() => props.reportEvent()}
-          icon="calendar-check-o"
-          label="Report Event"
-        />
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <Button
-          onClick={() => props.scheduleEvent()}
-          icon="calendar-plus-o"
-          label="Schedule Event"
-        />
-      </CustomActions>
-      <CSSTransitionGroup
-        transitionName="view"
-        transitionAppearTimeout={500}
-        transitionEnterTimeout={500}
-        transitionLeaveTimeout={500}
-        component="span"
-      >
-        <BigCalendar
-          key="bigcal"
-          events={props.events ? occurencesFromRecursiveEvent(props) : []}
-          startAccessor="start"
-          endAccessor="end"
-          popup={true}
-          onSelectEvent={event => selectEvent(event, props)}
-          onView={(view) => props.calendarViewChanged({ view })}
-          view={props.calendarView}
-          defaultView={props.calendarView}
-          toolbar={!props.deviceSize !== 'mobile'}
-          components={components}
-          // selectable={true}
-        />
-      </CSSTransitionGroup>
-      <br />
-    </EventsContainer>
-  </ViewContainer>
+const Events = props => {
+  return (
+    <ViewContainer>
+      <EventsContainer>
+        <CustomActions>
+          <Settings>
+            <Input
+              label="Army Time"
+              type="checkbox"
+              path={`events.calendarViewArmyTime`}
+              defaultValue={props.userHourFormat === 24}
+              value={props.calendarViewArmyTime.value}
+              nomargin
+            />
+          </Settings>
+          <Buttons>
+            <Button
+              onClick={() => props.reportEvent()}
+              icon="calendar-check-o"
+              label="Report Event"
+            />
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <Button
+              onClick={() => props.scheduleEvent()}
+              icon="calendar-plus-o"
+              label="Schedule Event"
+            />
+          </Buttons>
+        </CustomActions>
+        <CSSTransitionGroup
+          transitionName="view"
+          transitionAppearTimeout={500}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={500}
+          component="span"
+        >
+          <BigCalendar
+            key="bigcal"
+            events={props.events ? occurencesFromRecursiveEvent(props) : []}
+            startAccessor="start"
+            endAccessor="end"
+            popup={true}
+            onSelectEvent={event => selectEvent(event, props)}
+            onView={(view) => props.calendarViewChanged({ view })}
+            view={props.calendarView}
+            defaultView={props.calendarView}
+            toolbar={!props.deviceSize !== 'mobile'}
+            components={components}
+            // selectable={true}
+          />
+        </CSSTransitionGroup>
+        <br />
+      </EventsContainer>
+    </ViewContainer>
+  )
+}
 
 Events.propTypes = {
   authenticated: PropTypes.bool,
+  calendarViewArmyTime: PropTypes.object,
   deviceSize: PropTypes.string,
   events: PropTypes.oneOfType([
     PropTypes.array,
@@ -135,6 +152,7 @@ Events.propTypes = {
   scheduleEvent: PropTypes.func,
   reportEvent: PropTypes.func,
   userTimezone: PropTypes.string,
+  userHourFormat: PropTypes.number,
 }
 
 Events.defaultProps = {
@@ -148,11 +166,13 @@ export default connect(
     events: state`events.eventsData`,
     calendarView: state`events.calendarView`,
     event: state`events.eventData`,
+    userTimezone: state`user.timezone`,
+    userHourFormat: state`user.hourformat`,
+    calendarViewArmyTime: state`events.calendarViewArmyTime`,
     calendarViewChanged: signal`events.calendarViewChanged`,
     eventSelected: signal`events.viewEventRouted`,
     scheduleEvent: signal`events.scheduleEventRouted`,
     reportEvent: signal`events.reportEventRouted`,
-    userTimezone: state`user.timezone`,
   },
   Events
 )
@@ -167,9 +187,18 @@ const EventsContainerResponsive = css`
 
 const CustomActions = styled.div`
   display: flex;
+  flex: 1 0 auto;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   margin-bottom: 24px;
+`
+
+const Settings = styled.div`
+  margin-right: auto;
+`
+
+const Buttons = styled.div`
+
 `
 
 const EventsContainer = styled.div`

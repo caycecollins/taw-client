@@ -42,7 +42,7 @@ class Input extends Component {
     this.setState({
       inputComponent: this.props.type ? this.determineInputComponent() : StyledInput,
     })
-    if (this.props.defaultValue !== undefined) {
+    if (this.props.defaultValue !== undefined && this.props.value === undefined) {
       const defaultValue = this.props.type === 'date' ? moment.tz(this.props.defaultValue, this.props.userTimezone).format() : this.props.defaultValue
       this.props.setFieldDefaultValue({ field: this.props.path, value: defaultValue })
     }
@@ -89,6 +89,7 @@ class Input extends Component {
       <InputContainer
         isCheckboxGroup={this.props.is === 'checkbox-group'}
         placement={this.props.placement}
+        nomargin={this.props.nomargin}
       >
         <InputComponentContainer
           checkbox={this.props.type === 'checkbox'}
@@ -149,6 +150,7 @@ Input.propTypes = {
   value: PropTypes.oneOfType([
     PropTypes.string,
     PropTypes.number,
+    PropTypes.bool,
   ]),
   dateOptions: PropTypes.object,
   keyIndex: PropTypes.oneOfType([
@@ -170,6 +172,7 @@ Input.propTypes = {
   width: PropTypes.number,
   height: PropTypes.number,
   checked: PropTypes.bool,
+  nomargin: PropTypes.bool,
   setFieldDefaultValue: PropTypes.func,
   userTimezone: PropTypes.string,
 }
@@ -205,7 +208,7 @@ const InputComponentContainer = styled.div`
 `
 
 const InputContainer = styled.div`
-  margin-top: 24px;
+  margin-top: ${props => props.nomargin ? 0 : 24}px;
   ${props => props.isCheckboxGroup && css`
     display: inline-block;
     margin-right: 16px;
