@@ -2,6 +2,8 @@ import resetForm from '../../factories/resetForm'
 
 import initialAnimationStarted from './signals/initialAnimationStarted'
 import deviceSizeUpdated from './signals/deviceSizeUpdated'
+import modalActiveToggled from './signals/modalActiveToggled'
+import modalActionsUpdated from './signals/modalActionsUpdated'
 import drawerActiveToggled from './signals/drawerActiveToggled'
 import drawerLargeToggled from './signals/drawerLargeToggled'
 import sidebarActiveToggled from './signals/sidebarActiveToggled'
@@ -37,6 +39,11 @@ export default {
     drawerActive: determineDrawerActive(),
     drawerLarge: determineDrawerLarge(),
     initialAnimation: true,
+    modalActive: false,
+    modalView: null,
+    modalConfirmLabel: null,
+    modalActionPending: false,
+    modalConfirmSignal: 'app.modalConfirm',
     sidebarActive: null,
     sidebarView: null,
     sidebarPreviousView: null,
@@ -50,6 +57,8 @@ export default {
   signals: {
     initialAnimationStarted,
     deviceSizeUpdated,
+    modalActiveToggled,
+    modalActionsUpdated,
     drawerActiveToggled,
     drawerLargeToggled,
     sidebarActiveToggled,
@@ -59,5 +68,6 @@ export default {
     formResetClicked: resetForm(),
     setFieldDefaultValue,
     sidebarSubmit: [], // used to clear submit signals from SidebarActions
+    modalConfirm: [], // used to clear submit signals from Modals
   },
 }

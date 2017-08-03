@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
-import styled, { css, keyframes } from 'styled-components'
+import styled from 'styled-components'
 
 import Button from '../Button'
 import Link from '../Link'
@@ -85,7 +85,7 @@ const StyledAppBar = styled.div`
   padding: 8px 16px;
   background-color: ${props => props.theme.colors.darkGray};
   color: white;
-  z-index: 9999;
+  z-index: 9000;
   transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 

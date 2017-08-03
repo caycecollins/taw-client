@@ -9,6 +9,7 @@ import RenderView from '../RenderView'
 import AppBar from '../AppBar'
 import NavDrawer from '../NavDrawer'
 import Sidebar from '../Sidebar'
+import Modal from '../Modal'
 import cerebralTheme from '../.././theme'
 import './transitions.scss'
 
@@ -28,6 +29,7 @@ const App = props =>
         {props.authenticated && <Sidebar />}
         <NavDrawer />
         <RenderView />
+        <Modal />
       </AppContainer>
     </CSSTransitionGroup>
   </CerebralThemeProvider>

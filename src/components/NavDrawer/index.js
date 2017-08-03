@@ -177,7 +177,7 @@ const NavDrawerContainer = styled.div`
   height: calc(100% - 48px);
   top: 48px;
   background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
-  z-index: 9998;
+  z-index: 8000;
   overflow-y: auto;
   overflow-x: hidden;
   transition: all .3s cubic-bezier(.4,0,.2,1);

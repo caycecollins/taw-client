@@ -72,24 +72,114 @@
   }
 }
 
-.fade-enter {
+.modalOverlay-appear {
+  opacity: 0.01;
+  &.modalOverlay-appear-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+.modalOverlay-enter {
+  opacity: 0.01;
+  &.modalOverlay-enter-active {
+    opacity: 1;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+.modalOverlay-leave {
+  opacity: 1;
+  &.modalOverlay-leave-active {
+    opacity: 0.01;
+    transition: opacity 300ms ease-in-out;
+  }
+}
+
+.fadeUp-appear {
   opacity: 0.01;
   transform: translateY(50px);
+  &.fadeUp-appear-active {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all .25s cubic-bezier(.4,0,.2,1);
+  }
 }
 
-.fade-enter.fade-enter-active {
-  transition: opacity 250ms ease-in;
-  opacity: 1;
-}
-
-.fade-appear { opacity: 0.01; }
-.fade-appear.fade-appear-active { opacity: 1; transition: opacity 250ms ease-in; }
-
-.fade-leave {
-  opacity: 1;
-}
-
-.fade-leave.fade-leave-active {
+.fadeUp-enter {
   opacity: 0.01;
-  transition: opacity 100ms ease-in;
+  transform: translateY(50px);
+  &.fadeUp-enter-active {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all .25s cubic-bezier(.4,0,.2,1);
+  }
+}
+
+.fadeUp-leave {
+  opacity: 1;
+  transform: translateY(0px);
+  &.fadeUp-leave-active {
+    opacity: 0.01;
+    transform: translateY(50px);
+    transition: all .2s cubic-bezier(.4,0,.2,1);
+  }
+}
+
+.fadeDown-appear {
+  opacity: 0.01;
+  transform: translateY(-50px);
+  &.fadeDown-appear-active {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all .25s cubic-bezier(.4,0,.2,1);
+  }
+}
+
+.fadeDown-enter {
+  opacity: 0.01;
+  transform: translateY(-50px);
+  &.fadeDown-enter-active {
+    opacity: 1;
+    transform: translateY(0px);
+    transition: all .25s cubic-bezier(.4,0,.2,1);
+  }
+}
+
+.fadeDown-leave {
+  opacity: 1;
+  transform: translateY(0px);
+  &.fadeDown-leave-active {
+    opacity: 0.01;
+    transform: translateY(-50px);
+    transition: all .2s cubic-bezier(.4,0,.2,1);
+  }
+}
+
+.zoomIn-appear {
+  opacity: 0.01;
+  transform: scale(0);
+  &.zoomIn-appear-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all .25s cubic-bezier(.4,0,.2,1);
+  }
+}
+
+.zoomIn-enter {
+  opacity: 0.01;
+  transform: scale(0);
+  &.zoomIn-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all .25s cubic-bezier(.4,0,.2,1);
+  }
+}
+
+.zoomIn-leave {
+  opacity: 1;
+  transform: scale(1);
+  &.zoomIn-leave-active {
+    opacity: 0.01;
+    transform: scale(0);
+    transition: all .2s cubic-bezier(.4,0,.2,1);
+  }
 }

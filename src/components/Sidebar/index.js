@@ -211,7 +211,7 @@ const SidebarOverlay = styled.div`
   left: 0;
   height: calc(100vh - 48px);
   background-color: rgba(0,0,0,0.7);
-  z-index: 9997;
+  z-index: 8000;
   overflow: hidden;
   &:hover {
     cursor: pointer;
@@ -231,7 +231,7 @@ const SidebarWrapper = styled.div`
   background-color: ${props => { return rgba(props.theme.colors.darkGray4, 0.9) }};
   overflow: hidden;
   transition: all .3s cubic-bezier(.4,0,.2,1);
-  z-index: 9998;
+  z-index: 8001;
   @media (max-width: 720px) {
     width: 100%;
     right: ${props => props.active ? '0%' : '-100%'};
