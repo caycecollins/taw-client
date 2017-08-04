@@ -1,29 +1,14 @@
-import { set } from 'cerebral/operators'
-import { state, props } from 'cerebral/tags'
-
 import authenticate from '../../factories/authenticate'
-import changeView from '../../factories/changeView'
 
-const getGame = ({ path, http, props }) => {
-  return http.get(`/units/${props.id}`)
-    .then(path.success)
-    .catch(path.error)
-}
+import gameRouted from './signals/gameRouted'
+import gameViewChanged from './signals/gameViewChanged'
 
 export default {
   state: {
+    view: 'info',
   },
   signals: {
-    routed: [
-      authenticate([
-        getGame, {
-          success: [
-            set(state`game`, props`result`),
-            changeView('game'),
-          ],
-          error: changeView('fourohfour'),
-        },
-      ]),
-    ],
+    routed: authenticate(gameRouted),
+    gameViewChanged,
   },
 }
