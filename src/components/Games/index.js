@@ -40,6 +40,7 @@ const Games = props =>
               routeTo="game.routed"
               routeParams={{ id: game.id.toString() }}
             >
+              {game.iconUrl && <GameImage src={game.iconUrl.replace('/dynamicAssets', '')}/>}
               <Name>{game.name}</Name>
             </Game>
           )
@@ -91,10 +92,11 @@ const GamesContainer = styled.div`
 
 const Game = styled(Link)`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   padding: 16px;
   margin-right: 24px;
   margin-bottom: 24px;
@@ -111,6 +113,13 @@ const Game = styled(Link)`
   @media (max-width: 420px) {
     width: 100%;
   }
+`
+
+const GameImage = styled.img`
+  max-width: 104px;
+  max-height: 104px;
+  text-align: center;
+  border: none;
 `
 
 const Name = styled.div`
