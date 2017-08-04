@@ -9,20 +9,17 @@ const eventInfo = props => [
   ['title', props.event.title || 'Loading...'],
   ['start', moment.tz(props.event.start, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
   ['end', moment.tz(props.event.end, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
-  ['duration', props.event.duration / 60 + 'hr(s)'],
-  ['type', props.event.type],
+  ['duration', props.event.duration > 60 ? props.event.duration / 60 + 'hr(s)' : props.event.duration + 'm'],
   ['description', props.event.description],
-  ['mandatory', props.event.mandatory ? 'Yes' : 'No'],
-  ['repeats', props.event.recurring.length > 0 ? 'Yes' : 'No'],
+  ['hosted by', props.event.hoster.name],
   ['created by', props.event.creatorCallsign],
+  ['mandatory', props.event.mandatory ? 'Yes' : 'No'],
+  ['recurring', props.event.recurring.length > 0 ? 'Yes' : 'No'],
 ]
 
 const EventGeneralTab = props =>
   <Container>
     <Section>
-      Details
-      <br />
-      <br />
       <table>
         <tbody>
           {props.event && eventInfo(props).map((item, index) => {
