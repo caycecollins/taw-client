@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
+import { rgba } from 'polished'
 import moment from 'moment-timezone'
 import { sortBy } from 'lodash'
 
@@ -12,12 +13,9 @@ import selectEvent from '../../Events/helpers/selectEvent'
 import occurencesFromRecursiveEvent from '../../Events/helpers/occurencesFromRecursiveEvent'
 
 const UpcomingEvents = props => {
-  console.log(props.events)
   const ocurrences = props.events && occurencesFromRecursiveEvent(props)
-  console.log(ocurrences)
   const sortByDate = sortBy(ocurrences, ['start'])
   const events = sortByDate.slice(0, 5)
-  // console.log(events)
   return (
     <Container>
       <Legend>
@@ -138,7 +136,7 @@ const Event = styled.div`
   z-index: 1;
   padding: 16px;
   &:hover {
-    background-color: ${props => props.theme.colors.darkGray2};
+    background-color: ${props => rgba(props.theme.colors.darkGray2, 0.5)};
     cursor: pointer;
   }
 `
