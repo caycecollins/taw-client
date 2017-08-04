@@ -1,4 +1,4 @@
-import { when, set, wait } from 'cerebral/operators'
+import { when, equals, set, wait } from 'cerebral/operators'
 import { state, props, string } from 'cerebral/tags'
 import { goTo } from '@cerebral/router/operators'
 
@@ -11,7 +11,14 @@ export default [
     false: [
       wait(450),
       resetSidebarState(),
-      goTo(string`/${state`app.currentView`}`),
+      equals(state`app.currentView`), {
+        dashboard: [
+          goTo('/'),
+        ],
+        otherwise: [
+          goTo(string`/${state`app.currentView`}`),
+        ],
+      },
     ],
   },
 ]
