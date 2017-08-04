@@ -1,10 +1,11 @@
 import authenticate from '../../factories/authenticate'
-import changeView from '../../factories/changeView'
+
+import dashboardRouted from './signals/dashboardRouted'
 
 export default {
   state: {
   },
   signals: {
-    routed: authenticate(changeView('dashboard')),
+    routed: authenticate(dashboardRouted),
   },
 }
