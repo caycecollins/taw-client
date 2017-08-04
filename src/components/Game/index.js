@@ -47,7 +47,7 @@ const Game = props => {
           </Crumbs>
           <GameContainer>
             <GameArea>
-              <Callsign>{props.game.name}</Callsign>
+              <Name>{props.game.name}</Name>
               <Avatar />
             </GameArea>
           </GameContainer>
@@ -156,9 +156,10 @@ const GameArea = styled.div`
   }
 `
 
-const Callsign = styled.div`
+const Name = styled.div`
   font-size: 1.6rem;
   color: ${props => props.theme.colors.armyWhite};
+  text-align: center;
 `
 
 const Avatar = styled.div`

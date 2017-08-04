@@ -12,7 +12,7 @@ export default {
     routed: [
       authenticate([
         changeView('games'),
-        apiGet('/games', 'games.data'), {
+        apiGet('/games/gameDivisions', 'games.data'), {
           success: [
           ],
           error: [
