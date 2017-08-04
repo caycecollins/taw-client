@@ -37,7 +37,7 @@ const views = {
 const Game = props => {
   const ContentComponent = props.view ? views[props.view].component : views.info.component
   return (
-    <ViewContainer backgroundImage="/images/bf1-background.jpg" centered>
+    <ViewContainer backgroundImage="/images/bf1-background.jpg" centered padding={0}>
       <GameWrapper>
         <Header>
           <Crumbs>
@@ -85,10 +85,9 @@ export default connect(
 const GameWrapper = styled.div`
   display: flex;
   flex: 1 0 auto;
-  width: calc(100% + 48px);
+  width: 100%;
   height: auto;
   flex-direction: column;
-  margin: -24px;
   @media (max-width: 600px) {
     width: 100vw;
     margin-top: 24px;

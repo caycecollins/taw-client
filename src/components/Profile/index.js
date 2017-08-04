@@ -25,7 +25,7 @@ const views = {
 const Profile = props => {
   const ContentComponent = props.view ? views[props.view].component : views.info.component
   return (
-    <ViewContainer backgroundImage="/images/profile-bg.jpg" centered>
+    <ViewContainer backgroundImage="/images/profile-bg.jpg" centered padding={0}>
       <ProfileWrapper>
         <Header>
           <UserContainer>
@@ -72,10 +72,9 @@ export default connect(
 const ProfileWrapper = styled.div`
   display: flex;
   flex: 1 0 auto;
-  width: calc(100% + 48px);
+  width: 100%;
   height: auto;
   flex-direction: column;
-  margin: -24px;
   @media (max-width: 600px) {
     width: 100vw;
     margin-top: 24px;
