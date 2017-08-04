@@ -100,10 +100,9 @@ const Container = styled.div`
   ${props => props.initialAnimation && css`animation-name: ${viewContainerAnimation};`}
   animation-duration: .3s;
   animation-fill-mode: forwards;
-  @media (max-width: 500px) {
-    padding: 16px;
-  }
   @media (max-width: 767px) {
     padding-left: 24px;
+  }
+  @media (max-width: 600px) {
   }
 `
