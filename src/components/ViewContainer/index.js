@@ -55,13 +55,17 @@ export default connect(
   ViewContainer
 )
 
-const leftPaddingMixin = css`
+// 304px
+// 104px
+// 24px
+
+const leftPaddingMixin = extraPadding => css`
   ${props => {
     if (props.drawerActive) {
-      if (props.drawerLarge) return '304px'
-      else return '104px'
+      if (props.drawerLarge) return `calc(280px + ${extraPadding}px)`
+      else return `calc(80px + ${extraPadding}px)`
     } else {
-      return '24px'
+      return `${extraPadding}px)`
     }
   }}
 `
@@ -94,8 +98,8 @@ const Container = styled.div`
   `}
   width: 100%;
   height: ${props => props.authentiated ? '100vh' : 'calc(100vh - 48px)'};
-  padding: ${props => props.padding || 24}px;
-  padding-left: ${leftPaddingMixin};
+  padding: ${props => props.padding >= 0 ? props.padding : 48}px;
+  padding-left: ${props => leftPaddingMixin(props.padding >= 0 ? props.padding : 48)};
   color: white;
   opacity: 1;
   transition: all .3s cubic-bezier(.4,0,.2,1);
