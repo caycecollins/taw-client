@@ -13,7 +13,7 @@ const CustomizeModules = props =>
       Modules are similar to &quot;Widgets&quot; in the wild.  Modules allow you to place the content that <span>YOU</span> want to see on your TAW dashboard!
     </Text>
     <br />
-    <Button
+    <StyledButton
       onClick={() => console.log('not available yet')}
       icon="th-large"
       iconMarginless={true}
@@ -52,4 +52,10 @@ const SmallText = styled.div`
   font-size: 0.6rem;
   text-transform: uppercase;
   color: ${props => props.theme.colors.lightRed};
+`
+
+const StyledButton = styled(Button)`
+  &:hover {
+    background-color: transparent;
+  }
 `
