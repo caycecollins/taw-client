@@ -11,12 +11,10 @@ import Modules from './Modules'
 
 const Dashboard = props =>
   <ViewContainer>
-    <ExtraPadding>
-      <Greeting>
-        Welcome back <Callsign>{props.user.callsign}</Callsign>.
-      </Greeting>
-      <Modules />
-    </ExtraPadding>
+    <Greeting>
+      Welcome back <Callsign>{props.user.callsign}</Callsign>.
+    </Greeting>
+    <Modules />
   </ViewContainer>
 
 Dashboard.propTypes = {
@@ -29,10 +27,6 @@ export default connect(
   },
   Dashboard
 )
-
-const ExtraPadding = styled.div`
-  padding: 24px 0 24px 24px;
-`
 
 const Greeting = styled.div`
   font-size: 2rem;

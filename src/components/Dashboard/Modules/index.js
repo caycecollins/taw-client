@@ -70,9 +70,9 @@ const Module = styled.div`
   flex-direction: column;
   min-width: 320px;
   max-width: 320px;
-  min-height: 100px;
+  min-height: 160px;
   margin-bottom: 80px;
-  margin-right: 40px;
+  margin-right: 48px;
 `
 
 const Header = styled.div`
