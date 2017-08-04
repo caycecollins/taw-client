@@ -14,8 +14,9 @@ import occurencesFromRecursiveEvent from '../../Events/helpers/occurencesFromRec
 
 const UpcomingEvents = props => {
   const ocurrences = props.events && occurencesFromRecursiveEvent(props)
-  const sortByDate = sortBy(ocurrences, ['start'])
-  const events = sortByDate.slice(0, 5)
+  const events = sortBy(ocurrences, ['start'])
+    .filter(event => moment(event.start).unix() > moment().unix())
+    .slice(0, 5)
   return (
     <Container>
       <Legend>
@@ -34,7 +35,7 @@ const UpcomingEvents = props => {
       </Legend>
       <Upcoming>
         <VertLine />
-        {events.filter(event => moment(event.start).unix() > moment().unix()).map((event, index) => {
+        {events.map((event, index) => {
           const endTime = moment(event.end).format('HH:mm')
           const dateTime = `${moment(event.start).format('MMM Do, YYYY @ HH:mm - ')}${endTime}`
           return (
