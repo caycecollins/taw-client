@@ -24,7 +24,7 @@ export default [
     ],
     false: [
       changeView('events'),
-      wait(250),
+      wait(800),
       getEvents,
     ],
   },
