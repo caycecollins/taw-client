@@ -31,7 +31,7 @@ export default connect(
 )
 
 const ExtraPadding = styled.div`
-  padding: 24px;
+  padding: 24px 0 24px 24px;
 `
 
 const Greeting = styled.div`
