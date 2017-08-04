@@ -1,23 +1,33 @@
-import React from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state } from 'cerebral/tags'
 import styled, { css, keyframes } from 'styled-components'
 
-const ViewContainer = props =>
-  <Container
-    drawerActive={!props.authorizationPending && props.authenticated && props.drawerActive}
-    drawerLarge={props.drawerLarge}
-    initialAnimation={props.initialAnimation}
-    authenticated={props.authenticated}
-    backgroundImage={props.backgroundImage}
-    className={props.className}
-    centered={props.centered}
-    loggingOut={props.loggingOut}
-    padding={props.padding}
-  >
-    {props.children}
-  </Container>
+class ViewContainer extends Component {
+  componentWillMount () {
+    this.container && this.container.scrollTop(0)
+  }
+
+  render () {
+    return (
+      <Container
+        drawerActive={!this.props.authorizationPending && this.props.authenticated && this.props.drawerActive}
+        drawerLarge={this.props.drawerLarge}
+        initialAnimation={this.props.initialAnimation}
+        authenticated={this.props.authenticated}
+        backgroundImage={this.props.backgroundImage}
+        className={this.props.className}
+        centered={this.props.centered}
+        loggingOut={this.props.loggingOut}
+        padding={this.props.padding}
+        innerRef={container => this.container = container}
+      >
+        {this.props.children}
+      </Container>
+    )
+  }
+}
 
 ViewContainer.propTypes = {
   initialAnimation: PropTypes.bool,
@@ -89,6 +99,7 @@ const Container = styled.div`
   color: white;
   opacity: 1;
   transition: all .3s cubic-bezier(.4,0,.2,1);
+  overflow: auto;
   ${props => props.backgroundImage && css`
     background: url(${props.backgroundImage});
     background-repeat: no-repeat;

@@ -100,11 +100,10 @@ const PageContainerAnimation = keyframes`
 const PageContainer = styled.div`
   position: relative;
   width: 100%;
-  height: ${props => props.authenticated ? 'calc(100vh - 48px)' : '100vh'};
+  height: ${props => props.authenticated ? 'calc(100% - 48px)' : '100%'};
   left: 0;
   top: ${props => props.authenticated ? '48px' : '0px'};
-  overflow-y: ${props => props.authenticated && !props.sidebarActive ? 'scroll' : 'hidden'};
-  overflow-x: hidden;
+  overflow: hidden;
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
   ${props => props.authenticated && props.initialAnimation && css`
     animation-name: ${PageContainerAnimation};
