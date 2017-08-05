@@ -98,7 +98,8 @@ const Container = styled.div`
   color: white;
   opacity: 1;
   transition: all .3s cubic-bezier(.4,0,.2,1);
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: scroll;
   ${props => props.backgroundImage && css`
     background: url(${props.backgroundImage});
     background-repeat: no-repeat;
