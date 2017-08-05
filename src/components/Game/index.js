@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
-// import { rgba } from 'polished'
+import { CSSTransitionGroup } from 'react-transition-group'
 
 import ViewContainer from '../ViewContainer'
 import Link from '../Link'
@@ -37,7 +37,7 @@ const views = {
 const Game = props => {
   const ContentComponent = props.view ? views[props.view].component : views.info.component
   return (
-    <ViewContainer backgroundImage="/images/bf1-background.jpg" centered padding={0}>
+    <ViewContainer backgroundImage="/images/bf1-background.jpg" padding={0}>
       <GameWrapper>
         <Header>
           <Crumbs>
@@ -45,23 +45,31 @@ const Game = props => {
               <Button outline={false} size="xs" icon="angle-left" label="Back to all games" />
             </Link>
           </Crumbs>
+
           <GameContainer>
-            <GameArea>
-              <Name>{props.game.name}</Name>
-              <Avatar />
-            </GameArea>
+            <Name>{props.game.name}</Name>
+            <StyledTabs
+              tabs={views}
+              statePath="game.view"
+              onClick={props.gameViewChanged}
+              active
+            />
           </GameContainer>
-          <StyledTabs
-            tabs={views}
-            statePath="game.view"
-            onClick={props.gameViewChanged}
-            active
-          />
         </Header>
-        <Gap />
-        <Content>
-          <ContentComponent />
-        </Content>
+        <Gap>
+          {props.game.iconUrl && <Icon image={props.game.iconUrl.replace('/dynamicAssets', '')} /> }
+        </Gap>
+        <CSSTransitionGroup
+          transitionName="view"
+          transitionAppearTimeout={500}
+          transitionEnterTimeout={500}
+          transitionLeaveTimeout={400}
+          component="div"
+        >
+          <Content key={props.view}>
+            <ContentComponent />
+          </Content>
+        </CSSTransitionGroup>
       </GameWrapper>
     </ViewContainer>
   )
@@ -83,10 +91,11 @@ export default connect(
 )
 
 const GameWrapper = styled.div`
+  position: relative;
   display: flex;
   flex: 1 0 auto;
   width: 100%;
-  height: auto;
+  height: 100%;
   flex-direction: column;
   @media (max-width: 600px) {
     width: 100vw;
@@ -95,13 +104,13 @@ const GameWrapper = styled.div`
 `
 
 const Header = styled.div`
-  position: relative;
+  position: absolute;
   display: flex;
-  flex: 1 0 auto;
-  height: 112px;
-  max-height: 112px;
+  width: 100%;
+  height: 136px;
+  max-height: 136px;
   background-color: rgba(0,0,0,0.7);
-  padding: 24px 0px 0px 40px;
+  padding-left: 24px;
   @media (max-width: 600px) {
     flex: 0;
     flex-direction: column;
@@ -114,15 +123,17 @@ const Header = styled.div`
 
 const Crumbs = styled.div`
   position: absolute;
-  top: 0;
-  left: 0;
+  top: 8px;
+  left: 8px;
 `
 
 const Gap = styled.div`
+  position: relative;
   flex: 1 0 auto;
   height: 320px;
   max-height: 320px;
-  padding: 24px;
+  padding: 0 24px;
+  margin-top: 128px;
   @media (max-width: 600px) {
     flex: 0;
     height: 0;
@@ -131,42 +142,24 @@ const Gap = styled.div`
 `
 
 const GameContainer = styled.div`
-  position: relative;
-  display: flex;
-  width: 240px;
-  @media (max-width: 768px) {
-    width: 160px;
-  }
-  @media (max-width: 600px) {
-    width: auto;
-  }
-`
-
-const GameArea = styled.div`
-  position: absolute;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-conent: center;
-  width: 100%;
-  margin-top: 16px;
-  @media (max-width: 600px) {
-    position: relative;
-  }
+  justify-content: flex-end;
 `
 
 const Name = styled.div`
+  margin-left: 24px;
   font-size: 1.6rem;
   color: ${props => props.theme.colors.armyWhite};
-  text-align: center;
 `
 
-const Avatar = styled.div`
+const Icon = styled.div`
+  position: absolute;
+  bottom: 0;
   width: 160px;
   height: 160px;
   max-height: 160px;
-  margin-top: 16px;
-  background-color: ${props => props.theme.colors.lightTan};
+  background: url(${props => props.image}) no-repeat center center;
   @media (max-width: 768px) {
     width: 120px;
     height: 120px;
@@ -180,16 +173,16 @@ const Avatar = styled.div`
 `
 
 const StyledTabs = styled(Tabs)`
-  align-self: flex-end;
-  @media (max-width: 600px) {
-    align-self: flex-start;
-  }
+  padding-left: 0;
 `
 
 const Content = styled.div`
+  position: absolute;
+  top: 448px;
   display: flex;
-  flex: 1 0 auto;
-  height: 100%;
   background-color: rgba(0,0,0,0.7);
-  padding: 24px 40px;
+  background: linear-gradient(-0deg, rgba(0,0,0,1), rgba(0,0,0,0.7));
+  width: 100%;
+  min-height: calc(100% - 448px);
+  padding: 24px 48px;
 `
