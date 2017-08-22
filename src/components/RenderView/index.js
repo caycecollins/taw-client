@@ -121,6 +121,5 @@ const FullWidthHeight = styled.div`
   min-height: 100%;
   transition: all .3s cubic-bezier(.4,0,.2,1);
   background: linear-gradient(-90deg, #3E4039, #0F0F0E);
-  padding-right: ${props => props.sidebarActive ? '17px' : '0px'};
   transition: padding-right 0s ease;
 `
