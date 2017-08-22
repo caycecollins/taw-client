@@ -17,6 +17,7 @@ const Games = props =>
       <Input
         path={inputPath}
         placeholder="Type to filter games"
+        nomargin={true}
       />
     </ViewHeader>
     <GamesContainer>
