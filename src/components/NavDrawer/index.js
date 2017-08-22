@@ -98,9 +98,9 @@ const NavDrawer = props =>
         </UserInfo>
       }
     </User>
-    <Navigation user={true}>
+    {/* <Navigation user={true}>
       <List>{getListItems(props, userMenuItems)}</List>
-    </Navigation>
+    </Navigation> */}
     <Navigation>
       <List>{getListItems(props, menuItems)}</List>
       <List>{getListItems(props, adminMenuItems)}</List>
