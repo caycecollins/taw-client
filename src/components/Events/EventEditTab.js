@@ -151,7 +151,7 @@ const EventEditTab = props => {
                 type="select"
                 label="Hosting Unit"
                 path={`${formPath}.unit`}
-                defaultValue={props.event.hoster.id}
+                defaultValue={props.event.hoster && props.event.hoster.id}
               >
                 {props.divisions && getUserUnits(props)}
               </Input>

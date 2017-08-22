@@ -11,7 +11,7 @@ const eventInfo = props => [
   ['end', moment.tz(props.event.end, props.userTimezone).format('ddd, MMM Do YYYY @ HHmm (h:mm a) z')],
   ['duration', props.event.duration > 60 ? props.event.duration / 60 + 'hr(s)' : props.event.duration + 'm'],
   ['description', props.event.description],
-  ['hosted by', props.event.hoster.name],
+  ['hosted by', props.event.hoster ? props.event.hoster.name : 'None'],
   ['created by', props.event.creatorCallsign],
   ['mandatory', props.event.mandatory ? 'Yes' : 'No'],
   ['recurring', props.event.recurring.length > 0 ? 'Yes' : 'No'],
