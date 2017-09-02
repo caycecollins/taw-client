@@ -13,7 +13,7 @@ import Input from '../Input'
 import Button from '../Button'
 
 import selectEvent from './helpers/selectEvent'
-import occurencesFromRecursiveEvent from './helpers/occurencesFromRecursiveEvent'
+import occurrencesFromRecursiveEvent from './helpers/occurrencesFromRecursiveEvent'
 import MonthEvent from './Calendar/MonthEvent'
 
 BigCalendar.momentLocalizer(moment)
@@ -62,7 +62,7 @@ const Events = props => {
         >
           <BigCalendar
             key="bigcal"
-            events={props.events ? occurencesFromRecursiveEvent(props) : []}
+            events={props.events ? occurrencesFromRecursiveEvent(props) : []}
             startAccessor="start"
             endAccessor="end"
             popup={true}

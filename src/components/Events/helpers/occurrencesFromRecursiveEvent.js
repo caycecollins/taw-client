@@ -14,7 +14,7 @@ const isExcluded = (date, excludedDates) => {
   return false
 }
 
-const occurencesFromRecursiveEvent = props => {
+const occurrencesFromRecursiveEvent = props => {
   const allEvents = []
   props.events.forEach(event => {
     if (event.recurring.length > 0) {
@@ -59,4 +59,4 @@ const occurencesFromRecursiveEvent = props => {
   return allEvents
 }
 
-export default occurencesFromRecursiveEvent
+export default occurrencesFromRecursiveEvent
