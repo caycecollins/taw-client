@@ -7,8 +7,8 @@ import styled from 'styled-components'
 import Button from '../../Button'
 import Input from '../../Input'
 
-const getUserUnits = props => {
-  const units = props.divisions.map((unit, index) => {
+const getUserUnits = divisions => {
+  const units = divisions.map((unit, index) => {
     return (
       <option
         key={index}
@@ -37,7 +37,14 @@ const QuickUnitActions = props =>
       path={`dashboard.unit`}
       nomargin
     >
-      {getUserUnits(props)}
+      {props.divisions
+        ? getUserUnits(props.divisions)
+        : (
+          <option key="loading" value="">
+            Loading Units...
+          </option>
+        )
+      }
     </Input>
     <br />
     <StyledButton

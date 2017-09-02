@@ -6,15 +6,16 @@ import styled from 'styled-components'
 import { rgba } from 'polished'
 import moment from 'moment-timezone'
 import { sortBy } from 'lodash'
+import FlipMove from 'react-flip-move'
 
 import Icon from '../../Icon'
 import Button from '../../Button'
 import selectEvent from '../../Events/helpers/selectEvent'
-import occurencesFromRecursiveEvent from '../../Events/helpers/occurencesFromRecursiveEvent'
+import occurrencesFromRecursiveEvent from '../../Events/helpers/occurrencesFromRecursiveEvent'
 
 const UpcomingEvents = props => {
-  const ocurrences = props.events && occurencesFromRecursiveEvent(props)
-  const events = sortBy(ocurrences, ['start'])
+  const occurrences = props.events && occurrencesFromRecursiveEvent(props)
+  const events = sortBy(occurrences, ['start'])
     .filter(event => moment(event.start).unix() > moment().unix())
     .slice(0, 5)
   return (
@@ -34,28 +35,50 @@ const UpcomingEvents = props => {
         </LegendItem> */}
       </Legend>
       <Upcoming>
-        <VertLine />
-        {events.map((event, index) => {
-          const endTime = moment(event.end).format('HH:mm')
-          const dateTime = `${moment(event.start).format('MMM Do, YYYY @ HH:mm - ')}${endTime}`
-          return (
-            <Event
-              key={index}
-              onClick={e => selectEvent(event, props)}
-            >
-              <IconCircle mandatory={event.mandatory}>
-                <Icon
-                  name="calendar"
-                  size={15}
-                />
-              </IconCircle>
-              <Info>
-                <DateTime>{dateTime}</DateTime>
-                <Title>{event.title}</Title>
-              </Info>
-            </Event>
-          )
-        })}
+        <FlipMove
+          easing="ease-in-out"
+          duration={300}
+          staggerDelayBy={60}
+          appearAnimation="elevator"
+          enterAnimation="elevator"
+          leaveAnimation="none"
+          maintainContainerHeight={true}
+        >
+          {events.length > 0 && <VertLine />}
+          {events.length > 0
+            ? events.map((event, index) => {
+              const endTime = moment(event.end).format('HH:mm')
+              const dateTime = `${moment(event.start).format('MMM Do, YYYY @ HH:mm - ')}${endTime}`
+              return (
+                <Event
+                  key={index}
+                  onClick={e => selectEvent(event, props)}
+                >
+                  <IconCircle mandatory={event.mandatory}>
+                    <Icon
+                      name="calendar"
+                      size={15}
+                    />
+                  </IconCircle>
+                  <Info>
+                    <DateTime>{dateTime}</DateTime>
+                    <Title>{event.title}</Title>
+                  </Info>
+                </Event>
+              )
+            })
+            : (
+              <Button
+                icon="crosshairs"
+                iconSpin={true}
+                outline={false}
+                removeLeftPadding={true}
+                label="Reciving Events, ..."
+                disabled={true}
+              />
+            )
+          }
+        </FlipMove>
       </Upcoming>
       <Button
         onClick={() => props.viewAllEvents()}
@@ -85,6 +108,7 @@ export default connect(
 )
 
 const Container = styled.div`
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 
 const Legend = styled.div`
@@ -117,6 +141,7 @@ const Upcoming = styled.div`
   margin: 24px 0;
   display: flex;
   flex-direction: column;
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 
 const VertLine = styled.div`
@@ -130,6 +155,7 @@ const VertLine = styled.div`
 `
 
 const Event = styled.div`
+  position: relative;
   display: flex;
   flex: 0 1 auto;
   align-items: center;
@@ -140,6 +166,7 @@ const Event = styled.div`
     background-color: ${props => rgba(props.theme.colors.darkGray2, 0.5)};
     cursor: pointer;
   }
+  transition: all .3s cubic-bezier(.4,0,.2,1);
 `
 
 const Info = styled.div`
