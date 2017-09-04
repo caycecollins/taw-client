@@ -8,8 +8,7 @@ export default function changeSidebarViewFactory (obj, continuesequence = []) {
     set(state`app.sidebarTitle`, obj.title || null),
     set(state`app.sidebarActive`, true),
     ({ state, props }) => {
-      const time = state.get('app.initialAnimation') ? 300 : 300
-      setTimeout(() => state.set('app.sidebarTab', obj.tab || null), time)
+      setTimeout(() => state.set('app.sidebarTab', obj.tab || null), 300)
     },
     continuesequence,
   ]
