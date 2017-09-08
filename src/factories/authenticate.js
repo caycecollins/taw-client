@@ -1,11 +1,8 @@
-import { when } from 'cerebral/operators'
+import { set, when } from 'cerebral/operators'
+import { state, props } from 'cerebral/tags'
 import { goTo } from '@cerebral/router/operators'
-import { state } from 'cerebral/tags'
-
-const getCurrentUserData = async ({ http, state }) => {
-  const getUserDataFromApi = await http.get('/users/me')
-  state.set('user', getUserDataFromApi.result)
-}
+import { httpGet } from '@cerebral/http/operators'
+import { removeStorage } from '@cerebral/storage/operators'
 
 export default function authenticateFactory (continueSequence = []) {
   return [
@@ -14,7 +11,17 @@ export default function authenticateFactory (continueSequence = []) {
         when(state`user.callsign`), {
           true: [],
           false: [
-            getCurrentUserData,
+            httpGet('/users/me'), {
+              success: [
+                set(state`user`, props`response.result`),
+              ],
+              error: [
+                set(state`authorization.authenticated`, false),
+                set(state`authorization.token`, null),
+                removeStorage('authorization.token'),
+                goTo('/login'),
+              ],
+            },
           ],
         },
         continueSequence,
