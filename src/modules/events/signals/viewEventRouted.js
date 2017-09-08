@@ -48,13 +48,14 @@ export default [
         [
           set(state`events.eventData`, null),
           wait(500),
+          changeSidebarView({ view: 'viewEvent', tab: 'general' }),
           getEvent, {
             success: [
+              changeSidebarView({ view: 'viewEvent', tab: 'general', title: props`result.title` }),
               setOccurenceInfo,
               setParticipants,
               set(state`events.editEventForm.participants`, props`participants`),
               apiGet('/units', 'units.divisions', { mergeResult: false }), { success: [], error: [] },
-              changeSidebarView({ view: 'viewEvent', tab: 'general', title: props`result.title` }),
             ],
             error: [],
           },
