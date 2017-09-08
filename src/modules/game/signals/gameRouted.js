@@ -7,7 +7,7 @@ import changeView from '../../../factories/changeView'
 export default [
   httpGet(string`/units/${props`id`}`), {
     success: [
-      set(state`game.gameData`, props`result`),
+      set(state`game.gameData`, props`response.result`),
       changeView('game'),
     ],
     error: changeView('fourohfour'),
