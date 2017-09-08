@@ -44,40 +44,42 @@ const UpcomingEvents = props => {
           leaveAnimation="none"
           maintainContainerHeight={true}
         >
-          {events.length > 0 && <VertLine />}
-          {events.length > 0
-            ? events.map((event, index) => {
-              const endTime = moment(event.end).format('HH:mm')
-              const dateTime = `${moment(event.start).format('MMM Do, YYYY @ HH:mm - ')}${endTime}`
-              return (
-                <Event
-                  key={index}
-                  onClick={e => selectEvent(event, props)}
-                >
-                  <IconCircle mandatory={event.mandatory}>
-                    <Icon
-                      name="calendar"
-                      size={15}
-                    />
-                  </IconCircle>
-                  <Info>
-                    <DateTime>{dateTime}</DateTime>
-                    <Title>{event.title}</Title>
-                  </Info>
-                </Event>
+          <div>
+            {events.length > 0 && <VertLine />}
+            {events.length > 0
+              ? events.map((event, index) => {
+                const endTime = moment(event.end).format('HH:mm')
+                const dateTime = `${moment(event.start).format('MMM Do, YYYY @ HH:mm - ')}${endTime}`
+                return (
+                  <Event
+                    key={index}
+                    onClick={e => selectEvent(event, props)}
+                  >
+                    <IconCircle mandatory={event.mandatory}>
+                      <Icon
+                        name="calendar"
+                        size={15}
+                      />
+                    </IconCircle>
+                    <Info>
+                      <DateTime>{dateTime}</DateTime>
+                      <Title>{event.title}</Title>
+                    </Info>
+                  </Event>
+                )
+              })
+              : (
+                <Button
+                  icon="crosshairs"
+                  iconSpin={true}
+                  outline={false}
+                  removeLeftPadding={true}
+                  label="Reciving Events, ..."
+                  disabled={true}
+                />
               )
-            })
-            : (
-              <Button
-                icon="crosshairs"
-                iconSpin={true}
-                outline={false}
-                removeLeftPadding={true}
-                label="Reciving Events, ..."
-                disabled={true}
-              />
-            )
-          }
+            }
+          </div>
         </FlipMove>
       </Upcoming>
       <Button
