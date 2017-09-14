@@ -76,7 +76,7 @@ class Input extends Component {
     const inputValue = this.determineInputValue()
     const targetValue = this.props.type === 'date' ? moment.tz(e[0], this.props.userTimezone).format() : e.target.value
     if (targetValue !== inputValue) {
-      props.fieldChanged({
+      this.props.fieldChanged({
         field: this.props.path,
         value: targetValue,
       })
