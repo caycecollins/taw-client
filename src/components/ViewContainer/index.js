@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { state } from 'cerebral/tags'
 import styled, { css, keyframes } from 'styled-components'
 
@@ -17,6 +17,7 @@ class ViewContainer extends Component {
         initialAnimation={this.props.initialAnimation}
         authenticated={this.props.authenticated}
         backgroundImage={this.props.backgroundImage}
+        background={this.props.background}
         className={this.props.className}
         centered={this.props.centered}
         loggingOut={this.props.loggingOut}
@@ -36,6 +37,7 @@ ViewContainer.propTypes = {
   children: PropTypes.node,
   className: PropTypes.string,
   backgroundImage: PropTypes.string,
+  background: PropTypes.string,
   authenticated: PropTypes.bool,
   authorizationPending: PropTypes.bool,
   centered: PropTypes.bool,
@@ -92,7 +94,7 @@ const Container = styled.div`
     flex-direction: column;
   `}
   width: 100%;
-  height: ${props => props.authentiated ? '100vh' : 'calc(100vh - 48px)'};
+  height: 100vh;
   padding: ${props => props.padding > -1 ? props.padding : 48}px;
   padding-left: ${props => leftPaddingMixin(props)};
   color: white;
@@ -100,13 +102,17 @@ const Container = styled.div`
   transition: all .3s cubic-bezier(.4,0,.2,1);
   overflow-x: hidden;
   overflow-y: scroll;
-  ${props => props.backgroundImage && css`
-    background: url(${props.backgroundImage});
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-size: cover;
-    background-attachment: fixed;
-  `}
+  ${props => props.background
+    ? css`
+      background: ${props.background};
+    `
+    : props.backgroundImage && css`
+      background: url(${props.backgroundImage});
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      background-attachment: fixed;
+    `}
   ${props => props.loggingOut && css`animation-name: ${viewContainerLogoutAnimation};`}
   ${props => props.initialAnimation && css`animation-name: ${viewContainerAnimation};`}
   animation-duration: .3s;
