@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
 import { Grid, Row, Col } from 'react-material-responsive-grid'
@@ -11,10 +11,13 @@ import Modules from './Modules'
 
 const Dashboard = props =>
   <ViewContainer>
-    <Greeting>
-      Welcome back <Callsign>{props.user.callsign}</Callsign>.
-    </Greeting>
-    <Modules />
+    {props.user &&
+      <Greeting>
+        Welcome back <Callsign>{props.user.callsign}</Callsign>.
+      </Greeting>
+
+    }
+    {props.user && <Modules />}
   </ViewContainer>
 
 Dashboard.propTypes = {
