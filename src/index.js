@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-import { Container as CerebralController } from 'cerebral/react'
+import { Container as CerebralController } from '@cerebral/react'
 import { injectGlobal } from 'styled-components'
 
 import controller from './controller'

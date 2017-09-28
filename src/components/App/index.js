@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled, { ThemeProvider as CerebralThemeProvider } from 'styled-components'
 import { CSSTransitionGroup } from 'react-transition-group'

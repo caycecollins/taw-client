@@ -1,6 +1,6 @@
 import React from 'react'
 import { form } from '@cerebral/forms'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { signal, props, state } from 'cerebral/tags'
 
 import Button from '../Button'

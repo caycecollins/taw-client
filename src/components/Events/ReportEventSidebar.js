@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { signal, state } from 'cerebral/tags'
 import { Grid, Row, Col } from 'react-material-responsive-grid'
 

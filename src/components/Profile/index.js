@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
 // import { rgba } from 'polished'

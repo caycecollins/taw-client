@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { state, props, signal } from 'cerebral/tags'
 import { field } from '@cerebral/forms'
 import styled, { css } from 'styled-components'

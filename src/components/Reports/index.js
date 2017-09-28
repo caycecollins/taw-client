@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { state } from 'cerebral/tags'
 // import Chart from 'chart.js'
 import Highcharts from 'highcharts'

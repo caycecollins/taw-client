@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'cerebral/react'
+import { connect } from '@cerebral/react'
 import { signal, state } from 'cerebral/tags'
 import BigCalendar from 'react-big-calendar'
 import moment from 'moment-timezone'

@@ -1,6 +1,6 @@
 import React from 'react'
 import { mount } from 'enzyme'
-import { StateContainer } from 'cerebral/react'
+import { StateContainer } from '@cerebral/react'
 
 import Login from '../Login'
 
