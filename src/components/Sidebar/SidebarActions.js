@@ -7,10 +7,14 @@ import styled, { css } from 'styled-components'
 import { lighten, rgba } from 'polished'
 
 const errorMessage = error => {
-  if (error.body.error) {
-    return 'Error! ' + error.body.error.message
+  try {
+    const errorResponse = JSON.parse(error.message)
+    if (errorResponse.error) {
+      return 'Error! ' + errorResponse.error.message
+    }
+  } catch (ex) {
+    return `Error! Please report to DEVOPS:  ${error.response.status} | ${error.name}`
   }
-  return `Error! Please report to DEVOPS:  ${error.status} | ${error.name}`
 }
 
 const SidebarActions = props => {
