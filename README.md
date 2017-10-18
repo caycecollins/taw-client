@@ -4,7 +4,7 @@ This project is the front-end web application for The Art of Warfare Gaming Comm
 It should be able to service all needs for the members and have all the tools needed to facilitate the running of the community
 
 ### Prerequisites
-* [NodeJS](https://nodejs.org) (started @ v8+)
+* [NodeJS](https://nodejs.org) (v8.4.0+)
 
 ## Getting Started
 
