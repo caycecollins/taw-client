@@ -1,5 +1,4 @@
 .yarnclean
-yarn.lock
 node_modules
 webpack.local.js
 dist
