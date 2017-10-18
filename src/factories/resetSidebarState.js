@@ -4,7 +4,7 @@ import { state } from 'cerebral/tags'
 export default function resetSidebarStateFactory () {
   return [
     equals(state`app.sidebarFormPath`), {
-      'app.sidebarFormPath': [],
+      'app.emptySidebarFormPath': [],
       otherwise: [
         set(state`${state`app.sidebarFormPath`}.error`, null),
       ],
@@ -14,7 +14,7 @@ export default function resetSidebarStateFactory () {
     set(state`app.sidebarTab`, null),
     set(state`app.sidebarView`, null),
     set(state`app.sidebarTitle`, null),
-    set(state`app.sidebarFormPath`, 'app.sidebarFormPath'),
+    set(state`app.sidebarFormPath`, 'app.emptySidebarFormPath'),
     set(state`app.sidebarSubmitSignal`, 'app.sidebarSubmit'),
   ]
 }

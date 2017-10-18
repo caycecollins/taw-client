@@ -82,7 +82,7 @@ const setSidebarActions = props => {
   if (props.sidebarTab) {
     const tab = views[props.sidebarView].tabs[props.sidebarTab]
     return props.sidebarActionsUpdated({
-      sidebarFormPath: tab.formPath || 'app.sidebarFormPath',
+      sidebarFormPath: tab.formPath || 'app.emptySidebarFormPath',
       sidebarResetSignal: tab.resetSignal || 'app.formResetClicked',
       sidebarSubmitSignal: tab.submitSignal || 'app.sidebarSubmit',
     })
@@ -93,7 +93,7 @@ const setSidebarActions = props => {
   const sidebarResetSignal = defaultTab ? views[props.sidebarView].tabs[defaultTab].resetSignal : views[props.sidebarView].resetSignal
   const sidebarSubmitSignal = defaultTab ? views[props.sidebarView].tabs[defaultTab].submitSignal : views[props.sidebarView].submitSignal
   return props.sidebarActionsUpdated({
-    sidebarFormPath: sidebarFormPath || 'app.sidebarFormPath',
+    sidebarFormPath: sidebarFormPath || 'app.emptySidebarFormPath',
     sidebarResetSignal: sidebarResetSignal || 'app.formResetClicked',
     sidebarSubmitSignal: sidebarSubmitSignal || 'app.sidebarSubmit',
   })

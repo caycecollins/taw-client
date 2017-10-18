@@ -34,7 +34,7 @@ const QuickUnitActions = props =>
   <Container>
     <Input
       type="select"
-      path={`dashboard.unit`}
+      path="dashboard.unit"
       nomargin
     >
       {props.divisions

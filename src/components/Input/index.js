@@ -7,7 +7,6 @@ import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
 import Flatpickr from 'react-flatpickr'
 import moment from 'moment-timezone'
-import { debounce } from 'lodash'
 import './dateTimePickerStyles.scss'
 
 import ErrorMessage from './ErrorMessage'
