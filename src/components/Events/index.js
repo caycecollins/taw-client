@@ -245,6 +245,9 @@ const EventsContainer = styled.div`
       }
     }
   }
+  .rbc-off-range-bg {
+    background: transparent;
+  }
   .rbc-event {
     background-color: ${props => rgba(props.theme.colors.armyGreen, 0.6)};
     .rbc-event-content {

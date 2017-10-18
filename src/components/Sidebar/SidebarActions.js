@@ -35,7 +35,7 @@ const SidebarActions = props => {
       </CancelAction>
       <SubmitAction
         disabled={!props.form.isValid}
-        title={!props.form.isValid && 'Required inputs must be completed!'}
+        title={!props.form.isValid ? 'Required inputs must be completed!' : null}
         type="submit"
         onClick={() => props.form.isValid && props.sidebarSubmitClicked({ form: props.sidebarFormPath })}
         pending={props.pending}

@@ -10,10 +10,10 @@ import Button from '../Button'
 import Link from '../Link'
 import Icon from '../Icon'
 
-const userMenuItems = [
-  { label: 'My Profile', route: 'profile.routed', icon: 'user' },
-  { label: 'Notifications', route: 'notifications.routed', icon: 'bell' },
-]
+// const userMenuItems = [
+//   { label: 'My Profile', route: 'profile.routed', icon: 'user' },
+//   { label: 'Notifications', route: 'notifications.routed', icon: 'bell' },
+// ]
 
 const menuItems = [
   { label: 'Dashboard', route: 'dashboard.routed', icon: 'th' },
@@ -300,7 +300,7 @@ const ListItem = styled.li`
     `}
 `
 
-const StyledIcon = styled.div`
+const StyledIcon = styled(({ label, ...rest }) => <div {...rest} />)`
   ${props => props.label && css`padding-right: 16px;`}
 `
 

@@ -3,9 +3,7 @@ import Devtools from 'cerebral/devtools'
 import HttpProvider from '@cerebral/http'
 import FormsProvider from '@cerebral/forms'
 import StorageProvider from '@cerebral/storage'
-import { ContextProvider } from 'cerebral/providers'
 import config from 'config'
-import uuid from 'uuid'
 
 import router from './router'
 import app from './modules/app'
@@ -38,6 +36,7 @@ const controller = Controller({
     units: {},
   },
   modules: {
+    storage: StorageProvider({ target: window.localStorage }),
     router,
     app,
     authorization,
@@ -75,8 +74,6 @@ const controller = Controller({
         },
       },
     }),
-    StorageProvider({ target: window.localStorage }),
-    ContextProvider({ uuid }),
   ],
 })
 

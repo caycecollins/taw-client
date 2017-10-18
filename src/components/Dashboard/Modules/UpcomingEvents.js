@@ -35,6 +35,7 @@ const UpcomingEvents = props => {
         </LegendItem> */}
       </Legend>
       <Upcoming>
+
         <FlipMove
           easing="ease-in-out"
           duration={300}
@@ -44,31 +45,31 @@ const UpcomingEvents = props => {
           leaveAnimation="none"
           maintainContainerHeight={true}
         >
-          <div>
-            {events.length > 0 && <VertLine />}
-            {events.length > 0
-              ? events.map((event, index) => {
-                const endTime = moment(event.end).format('HH:mm')
-                const dateTime = `${moment(event.start).format('MMM Do, YYYY @ HH:mm - ')}${endTime}`
-                return (
-                  <Event
-                    key={index}
-                    onClick={e => selectEvent(event, props)}
-                  >
-                    <IconCircle mandatory={event.mandatory}>
-                      <Icon
-                        name="calendar"
-                        size={15}
-                      />
-                    </IconCircle>
-                    <Info>
-                      <DateTime>{dateTime}</DateTime>
-                      <Title>{event.title}</Title>
-                    </Info>
-                  </Event>
-                )
-              })
-              : (
+          {events.length > 0 && <VertLine />}
+          {events.length > 0
+            ? events.map((event, index) => {
+              const endTime = moment(event.end).format('HH:mm')
+              const dateTime = `${moment(event.start).format('MMM Do, YYYY @ HH:mm - ')}${endTime}`
+              return (
+                <Event
+                  key={index}
+                  onClick={e => selectEvent(event, props)}
+                >
+                  <IconCircle mandatory={event.mandatory}>
+                    <Icon
+                      name="calendar"
+                      size={15}
+                    />
+                  </IconCircle>
+                  <Info>
+                    <DateTime>{dateTime}</DateTime>
+                    <Title>{event.title}</Title>
+                  </Info>
+                </Event>
+              )
+            })
+            : (
+              <div>
                 <Button
                   icon="crosshairs"
                   iconSpin={true}
@@ -77,9 +78,9 @@ const UpcomingEvents = props => {
                   label="Reciving Events, ..."
                   disabled={true}
                 />
-              )
-            }
-          </div>
+              </div>
+            )
+          }
         </FlipMove>
       </Upcoming>
       <Button
