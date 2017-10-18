@@ -29,7 +29,7 @@ const Events = props => {
     <ViewContainer>
       <EventsContainer>
         <CustomActions>
-          <Settings>
+          {/* <Settings>
             <Input
               label="Army Time"
               type="checkbox"
@@ -39,6 +39,7 @@ const Events = props => {
               nomargin
             />
           </Settings>
+          */}
           <Buttons>
             <Button
               onClick={() => props.reportEvent()}
@@ -133,7 +134,7 @@ const CustomActions = styled.div`
   display: flex;
   flex: 1 0 auto;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   margin-bottom: 24px;
 `
 
