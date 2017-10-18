@@ -92,7 +92,6 @@
     "node-fetch": "^1.7.3",
     "polished": "^1.8.1",
     "prop-types": "^15.6.0",
-    "ramda": "^0.25.0",
     "react": "^16.0.0",
     "react-big-calendar": "^0.16.1",
     "react-chartkick": "https://github.com/inergy/react-chartkick#fix-create-react-class",
