@@ -2,9 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import styled, { css } from 'styled-components'
 import { rgba } from 'polished'
-import R from 'ramda'
 import reactStringReplace from 'react-string-replace'
-import { debounce } from 'lodash'
+import { replace, debounce } from 'lodash'
 
 import { Label, sharedInputStyles } from './index'
 
@@ -145,8 +144,8 @@ export default class TypeAhead extends Component {
   InputDropdown = () => {
     const items = this.props.items.map(item => {
       // replace spaces with proper html character codes (prevents spaces being removed after string replacement)
-      const inputValueWithEntities = R.replace(/ /g, '\u00a0', this.state.inputValue)
-      const itemValueWithEntities = R.replace(/ /g, '\u00a0', item.value)
+      const inputValueWithEntities = replace(this.state.inputValue, / /g, '\u00a0')
+      const itemValueWithEntities = replace(item.value, / /g, '\u00a0')
       const renderValue = reactStringReplace(itemValueWithEntities, inputValueWithEntities, (match, i) => (
         <MatchingText key={i}>{match}</MatchingText>
       ))
