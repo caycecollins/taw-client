@@ -1,7 +1,7 @@
 export default function editProfile ({ props, state, http, forms }) {
   state.set(`${props.form}.pending`, true)
   let fields = forms.toJSON(props.form)
-  return http.put(`/users/${state.get('user.id')}/infos`, fields)
+  return http.put(`/users/${state.get('user.id')}/info`, fields)
     .then(response => {
       state.merge('user', response.result)
       setTimeout(() => state.set(`${props.form}.pending`, false), 500)
