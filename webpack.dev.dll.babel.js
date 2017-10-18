@@ -23,7 +23,7 @@ module.exports = {
           plugins: ['transform-regenerator'],
           presets: [
             'react',
-            ['es2015', { modules: false }],
+            ['env', { modules: false }],
             'stage-0',
           ],
         },
