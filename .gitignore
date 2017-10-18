@@ -1,11 +1,6 @@
 .yarnclean
 yarn.lock
 node_modules
-config/*
-!config/test.js
-!config/common.js
-!config/development-example.js
-!config/production-example.js
 webpack.local.js
 dist
 dll
