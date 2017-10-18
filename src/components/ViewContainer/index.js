@@ -94,7 +94,7 @@ const Container = styled.div`
     flex-direction: column;
   `}
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 48px);
   padding: ${props => props.padding > -1 ? props.padding : 48}px;
   padding-left: ${props => leftPaddingMixin(props)};
   color: white;
