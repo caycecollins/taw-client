@@ -3,7 +3,7 @@ import { state } from 'cerebral/tags'
 
 import resetSidebarState from './resetSidebarState'
 
-export default function changeViewFactory (view, continuesequence = []) {
+export default function changeViewFactory (view) {
   return [
     when(state`app.sidebarActive`), {
       true: [
@@ -23,6 +23,5 @@ export default function changeViewFactory (view, continuesequence = []) {
     },
     set(state`app.previousView`, state`app.currentView`),
     set(state`app.currentView`, view),
-    continuesequence,
   ]
 }
