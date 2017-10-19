@@ -1795,14 +1795,6 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
-create-react-class@^15.6.2:
-  version "15.6.2"
-  resolved "https://registry.yarnpkg.com/create-react-class/-/create-react-class-15.6.2.tgz#cf1ed15f12aad7f14ef5f2dfe05e6c42f91ef02a"
-  dependencies:
-    fbjs "^0.8.9"
-    loose-envify "^1.3.1"
-    object-assign "^4.1.1"
-
 cross-spawn@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-3.0.1.tgz#1256037ecb9f0c5f79e3d6ef135e30770184b982"
@@ -5324,11 +5316,9 @@ react-big-calendar@^0.16.1:
     uncontrollable "^3.3.1 || ^4.0.0"
     warning "^2.0.0"
 
-"react-chartkick@https://github.com/inergy/react-chartkick#fix-create-react-class":
+"react-chartkick@https://github.com/inergy/react-chartkick#refactor-to-react-classes":
   version "0.1.3"
-  resolved "https://github.com/inergy/react-chartkick#afe2010556d8af58f682d6595ab2b88cfe8ae615"
-  dependencies:
-    create-react-class "^15.6.2"
+  resolved "https://github.com/inergy/react-chartkick#c9b433de84814cc1c62c262fe5ce89ccf07fd935"
 
 react-deep-force-update@^2.1.1:
   version "2.1.1"

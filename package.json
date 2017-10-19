@@ -94,7 +94,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.0.0",
     "react-big-calendar": "^0.16.1",
-    "react-chartkick": "https://github.com/inergy/react-chartkick#fix-create-react-class",
+    "react-chartkick": "https://github.com/inergy/react-chartkick#refactor-to-react-classes",
     "react-dom": "^16.0.0",
     "react-fa": "^5.0.0",
     "react-flatpickr": "^3.6.0",
