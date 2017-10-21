@@ -19,6 +19,45 @@ class Input extends Component {
     inputComponent: StyledInput,
   }
 
+  static propTypes = {
+    name: PropTypes.string,
+    type: PropTypes.string,
+    field: PropTypes.object,
+    path: PropTypes.string,
+    fieldChanged: PropTypes.func,
+    label: PropTypes.string,
+    placeholder: PropTypes.string,
+    children: PropTypes.node,
+    value: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.bool,
+    ]),
+    dateOptions: PropTypes.object,
+    keyIndex: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+    ]),
+    is: PropTypes.string,
+    innerRef: PropTypes.string,
+    autoComplete: PropTypes.string,
+    onChange: PropTypes.func,
+    defaultValue: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.bool,
+      PropTypes.number,
+      PropTypes.object,
+    ]),
+    placement: PropTypes.string,
+    className: PropTypes.string,
+    width: PropTypes.number,
+    height: PropTypes.number,
+    checked: PropTypes.bool,
+    nomargin: PropTypes.bool,
+    setFieldDefaultValue: PropTypes.func,
+    userTimezone: PropTypes.string,
+  }
+
   determineInputComponent = () => {
     switch (this.props.type) {
       case 'date': return StyledDate
@@ -135,45 +174,6 @@ class Input extends Component {
       </InputContainer>
     )
   }
-}
-
-Input.propTypes = {
-  name: PropTypes.string,
-  type: PropTypes.string,
-  field: PropTypes.object,
-  path: PropTypes.string,
-  fieldChanged: PropTypes.func,
-  label: PropTypes.string,
-  placeholder: PropTypes.string,
-  children: PropTypes.node,
-  value: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-    PropTypes.bool,
-  ]),
-  dateOptions: PropTypes.object,
-  keyIndex: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.number,
-  ]),
-  is: PropTypes.string,
-  innerRef: PropTypes.string,
-  autoComplete: PropTypes.string,
-  onChange: PropTypes.func,
-  defaultValue: PropTypes.oneOfType([
-    PropTypes.string,
-    PropTypes.bool,
-    PropTypes.number,
-    PropTypes.object,
-  ]),
-  placement: PropTypes.string,
-  className: PropTypes.string,
-  width: PropTypes.number,
-  height: PropTypes.number,
-  checked: PropTypes.bool,
-  nomargin: PropTypes.bool,
-  setFieldDefaultValue: PropTypes.func,
-  userTimezone: PropTypes.string,
 }
 
 export default connect(
