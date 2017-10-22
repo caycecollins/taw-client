@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { connect } from '@cerebral/react'
 import { state, signal } from 'cerebral/tags'
 import styled from 'styled-components'
-// import { rgba } from 'polished'
 
 import ViewContainer from '../ViewContainer'
 import Tabs from '../Tabs'
@@ -11,7 +10,7 @@ import Tabs from '../Tabs'
 import ProfileInfo from './ProfileInfo'
 import Commendations from './Commendations'
 
-const views = {
+const tabs = {
   info: {
     label: 'Profile Information',
     component: ProfileInfo,
@@ -23,9 +22,15 @@ const views = {
 }
 
 const Profile = props => {
-  const ContentComponent = props.view ? views[props.view].component : views.info.component
+  const ContentComponent = props.tab
+    ? tabs[props.tab].component
+    : tabs.info.component
   return (
-    <ViewContainer backgroundImage="/images/profile-bg.jpg" centered padding={0}>
+    <ViewContainer
+      backgroundImage="/images/profile-bg.jpg"
+      centered
+      padding={0}
+    >
       <ProfileWrapper>
         <Header>
           <UserContainer>
@@ -39,9 +44,9 @@ const Profile = props => {
             </User>
           </UserContainer>
           <StyledTabs
-            tabs={views}
-            statePath="profile.view"
-            onClick={props.profileViewChanged}
+            tabs={tabs || {}}
+            statePath="profile.tab"
+            onClick={props.profileTabChanged}
             active
           />
         </Header>
@@ -55,16 +60,16 @@ const Profile = props => {
 }
 
 Profile.propTypes = {
-  view: PropTypes.string,
+  tab: PropTypes.string,
   user: PropTypes.object,
-  profileViewChanged: PropTypes.func,
+  profileTabChanged: PropTypes.func,
 }
 
 export default connect(
   {
-    view: state`profile.view`,
+    tab: state`profile.tab`,
     user: state`user`,
-    profileViewChanged: signal`profile.profileViewChanged`,
+    profileTabChanged: signal`profile.profileTabChanged`,
   },
   Profile
 )
@@ -86,7 +91,7 @@ const Header = styled.div`
   flex: 1 0 auto;
   height: 112px;
   max-height: 112px;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   padding: 24px 0px 0px 40px;
   @media (max-width: 600px) {
     flex: 0;
@@ -157,13 +162,9 @@ const Avatar = styled.div`
   }
 `
 
-const Rank = styled.div`
-  margin-top: 8px;
-`
+const Rank = styled.div`margin-top: 8px;`
 
-const RankImage = styled.div`
-
-`
+const RankImage = styled.div``
 
 const RankText = styled.div`
   font-size: 0.9rem;
@@ -180,6 +181,6 @@ const Content = styled.div`
   display: flex;
   flex: 1 0 auto;
   height: 100%;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   padding: 24px 40px;
 `

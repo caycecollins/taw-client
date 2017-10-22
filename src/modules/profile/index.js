@@ -1,13 +1,13 @@
 import authenticate from '../../factories/authenticate'
 
 import profileRouted from './signals/profileRouted'
-import profileViewChanged from './signals/profileViewChanged'
+import profileTabChanged from './signals/profileTabChanged'
 import editProfileClicked from './signals/editProfileClicked'
 import editProfileSubmitted from './signals/editProfileSubmitted'
 
 export default {
   state: {
-    view: 'info',
+    tab: 'info',
     editProfileForm: {
       timezone: {
         type: 'select',
@@ -24,7 +24,7 @@ export default {
   },
   signals: {
     routed: authenticate(profileRouted),
-    profileViewChanged,
+    profileTabChanged,
     editProfileClicked,
     editProfileSubmitted,
   },

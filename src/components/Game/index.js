@@ -15,7 +15,7 @@ import StructureAndMembers from './StructureAndMembers'
 import Events from './Events'
 import Forums from './Forums'
 
-const views = {
+const tabs = {
   info: {
     label: 'Info & News',
     component: InfoAndNews,
@@ -35,29 +35,38 @@ const views = {
 }
 
 const Game = props => {
-  const ContentComponent = props.view ? views[props.view].component : views.info.component
+  const ContentComponent = props.tab
+    ? tabs[props.tab].component
+    : tabs.info.component
   return (
     <ViewContainer backgroundImage="/images/bf1-background.jpg" padding={0}>
       <GameWrapper>
         <Header>
           <Crumbs>
             <Link routeTo="games.routed">
-              <Button outline={false} size="xs" icon="angle-left" label="Back to all games" />
+              <Button
+                outline={false}
+                size="xs"
+                icon="angle-left"
+                label="Back to all games"
+              />
             </Link>
           </Crumbs>
 
           <GameContainer>
             <Name>{props.game.name}</Name>
             <StyledTabs
-              tabs={views}
-              statePath="game.view"
-              onClick={props.gameViewChanged}
+              tabs={tabs || {}}
+              statePath="game.tab"
+              onClick={props.gameTabChanged}
               active
             />
           </GameContainer>
         </Header>
         <Gap>
-          {props.game.iconUrl && <Icon image={props.game.iconUrl.replace('/dynamicAssets', '')} /> }
+          {props.game.iconUrl && (
+            <Icon image={props.game.iconUrl.replace('/dynamicAssets', '')} />
+          )}
         </Gap>
         <CSSTransitionGroup
           transitionName="view"
@@ -66,7 +75,7 @@ const Game = props => {
           transitionLeaveTimeout={400}
           component="div"
         >
-          <Content key={props.view}>
+          <Content key={props.tab}>
             <ContentComponent />
           </Content>
         </CSSTransitionGroup>
@@ -76,16 +85,16 @@ const Game = props => {
 }
 
 Game.propTypes = {
-  view: PropTypes.string,
+  tab: PropTypes.string,
   game: PropTypes.object,
-  gameViewChanged: PropTypes.func,
+  gameTabChanged: PropTypes.func,
 }
 
 export default connect(
   {
-    view: state`game.view`,
+    tab: state`game.tab`,
     game: state`game.gameData`,
-    gameViewChanged: signal`game.gameViewChanged`,
+    gameTabChanged: signal`game.gameTabChanged`,
   },
   Game
 )
@@ -109,7 +118,7 @@ const Header = styled.div`
   width: 100%;
   height: 136px;
   max-height: 136px;
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   padding-left: 24px;
   @media (max-width: 600px) {
     flex: 0;
@@ -180,8 +189,8 @@ const Content = styled.div`
   position: absolute;
   top: 448px;
   display: flex;
-  background-color: rgba(0,0,0,0.7);
-  background: linear-gradient(-0deg, rgba(0,0,0,1), rgba(0,0,0,0.7));
+  background-color: rgba(0, 0, 0, 0.7);
+  background: linear-gradient(-0deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0.7));
   width: 100%;
   min-height: calc(100% - 448px);
   padding: 24px 48px;

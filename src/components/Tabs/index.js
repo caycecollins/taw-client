@@ -3,25 +3,22 @@ import PropTypes from 'prop-types'
 import { connect } from '@cerebral/react'
 import { state, props } from 'cerebral/tags'
 import styled, { css } from 'styled-components'
-import { rgba } from 'polished'
 
 const Tabs = props => {
   return (
-    <TabsContainer
-      active={props.active}
-      className={props.className}
-    >
-      {props.tabs && Object.keys(props.tabs).map((tab, index) => {
-        return (
-          <Tab
-            key={index}
-            active={props.currentView === tab}
-            onClick={() => props.onClick({ view: tab })}
-          >
-            {props.tabs[tab].label}
-          </Tab>
-        )
-      })}
+    <TabsContainer active={props.active} className={props.className}>
+      {props.tabs &&
+        Object.keys(props.tabs).map((tab, index) => {
+          return (
+            <Tab
+              key={index}
+              active={props.currentView === tab}
+              onClick={() => props.onClick({ tab })}
+            >
+              {props.tabs[tab].label}
+            </Tab>
+          )
+        })}
     </TabsContainer>
   )
 }
@@ -34,6 +31,10 @@ Tabs.propTypes = {
   className: PropTypes.string,
 }
 
+Tabs.defaultProps = {
+  tabs: {},
+}
+
 export default connect(
   {
     currentView: state`${props`statePath`}`,
@@ -44,16 +45,16 @@ export default connect(
 const TabsContainer = styled.div`
   display: flex;
   align-items: center;
-  height: ${props => props.active ? '56px' : '0px'};
+  height: ${props => (props.active ? '56px' : '0px')};
   overflow: hidden;
   padding: 0 24px;
-  transition: all .3s cubic-bezier(.4,0,.2,1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   @media (max-width: 600px) {
     margin-top: 24px;
     overflow-x: auto;
     padding: 0;
     padding-right: 24px;
-    height: ${props => props.active ? '48px' : '0px'};
+    height: ${props => (props.active ? '48px' : '0px')};
     width: auto;
     width: 100vw;
   }
@@ -68,31 +69,34 @@ const Tab = styled.div`
   height: 56px;
   margin: 0 24px;
   padding: 4px 1px 0 1px;
-  color: ${props => props.active ? props.theme.colors.armyWhite : props.theme.colors.armyGreen};
-  transition: all .3s cubic-bezier(.4,0,.2,1);
+  color: ${props =>
+    props.active ? props.theme.colors.armyWhite : props.theme.colors.armyGreen};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   text-transform: capitalize;
   white-space: nowrap;
-  ${props => !props.active && css`
-    &:hover {
-      color: ${props => props.theme.colors.tan};
-      cursor: pointer;
-      &:after {
-        height: 4px;
-        background-color: ${props => props.theme.colors.tan};
+  ${props =>
+    !props.active &&
+    css`
+      &:hover {
+        color: ${props => props.theme.colors.tan};
+        cursor: pointer;
+        &:after {
+          height: 4px;
+          background-color: ${props => props.theme.colors.tan};
+        }
       }
-    }
-  `}
-  &:after {
+    `} &:after {
     position: absolute;
     bottom: 0;
     right: 0;
     left: 0;
     margin: 0 auto;
     width: 100%;
-    height: ${props => props.active ? '4px' : '0'};
+    height: ${props => (props.active ? '4px' : '0')};
     content: '';
-    background-color: ${props => props.active ? props.theme.colors.armyWhite : props.theme.colors.tan};
-    transition: all .3s cubic-bezier(.4,0,.2,1);
+    background-color: ${props =>
+    props.active ? props.theme.colors.armyWhite : props.theme.colors.tan};
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   @media (max-width: 768px) {
     font-size: 0.9rem;
