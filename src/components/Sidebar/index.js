@@ -69,6 +69,7 @@ const views = {
     defaultTab: 'general',
     tabs: {
       general: {
+        label: 'Settings',
         component: EditProfileSidebar,
         formPath: 'profile.editProfileForm',
         submitSignal: 'profile.editProfileSubmitted',
