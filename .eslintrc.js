@@ -19,7 +19,7 @@ module.exports = {
     "object-curly-spacing": [2, "always"],
     "array-bracket-spacing": [2, "never"],
     "import/no-unresolved": [2, { "ignore": ["^config$"] }],
-    "import/order": [2, { "newlines-between": "always" }],
+    "import/order": [1, { "newlines-between": "always" }],
     "jsx-quotes": [2, "prefer-double"],
     "react/jsx-curly-spacing": [2, "never"],
   },
