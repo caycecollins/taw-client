@@ -7,9 +7,10 @@ import Copy from 'copy-webpack-plugin'
 
 import manifest from './dll/vendor-manifest.json'
 
-const local = {}
-if (Fs.existsSync('./webpack.local.js')) {
-  Object.assign(local, require('./webpack.local').default)
+let local = {}
+const configFileString = './config/' + (process.env.NODE_ENV || 'development.js')
+if (Fs.existsSync(configFileString)) {
+  Object.assign(local, require(configFileString).default.webpack)
 }
 
 export default {

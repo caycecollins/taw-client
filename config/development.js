@@ -9,6 +9,9 @@ import { merge } from 'lodash'
 import common from './common'
 
 export default merge(common, {
+  api: {
+    host: 'localhost',
+  },
   cerebral: {
     debugger: true,
     remote: 'localhost:8585',
