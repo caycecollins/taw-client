@@ -21,3 +21,4 @@ After the vendor and localization have been built, you can simply run the follow
 ```
 yarn start
 ```
+
