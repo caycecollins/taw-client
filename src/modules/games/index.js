@@ -1,8 +1,10 @@
+import { Module } from 'cerebral'
+
 import authenticate from '../../factories/authenticate'
 import apiGet from '../../factories/apiGet'
 import changeView from '../../factories/changeView'
 
-export default {
+export default Module({
   state: {
     filterInput: {
       value: '',
@@ -24,4 +26,4 @@ export default {
     toggleGames: [
     ],
   },
-}
+})

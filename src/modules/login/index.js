@@ -1,8 +1,10 @@
+import { Module } from 'cerebral'
+
 import authenticate from '../authorization/signals/authenticate'
 
 import loginRouted from './signals/loginRouted'
 
-export default {
+export default Module({
   state: {
     authForm: {
       callsign: {
@@ -29,4 +31,4 @@ export default {
     routed: loginRouted,
     login: authenticate,
   },
-}
+})

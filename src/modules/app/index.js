@@ -1,3 +1,5 @@
+import { Module } from 'cerebral'
+
 import resetForm from '../../factories/resetForm'
 
 import initialAnimationStarted from './signals/initialAnimationStarted'
@@ -13,9 +15,11 @@ import fieldChanged from './signals/fieldChanged'
 import setFieldDefaultValue from './signals/setFieldDefaultValue'
 
 function determineDrawerActive () {
-  const drawerActiveFromStorage = window.localStorage.getItem('app.drawerActive')
+  const drawerActiveFromStorage = window.localStorage.getItem(
+    'app.drawerActive'
+  )
   if (!drawerActiveFromStorage) {
-    const shouldBeActive = (window.innerWidth > 768)
+    const shouldBeActive = window.innerWidth > 768
     window.localStorage.setItem('app.drawerActive', shouldBeActive)
     return shouldBeActive
   }
@@ -25,14 +29,14 @@ function determineDrawerActive () {
 function determineDrawerLarge () {
   const drawerLargeFromStorage = window.localStorage.getItem('app.drawerLarge')
   if (!drawerLargeFromStorage) {
-    const shouldBeLarge = (window.innerWidth > 1024)
+    const shouldBeLarge = window.innerWidth > 1024
     window.localStorage.setItem('app.drawerLarge', shouldBeLarge)
     return shouldBeLarge
   }
   return JSON.parse(window.localStorage.getItem('app.drawerLarge'))
 }
 
-export default {
+export default Module({
   state: {
     currentView: 'empty',
     previousView: null,
@@ -71,4 +75,4 @@ export default {
     sidebarSubmit: [], // used to clear submit signals from SidebarActions
     modalConfirm: [], // used to clear submit signals from Modals
   },
-}
+})

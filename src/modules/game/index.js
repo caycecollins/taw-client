@@ -1,9 +1,11 @@
+import { Module } from 'cerebral'
+
 import authenticate from '../../factories/authenticate'
 
 import gameRouted from './signals/gameRouted'
 import gameTabChanged from './signals/gameTabChanged'
 
-export default {
+export default Module({
   state: {
     tab: 'info',
   },
@@ -11,4 +13,4 @@ export default {
     routed: authenticate(gameRouted),
     gameTabChanged,
   },
-}
+})

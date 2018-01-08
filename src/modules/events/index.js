@@ -1,3 +1,5 @@
+import { Module } from 'cerebral'
+
 import authenticate from '../../factories/authenticate'
 import resetForm from '../../factories/resetForm'
 
@@ -21,7 +23,7 @@ import editEventSubmitted from './signals/editEventSubmitted'
 import deleteEventClicked from './signals/deleteEventClicked'
 import deleteEventConfirmed from './signals/deleteEventConfirmed'
 
-export default {
+export default Module({
   state: {
     calendarView: calculateCalendarView(),
     calendarViewArmyTime: {
@@ -49,4 +51,4 @@ export default {
     reportEventRouted: authenticate(reportEventRouted),
     reportEventSubmitted,
   },
-}
+})

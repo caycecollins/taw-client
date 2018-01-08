@@ -1,3 +1,5 @@
+import { Module } from 'cerebral'
+
 import authenticate from '../../factories/authenticate'
 
 import profileRouted from './signals/profileRouted'
@@ -5,7 +7,7 @@ import profileTabChanged from './signals/profileTabChanged'
 import editProfileClicked from './signals/editProfileClicked'
 import editProfileSubmitted from './signals/editProfileSubmitted'
 
-export default {
+export default Module({
   state: {
     tab: 'info',
     editProfileForm: {
@@ -28,4 +30,4 @@ export default {
     editProfileClicked,
     editProfileSubmitted,
   },
-}
+})

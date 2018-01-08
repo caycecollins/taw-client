@@ -1,3 +1,5 @@
+import { Module } from 'cerebral'
+
 import authenticate from './signals/authenticate'
 import logout from './signals/logout'
 
@@ -6,7 +8,7 @@ const jwtToken = localStorageToken
   ? JSON.parse(localStorageToken)
   : null
 
-export default {
+export default Module({
   state: {
     pending: false,
     authenticated: !!jwtToken || false,
@@ -18,4 +20,4 @@ export default {
     authenticate,
     logout,
   },
-}
+})
