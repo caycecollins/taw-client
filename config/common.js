@@ -8,7 +8,7 @@
 export default {
   api: {
     protocol: 'http',
-    host: 'taw.inergy.io',
+    host: 'localhost',
     port: 5000,
     baseUrl: 'api',
   },
