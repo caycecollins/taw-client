@@ -69,7 +69,7 @@ class Input extends Component {
   }
 
   determineInputValue = () => {
-    if (this.props.type === 'date') return this.props.field.value || this.props.dateOptions.defaultDate
+    if (this.props.type === 'date') return this.props.field.value || this.props.dateOptions.minDate
     if (this.props.type === 'checkbox') return this.props.field.value
     if (this.props.type === 'typeahead') return this.props.field.value
     const inputValue = this.props.field.value || this.props.value || this.props.field.defaultValue || ''
@@ -230,7 +230,7 @@ const CheckBoxLabel = styled.label`
     background: transparent;
     color: ${props => props.theme.colors.armyGreen};
     font-size: 1.4rem;
-    margin-bottom: 6px;
+    margin-bottom: 2px;
   }
   &:hover {
     &::after {
@@ -246,7 +246,7 @@ const CheckBoxLabel = styled.label`
 `
 
 export const sharedInputStyles = css`
-  padding: 4px 16px 6px 16px;
+  padding: 4px 16px 4px 16px;
   background-color: transparent;
   color: ${props => props.isPristine ? props.theme.colors.gray : props.theme.colors.armyWhite};
   border: 1px solid ${props => props.isPristine ? props.theme.colors.gray : rgba(props.theme.colors.armyWhite, 0.7)};
