@@ -35,53 +35,54 @@ const UpcomingEvents = props => {
         </LegendItem> */}
       </Legend>
       <Upcoming>
-
-        <FlipMove
-          easing="ease-in-out"
-          duration={300}
-          staggerDelayBy={60}
-          appearAnimation="elevator"
-          enterAnimation="elevator"
-          leaveAnimation="none"
-          maintainContainerHeight={true}
-        >
-          {events.length > 0 && <VertLine />}
-          {events.length > 0
-            ? events.map((event, index) => {
+        {props.events && props.events.length === undefined && (
+          <Button
+            icon="crosshairs"
+            iconSpin={true}
+            outline={false}
+            removeLeftPadding={true}
+            label="Reciving Events, ..."
+            disabled={true}
+          />
+        )}
+        {events && events.length > 0 ? (
+          <FlipMove
+            easing="ease-in-out"
+            duration={300}
+            staggerDelayBy={60}
+            appearAnimation="elevator"
+            enterAnimation="elevator"
+            leaveAnimation="none"
+            maintainContainerHeight={true}
+          >
+            {events ? events.map((event, index) => {
               const endTime = moment(event.end).format('HH:mm')
               const dateTime = `${moment(event.start).format('MMM Do, YYYY @ HH:mm - ')}${endTime}`
               return (
-                <Event
-                  key={index}
-                  onClick={e => selectEvent(event, props)}
-                >
-                  <IconCircle mandatory={event.mandatory}>
-                    <Icon
-                      name="calendar"
-                      size={15}
-                    />
-                  </IconCircle>
-                  <Info>
-                    <DateTime>{dateTime}</DateTime>
-                    <Title>{event.title}</Title>
-                  </Info>
-                </Event>
+                <span key={index}>
+                  <VertLine />
+                  <Event
+                    key={index}
+                    onClick={e => selectEvent(event, props)}
+                  >
+                    <IconCircle mandatory={event.mandatory}>
+                      <Icon
+                        name="calendar"
+                        size={15}
+                      />
+                    </IconCircle>
+                    <Info>
+                      <Title>{event.title}</Title>
+                      <DateTime>{dateTime}</DateTime>
+                    </Info>
+                  </Event>
+                </span>
               )
-            })
-            : (
-              <div>
-                <Button
-                  icon="crosshairs"
-                  iconSpin={true}
-                  outline={false}
-                  removeLeftPadding={true}
-                  label="Reciving Events, ..."
-                  disabled={true}
-                />
-              </div>
-            )
-          }
-        </FlipMove>
+            }) : <span/>}
+          </FlipMove>
+        ) : (
+          <span><br /><br />No upcoming events.<br /><br /><br /></span>
+        )}
       </Upcoming>
       <Button
         onClick={() => props.viewAllEvents()}
@@ -190,11 +191,11 @@ const IconCircle = styled.div`
 `
 
 const DateTime = styled.div`
+  margin-top: 4px;
   font-size: 0.8rem;
 `
 
 const Title = styled.div`
-  margin-top: 4px;
   font-size: 0.9rem;
   color: ${props => props.theme.colors.armyGreen};
 `
