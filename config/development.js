@@ -1,16 +1,10 @@
-/**
- * development-example.js
- *
- * Sample configuration.  Rename to development.js and edit.
- */
-
 import { merge } from 'lodash'
 
 import common from './common'
 
 export default merge(common, {
   api: {
-    host: 'localhost',
+    host: 'home.caycecollins.com',
   },
   cerebral: {
     debugger: true,
